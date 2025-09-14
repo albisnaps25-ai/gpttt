@@ -19,11 +19,45 @@
     /* Header/Profile */
     header { display: flex; justify-content: space-between; align-items: center; padding: .8rem 1rem; }
     .menu-btn { background: none; border: none; font-size: 1.8rem; cursor: pointer; padding: 0.8rem; }
-    nav { display: none; }
-    nav.open { display: block; margin: .5rem 1rem; }
-    nav ul { list-style: none; padding: 0; margin: 0; display: flex; justify-content: center; gap: 1rem; }
-    nav li { margin: .3rem 0; }
-    nav a { color: var(--fg); text-decoration: none; font-weight: 500; }
+    nav { 
+      display: none; 
+      position: fixed; 
+      top: 0; 
+      right: -50%; 
+      width: 50%; 
+      height: 100vh; 
+      background: var(--bg); 
+      box-shadow: -2px 0 5px rgba(0,0,0,0.2); 
+      transition: right 0.3s ease-in-out; 
+      z-index: 1000; 
+    }
+    nav.open { 
+      display: block; 
+      right: 0; 
+    }
+    .nav-header { 
+      display: flex; 
+      justify-content: flex-end; 
+      padding: 1rem; 
+    }
+    .close-nav-btn { 
+      background: none; 
+      border: none; 
+      font-size: 1.8rem; 
+      cursor: pointer; 
+      color: var(--fg); 
+      padding: 0.8rem; 
+    }
+    nav ul { 
+      list-style: none; 
+      padding: 2rem; 
+      margin: 0; 
+      display: flex; 
+      flex-direction: column; 
+      gap: 1.5rem; 
+    }
+    nav li { margin: 0; }
+    nav a { color: var(--fg); text-decoration: none; font-weight: 500; font-size: 1.2rem; }
     nav a:hover { color: var(--accent); }
     .profile { text-align: center; padding: 1rem; }
     .profile-pic-wrapper { position: relative; display: inline-block; }
@@ -126,6 +160,9 @@
       <h1 style="margin:0;font-size:1.25rem">Creator</h1>
       <button class="menu-btn">☰</button>
       <nav>
+        <div class="nav-header">
+          <button class="close-nav-btn">✕</button>
+        </div>
         <ul>
           <li><a href="#">Home</a></li>
           <li><a href="#">About</a></li>
@@ -254,7 +291,9 @@ document.getElementById("year").textContent = new Date().getFullYear();
 /* Menu */
 const menuBtn = document.querySelector(".menu-btn");
 const nav = document.querySelector("nav");
-menuBtn.onclick = () => nav.classList.toggle("open");
+const closeNavBtn = document.querySelector(".close-nav-btn");
+menuBtn.onclick = () => nav.classList.add("open");
+closeNavBtn.onclick = () => nav.classList.remove("open");
 
 /* Tabs */
 document.querySelectorAll(".tab-btn").forEach(b => {
