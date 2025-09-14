@@ -62,13 +62,13 @@
     .profile { text-align: center; padding: 1rem; }
     .profile-pic-wrapper { position: relative; display: inline-block; }
     
-    /* Instagram Story Border Effect */
+    /* Static Instagram Story Border (No Animation) */
     .profile-pic-wrapper.has-story {
       position: relative;
       padding: 4px;
       background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
       border-radius: 50%;
-      animation: rotate 3s linear infinite;
+      /* Removed animation property */
     }
     
     .profile-pic-wrapper.has-story .profile-pic {
@@ -86,10 +86,7 @@
       display: block; 
     }
     
-    @keyframes rotate { 
-      from { transform: rotate(0deg); } 
-      to { transform: rotate(360deg); } 
-    }
+    /* Removed the rotation animation */
     
     .creator-name { font-size: 1.5rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: .3rem; margin-top: .5rem; }
     .verified { color: var(--accent); font-size: 1.2rem; }
@@ -529,4 +526,5 @@ nextStoryBtn.onclick = () => {
 </script>
 </body>
 </html>
+
 
