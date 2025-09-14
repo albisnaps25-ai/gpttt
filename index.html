@@ -1,0 +1,305 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <title>Creator Profile</title>
+  <style>
+    :root {
+      --bg: #f9fafb;
+      --fg: #111827;
+      --accent: #2563eb;
+      --muted: #6b7280;
+      --radius: 20px;
+      font-family: system-ui, sans-serif;
+    }
+    body { margin: 0; background: var(--bg); color: var(--fg); }
+    .container { max-width: 800px; margin: auto; }
+
+    /* Profile */
+    header { display: flex; justify-content: space-between; align-items: center; padding: .8rem 1rem; }
+    .menu-btn { background: none; border: none; font-size: 1.5rem; cursor: pointer; }
+    nav { display: none; }
+    nav.open { display: block; margin: .5rem 1rem; }
+    nav ul { list-style: none; padding: 0; margin: 0; }
+    nav li { margin: .3rem 0; }
+    nav a { color: var(--accent); text-decoration: none; }
+    .profile { text-align: center; padding: 1rem; }
+    .profile img { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+    .creator-name { font-size: 1.5rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: .3rem; margin-top: .5rem; }
+    .verified { color: var(--accent); font-size: 1.2rem; }
+    .username { color: var(--muted); margin-bottom: .5rem; }
+    .stats { display: flex; justify-content: center; gap: 2rem; margin: 1rem 0; }
+    .stat strong { display: block; font-size: 1.2rem; }
+    .actions { display: flex; gap: .5rem; justify-content: center; margin-bottom: 1rem; }
+    .actions button { flex: 1; padding: .6rem; border-radius: var(--radius); border: 0; cursor: pointer; font-weight: 600; }
+    .subscribe { background: var(--accent); color: white; }
+    .message { background: #e5e7eb; }
+    .donate { background: #facc15; } /* Yellow */
+    .tabs { display: flex; justify-content: center; gap: 1rem; margin: 1rem 0; border-bottom: 2px solid #e5e7eb; }
+    .tab-btn { background: none; border: none; padding: .5rem 1rem; cursor: pointer; font-weight: 600; color: var(--muted); }
+    .tab-btn.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
+    .tab-content { display: none; margin-top: 1rem; }
+    .tab-content.active { display: block; }
+    .media-grid { display: grid; grid-template-columns: repeat(auto-fill,minmax(150px,1fr)); gap: .5rem; }
+    .media-grid img, .media-grid video { width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius); }
+    footer { text-align: center; margin: 2rem 0; color: var(--muted); font-size: .9rem; }
+
+    /* Chat */
+    .chat-screen { display: none; flex-direction: column; height: 100vh; background: #fff; }
+    .chat-header {
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .6rem 1rem; border-bottom: 1px solid #e5e7eb;
+      background: #fff; position: sticky; top: 0; z-index: 10;
+    }
+    .chat-header-left { display: flex; align-items: center; gap: .6rem; }
+    .chat-header-left img { width: 40px; height: 40px; border-radius: 50%; object-fit: cover; }
+    .chat-user-info { display: flex; flex-direction: column; line-height: 1.2; }
+    .chat-user-info strong { font-size: .95rem; }
+    .online { font-size: .75rem; color: green; }
+    .chat-header-right { display: flex; align-items: center; gap: 1rem; font-size: 1.2rem; }
+    .chat-header button { background: none; border: none; font-size: 1.2rem; cursor: pointer; color: var(--fg); }
+    .chat-messages { flex: 1; overflow-y: auto; padding: 1rem; display: flex; flex-direction: column; gap: .5rem; background: #f3f4f6; }
+    .msg-wrapper { display: flex; flex-direction: column; align-items: flex-end; }
+    .msg { max-width: 70%; padding: .6rem .9rem; border-radius: var(--radius); line-height: 1.4; font-size: .9rem; word-wrap: break-word; }
+    .creator-msg { background: #e5e7eb; align-self: flex-start; }
+    .user-msg { background: var(--accent); color: white; }
+    .seen { font-size: .7rem; color: var(--muted); margin-top: .2rem; margin-right: .3rem; }
+    .typing { font-size: .8rem; color: var(--muted); font-style: italic; margin: .2rem 0; }
+    .chat-input { display: flex; align-items: center; padding: .5rem; border-top: 1px solid #e5e7eb; background: white; }
+    .chat-input input { flex: 1; padding: .6rem; border: 1px solid #d1d5db; border-radius: 20px; outline: none; }
+    .chat-input button { background: none; border: none; font-size: 1.2rem; margin-left: .6rem; cursor: pointer; color: var(--accent); }
+
+    /* Donation Modals */
+    .modal { display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%; background: rgba(0,0,0,0.6); justify-content: center; align-items: center; }
+    .modal-content { background: #fff; padding: 20px; border-radius: 12px; max-width: 420px; width: 90%; text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative; }
+    .close-x-button { position: absolute; top: 10px; right: 15px; font-size: 20px; cursor: pointer; background:none; border:none; }
+    .qr-code { border: 2px solid #f7931a; border-radius: 10px; padding: 8px; margin: 10px auto; background: white; width: 100%; max-width: 200px; display: block; }
+    .wallet-address-container { display: flex; align-items: center; justify-content: center; margin: 10px 0; flex-wrap: wrap; gap: 8px; }
+    .wallet-address { word-break: break-all; font-family: monospace; font-size: 13px; color: #444; padding: 8px 10px; background: #f1f1f1; border-radius: 5px; flex: 1; text-align: center; }
+    .copy-button { background: #28a745; color: white; padding: 6px 12px; border: none; border-radius: 5px; cursor: pointer; font-size: 12px; }
+    .copy-button:hover { background: #218838; }
+    .status-message { font-size: 14px; margin-top: 10px; display: none; }
+    .status-success { color: #28a745; }
+    .status-error { color: #dc3545; }
+    .donate-button { background: linear-gradient(45deg, #f7931a, #ffbf00); color: white; padding: 12px 24px; border: none; border-radius: 25px; cursor: pointer; font-size: 16px; font-weight: bold; margin-top: 12px; box-shadow: 0 4px 8px rgba(247, 147, 26, 0.3); }
+    .modal-button { padding: 10px 20px; margin: 5px; border: none; border-radius: 20px; cursor: pointer; font-size: 16px; font-weight: 600; color: white; }
+    .btc-button { background: linear-gradient(45deg, #f7931a, #ffbf00); }
+    .paypal-button { background:#0070ba; }
+    .back-button { background:#f7931a; color:white; border:none; border-radius:20px; padding:8px 16px; margin-top:10px; cursor:pointer; }
+  </style>
+</head>
+<body>
+  <!-- Main Profile -->
+  <div class="container main-screen">
+    <header>
+      <h1 style="margin:0;font-size:1.25rem">Creator</h1>
+      <button class="menu-btn">☰</button>
+    </header>
+    <nav>
+      <ul>
+        <li><a href="#">Home</a></li>
+        <li><a href="#">About</a></li>
+        <li><a href="#">Support</a></li>
+      </ul>
+    </nav>
+    <section class="profile">
+      <img src="profile.png" alt="Creator profile picture">
+      <div class="creator-name">Sofia Creator <span class="verified">✔</span></div>
+      <div class="username">@sofia123</div>
+      <div class="stats">
+        <div class="stat"><strong>15.2k</strong> Followers</div>
+        <div class="stat"><strong>320k</strong> Likes</div>
+      </div>
+      <div class="actions">
+        <button class="subscribe">Subscribe</button>
+        <button class="message">Message</button>
+        <button class="donate" id="openDonate">Donate</button>
+      </div>
+    </section>
+
+    <div class="tabs">
+      <button class="tab-btn active" data-tab="photos">Photos</button>
+      <button class="tab-btn" data-tab="reels">Reels</button>
+      <button class="tab-btn" data-tab="exclusive">Exclusive</button>
+    </div>
+
+    <section id="photos" class="tab-content active">
+      <div class="media-grid">
+        <img src="photo1.jpg" alt="Photo 1">
+        <img src="photo2.jpg" alt="Photo 2">
+        <img src="photo3.jpg" alt="Photo 3">
+      </div>
+    </section>
+    <section id="reels" class="tab-content">
+      <div class="media-grid">
+        <video src="reels1.mp4" controls></video>
+      </div>
+    </section>
+    <section id="exclusive" class="tab-content">
+      <div class="media-grid">
+        <img src="exclusive1.jpg" alt="Exclusive content locked">
+      </div>
+      <p style="text-align:center;color:var(--muted)">Subscribe to unlock exclusive content ✨</p>
+    </section>
+
+    <footer>&copy; <span id="year"></span> Sofia Creator</footer>
+  </div>
+
+  <!-- Chat Screen -->
+  <div class="chat-screen container">
+    <div class="chat-header">
+      <div class="chat-header-left">
+        <button class="back-btn">←</button>
+        <img src="profile.png" alt="Creator">
+        <div class="chat-user-info">
+          <strong>Sofia Creator</strong>
+          <span class="online">Online</span>
+        </div>
+      </div>
+      <div class="chat-header-right">
+        <button title="Video Call">📹</button>
+        <button title="Voice Call">📞</button>
+      </div>
+    </div>
+    <div class="chat-messages" id="chatMessages"></div>
+    <div class="chat-input">
+      <input type="text" id="chatInput" placeholder="Message...">
+      <button id="sendBtn">➤</button>
+    </div>
+  </div>
+
+  <!-- Donation Modals -->
+  <div id="chooseMethodModal" class="modal">
+    <div class="modal-content">
+      <button class="close-x-button" onclick="closeModal('chooseMethodModal')">X</button>
+      <h3>Choose Your Donation Method</h3>
+      <div class="modal-buttons-container">
+        <button class="modal-button btc-button" onclick="showBtcModal()">Donate with Bitcoin</button>
+        <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display:inline;">
+          <input type="hidden" name="business" value="YOUR_PAYPAL_EMAIL@EXAMPLE.COM"/>
+          <input type="hidden" name="currency_code" value="USD"/>
+          <input type="submit" class="modal-button paypal-button" value="Donate with PayPal"/>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <div id="btcModal" class="modal">
+    <div class="modal-content">
+      <button class="close-x-button" onclick="closeModal('btcModal')">X</button>
+      <h3>Support Us with Bitcoin! 🚀</h3>
+      <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n" alt="BTC QR Code" class="qr-code">
+      <p>Scan the QR code or copy the address below:</p>
+      <div class="wallet-address-container">
+        <div class="wallet-address" id="btcAddress">bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n</div>
+        <button class="copy-button" onclick="copyToClipboard()">Copy</button>
+      </div>
+      <div id="statusMessage" class="status-message"></div>
+      <button class="donate-button" onclick="openDonationPage()">Donate BTC Now</button>
+      <button class="back-button" onclick="goBackToChooseMethod()">Back</button>
+    </div>
+  </div>
+
+  <script>
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Menu toggle
+    document.querySelector(".menu-btn").addEventListener("click", () => {
+      document.querySelector("nav").classList.toggle("open");
+    });
+
+    // Tabs
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(b => b.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    // Chat
+    const messageBtn = document.querySelector(".message");
+    const mainScreen = document.querySelector(".main-screen");
+    const chatScreen = document.querySelector(".chat-screen");
+    const backBtn = document.querySelector(".back-btn");
+    const chatMessages = document.getElementById("chatMessages");
+    const chatInput = document.getElementById("chatInput");
+    const sendBtn = document.getElementById("sendBtn");
+
+    function addMessage(text, sender="creator") {
+      const wrapper = document.createElement("div");
+      wrapper.className = "msg-wrapper";
+      if (sender === "creator") wrapper.style.alignItems = "flex-start";
+      const msg = document.createElement("div");
+      msg.className = "msg " + (sender === "creator" ? "creator-msg" : "user-msg");
+      msg.textContent = text;
+      wrapper.appendChild(msg);
+      chatMessages.appendChild(wrapper);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return wrapper;
+    }
+    function addSeen(wrapper) {
+      const seen = document.createElement("div");
+      seen.className = "seen";
+      seen.textContent = "Seen";
+      wrapper.appendChild(seen);
+    }
+    function showTyping() {
+      const typing = document.createElement("div");
+      typing.className = "typing";
+      typing.textContent = "Sofia is typing...";
+      chatMessages.appendChild(typing);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return typing;
+    }
+    messageBtn.addEventListener("click", () => {
+      mainScreen.style.display = "none";
+      chatScreen.style.display = "flex";
+      chatMessages.innerHTML = "";
+      setTimeout(() => addMessage("Welcome to my chat! 💬", "creator"), 400);
+    });
+    backBtn.addEventListener("click", () => {
+      chatScreen.style.display = "none";
+      mainScreen.style.display = "block";
+    });
+    sendBtn.addEventListener("click", () => {
+      const text = chatInput.value.trim();
+      if (text) {
+        const wrapper = addMessage(text, "user");
+        chatInput.value = "";
+        setTimeout(() => {
+          addSeen(wrapper);
+          const typingIndicator = showTyping();
+          setTimeout(() => {
+            typingIndicator.remove();
+            const reply = addMessage("Check this out 👉 https://mywebsite.com", "creator");
+            reply.querySelector(".msg").innerHTML = 'Check this out 👉 <a href="https://mywebsite.com" target="_blank">https://mywebsite.com</a>';
+          }, 3000);
+        }, 2000);
+      }
+    });
+    chatInput.addEventListener("keypress", e => { if (e.key === "Enter") sendBtn.click(); });
+
+    // Donation Flow
+    document.getElementById("openDonate").onclick = () => showModal('chooseMethodModal');
+    function showModal(id){document.getElementById(id).style.display='flex';}
+    function closeModal(id){document.getElementById(id).style.display='none';}
+    function showBtcModal(){closeModal('chooseMethodModal');showModal('btcModal');}
+    function goBackToChooseMethod(){closeModal('btcModal');showModal('chooseMethodModal');}
+    const btcAddress = document.getElementById("btcAddress").textContent.trim();
+    function copyToClipboard(){
+      if(navigator.clipboard){
+        navigator.clipboard.writeText(btcAddress).then(()=>showStatus("Address copied! 📋","success")).catch(()=>showStatus("Failed to copy","error"));
+      }else{showStatus("Please copy manually","error");}
+    }
+    function showStatus(msg,type){
+      const s=document.getElementById("statusMessage");
+      s.textContent=msg; s.className="status-message status-"+type; s.style.display="block";
+      setTimeout(()=>s.style.display="none",3000);
+    }
+    function openDonationPage(){window.open("https://www.blockchain.com/explorer/addresses/btc/"+btcAddress,"_blank");closeModal('btcModal');}
+  </script>
+</body>
+</html>
