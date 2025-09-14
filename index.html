@@ -61,13 +61,36 @@
     nav a:hover { color: var(--accent); }
     .profile { text-align: center; padding: 1rem; }
     .profile-pic-wrapper { position: relative; display: inline-block; }
-    .profile img.profile-pic { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; cursor: pointer; display: block; }
-    .profile img.has-story::before {
-      content: ''; position: absolute; top: -6px; left: -6px; right: -6px; bottom: -6px; border-radius: 50%;
+    
+    /* Instagram Story Border Effect */
+    .profile-pic-wrapper.has-story {
+      position: relative;
+      padding: 4px;
       background: linear-gradient(45deg, #f09433, #e6683c, #dc2743, #cc2366, #bc1888);
-      z-index: -1; animation: spin 3s linear infinite;
+      border-radius: 50%;
+      animation: rotate 3s linear infinite;
     }
-    @keyframes spin { from { transform: rotate(0); } to { transform: rotate(360deg); } }
+    
+    .profile-pic-wrapper.has-story .profile-pic {
+      border: 3px solid var(--bg);
+      position: relative;
+      z-index: 1;
+    }
+    
+    .profile img.profile-pic { 
+      width: 120px; 
+      height: 120px; 
+      border-radius: 50%; 
+      object-fit: cover; 
+      cursor: pointer; 
+      display: block; 
+    }
+    
+    @keyframes rotate { 
+      from { transform: rotate(0deg); } 
+      to { transform: rotate(360deg); } 
+    }
+    
     .creator-name { font-size: 1.5rem; font-weight: 600; display: flex; align-items: center; justify-content: center; gap: .3rem; margin-top: .5rem; }
     .verified { color: var(--accent); font-size: 1.2rem; }
     .username { color: var(--muted); margin-bottom: .5rem; }
@@ -172,8 +195,8 @@
     </header>
 
     <section class="profile">
-      <div class="profile-pic-wrapper">
-        <img id="profilePic" class="profile-pic has-story" src="profile.png" alt="Creator profile picture">
+      <div class="profile-pic-wrapper has-story">
+        <img id="profilePic" class="profile-pic" src="profile.png" alt="Creator profile picture">
       </div>
       <div class="creator-name">Sofia Creator <span class="verified">✔</span></div>
       <div class="username">@sofia123</div>
@@ -506,3 +529,4 @@ nextStoryBtn.onclick = () => {
 </script>
 </body>
 </html>
+
