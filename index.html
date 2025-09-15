@@ -16,7 +16,6 @@
     }
     body { margin: 0; background: var(--bg); color: var(--fg); }
     .container { max-width: 800px; margin: 0 auto; padding: 0 16px; }
-
     /* Header/Profile */
     header {
       position: relative;
@@ -40,21 +39,32 @@
     }
     .menu-btn span {
       display: block;
+      width: auto;
       height: 4px;
       background: var(--fg);
       border-radius: 2px;
       transition: transform 0.3s ease, opacity 0.2s ease;
+      transform: none;
+      opacity: 1;
     }
-    .menu-btn.open span:nth-child(1) {
-      transform: translateY(10px) rotate(90deg);
+    /* Closed state: horizontal bars */
+    .menu-btn:not(.open) span {
+      width: 100%;
+      height: 4px;
     }
-    .menu-btn.open span:nth-child(2) {
-      opacity: 0;
+    /* Open state: vertical parallel bars */
+    .menu-btn.open {
+      flex-direction: row;
+      justify-content: center;
+      align-items: center;
+      gap: 6px;
     }
-    .menu-btn.open span:nth-child(3) {
-      transform: translateY(-10px) rotate(90deg);
+    .menu-btn.open span {
+      width: 4px;
+      height: 24px;
+      transform: none;
+      opacity: 1;
     }
-
     /* Nav panel */
     nav {
       display: none;
@@ -84,7 +94,6 @@
       font-size: 1.05rem;
     }
     nav a:hover { color: var(--accent); }
-
     .profile { text-align: center; padding: 1rem; }
     .profile-pic-wrapper { position: relative; display: inline-block; }
     .profile-pic-wrapper.has-story {
@@ -131,7 +140,6 @@
     .subscribe { background: var(--accent); color: white; }
     .message { background: #e5e7eb; }
     .donate { background: #facc15; }
-
     /* Tabs / Media */
     .tabs {
       display: flex;
@@ -167,9 +175,7 @@
       object-fit: cover;
       border-radius: var(--radius);
     }
-
     footer { text-align: center; margin: 2rem 0; color: var(--muted); font-size: .9rem; }
-
     /* Chat */
     .chat-screen { display: none; flex-direction: column; height: 100vh; background: #fff; }
     .chat-header {
@@ -204,7 +210,6 @@
     .chat-input button {
       background: none; border: none; font-size: 1.4rem; margin-left: .6rem; cursor: pointer; color: var(--accent);
     }
-
     /* Donation modals */
     .modal {
       display: none; position: fixed; z-index: 1000; left: 0; top: 0; width: 100%; height: 100%;
@@ -243,15 +248,34 @@
     .donate-button {
       background: linear-gradient(45deg, #f7931a, #ffbf00); color: white; padding: .8rem 1.4rem; border: none; border-radius: 25px; cursor: pointer; font-size: 1.1rem; font-weight: bold; margin-top: .6rem; box-shadow: 0 4px 8px rgba(247,147,26,0.3);
     }
-
-    /* Story modal and controls unchanged */
+    /* Story modal */
+    .story-modal { display: none; position: fixed; top:0; left:0; width:100%; height:100%; background:rgba(0,0,0,0.8); justify-content:center; align-items:center; z-index:1000; }
+    .story-container { background:#fff; border-radius:12px; overflow:hidden; position:relative; width:90%; max-width:480px; }
+    .story-header { padding:10px; display:flex; align-items:center; gap:10px; background:#f9fafb; }
+    .story-profile-pic { width:40px; height:40px; border-radius:50%; }
+    .story-user-details { display:flex; align-items:center; gap:5px; font-weight:600; }
+    .progress-bars { display:flex; gap:4px; padding:4px; }
+    .progress-bar { flex:1; background:#e5e7eb; border-radius:4px; overflow:hidden; }
+    .progress-bar-fill { width:0%; height:4px; background:var(--accent); }
+    .story-image { display:none; width:100%; height:400px; object-fit:cover; }
+    .story-image.active { display:block; }
+    .btn { background:none; border:none; cursor:pointer; font-size:16px; }
+    .nav-btn { position:absolute; top:50%; transform:translateY(-50%); background:rgba(0,0,0,0.3); color:#fff; padding:10px; border-radius:50%; }
+    .nav-btn-left { left:10px; }
+    .nav-btn-right { right:10px; }
+    .close-btn { position:absolute; top:10px; right:10px; background:rgba(0,0,0,0.3); color:#fff; padding:8px; border-radius:50%; }
+    .story-count { position:absolute; top:10px; left:50%; transform:translateX(-50%); color:#fff; font-weight:600; }
+    .story-controls { display:flex; gap:8px; padding:10px; background:#fff; align-items:center; }
+    .reply-input { flex:1; padding:8px; border:1px solid #d1d5db; border-radius:20px; outline:none; }
+    .send-btn, .like-btn { background:none; border:none; cursor:pointer; font-size:20px; }
+    .like-btn.liked { color:var(--accent); }
   </style>
 </head>
 <body>
   <div class="container main-screen">
     <header>
       <h1 style="margin:0;font-size:1.25rem">Creator</h1>
-      <button class="menu-btn" aria-label="Menu toggle">
+      <button class="menu-btn" aria-label="Menu toggle" aria-expanded="false">
         <span></span>
         <span></span>
         <span></span>
@@ -265,12 +289,11 @@
         </ul>
       </nav>
     </header>
-
     <section class="profile">
       <div class="profile-pic-wrapper has-story">
         <img id="profilePic" class="profile-pic" src="profile.png" alt="Creator profile picture">
       </div>
-      <div class="creator-name">Sofia Creator <span class="verified">&#10004;</span></div>
+      <div class="creator-name">Sofia Creator <span class="verified">✔</span></div>
       <div class="username">@sofia123</div>
       <div class="stats">
         <div class="stat"><strong>15.2k</strong> Followers</div>
@@ -282,13 +305,11 @@
         <button class="donate" id="openDonate">Donate</button>
       </div>
     </section>
-
     <div class="tabs">
       <button class="tab-btn active" data-tab="photos">Photos</button>
       <button class="tab-btn" data-tab="reels">Reels</button>
       <button class="tab-btn" data-tab="exclusive">Exclusive</button>
     </div>
-
     <section id="photos" class="tab-content active">
       <div class="media-grid">
         <img src="photo1.jpg" alt="Photo 1">
@@ -296,20 +317,17 @@
         <img src="photo3.jpg" alt="Photo 3">
       </div>
     </section>
-
     <section id="reels" class="tab-content">
       <div class="media-grid">
         <video src="reels1.mp4" controls></video>
       </div>
     </section>
-
     <section id="exclusive" class="tab-content">
       <div class="media-grid">
         <img src="exclusive1.jpg" alt="Exclusive content locked">
       </div>
-      <p style="text-align:center;color:var(--muted)">Subscribe to unlock exclusive content &#10024;</p>
+      <p style="text-align:center;color:var(--muted)">Subscribe to unlock exclusive content ✨</p>
     </section>
-
     <footer>&copy; <span id="year"></span> Sofia Creator</footer>
   </div>
 
@@ -317,7 +335,7 @@
   <div id="chatScreen" class="chat-screen container">
     <div class="chat-header">
       <div class="chat-header-left">
-        <button class="btn" id="backToMain">&#8592;</button>
+        <button class="btn" id="backToMain">←</button>
         <img src="profile.png" alt="Creator">
         <div class="chat-user-info">
           <strong>Sofia Creator</strong>
@@ -325,21 +343,21 @@
         </div>
       </div>
       <div class="chat-header-right">
-        <button title="Video Call">&#128249;</button>
-        <button title="Voice Call">&#128222;</button>
+        <button title="Video Call">📹</button>
+        <button title="Voice Call">📞</button>
       </div>
     </div>
     <div class="chat-messages" id="chatMessages"></div>
     <div class="chat-input">
       <input id="chatInput" placeholder="Message...">
-      <button id="sendMessage">&#10148;</button>
+      <button id="sendMessage">➤</button>
     </div>
   </div>
 
   <!-- Donation Modals -->
   <div id="chooseMethodModal" class="modal">
     <div class="modal-content">
-      <button class="close-x-button" id="closeDonate">&#10006;</button>
+      <button class="close-x-button" id="closeDonate">✖</button>
       <h3>Choose Your Donation Method</h3>
       <div class="modal-buttons-container">
         <button class="modal-button btc-button" id="openBtcDonate">Donate with Bitcoin</button>
@@ -354,8 +372,8 @@
 
   <div id="btcDonateModal" class="modal">
     <div class="modal-content">
-      <button class="close-x-button" id="closeBtcDonate">&#10006;</button>
-      <h3>Support Us with Bitcoin! &#128640;</h3>
+      <button class="close-x-button" id="closeBtcDonate">✖</button>
+      <h3>Support Us with Bitcoin! 🚀</h3>
       <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n" alt="BTC QR Code" class="qr-code">
       <p>Scan the QR code or copy the address below:</p>
       <div class="wallet-address-container">
@@ -376,7 +394,7 @@
           <img src="profile.png" alt="Profile" class="story-profile-pic">
           <div class="story-user-details">
             <span class="story-username">Sofia Creator</span>
-            <span class="story-verified">&#10004;</span>
+            <span class="story-verified">✔</span>
           </div>
         </div>
       </div>
@@ -385,13 +403,13 @@
       <img src="storyimage1.jpg" class="story-image active" data-index="0" alt="Story 1">
       <img src="storyimage2.jpg" class="story-image" data-index="1" alt="Story 2">
       <img src="storyimage3.jpg" class="story-image" data-index="2" alt="Story 3">
-      <button class="btn close-btn" id="storyCloseBtn">&#10006;</button>
-      <button class="btn nav-btn nav-btn-left" id="prevStoryBtn">&#9664;</button>
-      <button class="btn nav-btn nav-btn-right" id="nextStoryBtn">&#9654;</button>
+      <button class="btn close-btn" id="storyCloseBtn">✖</button>
+      <button class="btn nav-btn nav-btn-left" id="prevStoryBtn">◀</button>
+      <button class="btn nav-btn nav-btn-right" id="nextStoryBtn">▶</button>
       <div class="story-controls">
         <input id="replyInput" class="reply-input" placeholder="Reply to this story">
-        <button id="sendStoryBtn" class="send-btn">&#10148;</button>
-        <button id="likeStoryBtn" class="btn like-btn">&#10084;</button>
+        <button id="sendStoryBtn" class="send-btn">➤</button>
+        <button id="likeStoryBtn" class="btn like-btn">❤</button>
       </div>
     </div>
   </div>
@@ -402,9 +420,24 @@
     // Menu toggle
     const menuBtn = document.querySelector(".menu-btn");
     const nav = document.querySelector("nav");
-    menuBtn.addEventListener("click", () => {
-      menuBtn.classList.toggle("open");
+
+    menuBtn.addEventListener("click", (e) => {
+      const isOpen = menuBtn.classList.toggle("open");
       nav.classList.toggle("open");
+      menuBtn.setAttribute("aria-expanded", isOpen);
+      e.stopPropagation();
+    });
+
+    document.addEventListener("click", () => {
+      if (menuBtn.classList.contains("open")) {
+        menuBtn.classList.remove("open");
+        nav.classList.remove("open");
+        menuBtn.setAttribute("aria-expanded", false);
+      }
+    });
+
+    nav.addEventListener("click", (e) => {
+      e.stopPropagation();
     });
 
     // Tabs
@@ -437,11 +470,13 @@
       chatMessages.scrollTop = chatMessages.scrollHeight;
       return wrapper;
     }
+
     function addSeen(wrapper) {
       const seen=document.createElement("div");
       seen.className="seen"; seen.textContent="Seen";
       wrapper.appendChild(seen);
     }
+
     function showTyping() {
       const t=document.createElement("div");
       t.className="typing"; t.textContent="Sofia is typing...";
@@ -449,16 +484,19 @@
       chatMessages.scrollTop=chatMessages.scrollHeight;
       return t;
     }
+
     openChat.onclick = () => {
       chatScreen.style.display="flex";
       document.querySelector(".main-screen").style.display="none";
       chatMessages.innerHTML="";
       setTimeout(()=>addMessage("Welcome to my chat! 💬","creator"),400);
     };
+
     backToMain.onclick = () => {
       chatScreen.style.display="none";
       document.querySelector(".main-screen").style.display="block";
     };
+
     sendMessage.onclick = () => {
       const text=chatInput.value.trim();
       if (!text) return;
@@ -474,6 +512,7 @@
         },3000);
       },2000);
     };
+
     chatInput.addEventListener("keypress",e=>{ if(e.key==="Enter") sendMessage.click(); });
 
     // Donation modals
@@ -499,6 +538,7 @@
       btcDonateModal.style.display="none";
       donateModal.style.display="flex";
     };
+
     function showStatus(msg,type){
       const s=document.getElementById("statusMessage");
       s.textContent=msg;
@@ -506,11 +546,13 @@
       s.style.display="block";
       setTimeout(()=>s.style.display="none",3000);
     }
+
     copyBtcAddress.onclick=()=>{
       navigator.clipboard.writeText(btcAddress)
         .then(()=>showStatus("Address copied! 📋","success"))
         .catch(()=>showStatus("Failed to copy","error"));
     };
+
     donateBtcNow.onclick=()=>{
       window.open("https://www.blockchain.com/explorer/addresses/btc/"+btcAddress,"_blank");
       btcDonateModal.style.display="none";
@@ -544,6 +586,7 @@
         progressBars.appendChild(b);
       });
     }
+
     function showStory(i){
       clearTimeout(timer);
       storyImages.forEach(im=>im.classList.remove("active"));
@@ -562,10 +605,12 @@
       likeStoryBtn.classList.remove("liked");
       updateNav();
     }
+
     function updateNav(){
       prevStoryBtn.classList.toggle("visible",currentStory>0);
       nextStoryBtn.classList.toggle("visible",currentStory<total-1);
     }
+
     function start(){
       timer=setTimeout(()=>{
         if(currentStory<total-1){
@@ -574,6 +619,7 @@
         } else closeStory();
       },duration);
     }
+
     function closeStory(){
       clearTimeout(timer);
       storyModal.style.display="none";
@@ -581,12 +627,14 @@
       replyInput.value="";
       sendStoryBtn.classList.remove("visible");
     }
+
     profilePic.onclick=()=>{
       storyModal.style.display="flex";
       createBars();
       showStory(0);
       start();
     };
+
     storyCloseBtn.onclick=closeStory;
     replyInput.oninput=()=>sendStoryBtn.classList.toggle("visible",!!replyInput.value.trim());
     sendStoryBtn.onclick=()=>{
@@ -617,4 +665,5 @@
   </script>
 </body>
 </html>
+
 
