@@ -45,7 +45,7 @@
     }
     .menu-btn span + span { margin-top: 4px; }
 
-    /* Open state: three vertical bars “III” */
+    /* Open state: three vertical bars "III" */
     .menu-btn.open {
       flex-direction: row;
       justify-content: center;
@@ -58,19 +58,27 @@
       margin-left: 6px;
     }
 
+    /* Fixed navigation menu visibility */
     nav {
       display: none;
       position: absolute;
       top: 100%;
       right: 0;
       width: 220px;
-      background: var(--bg);
-      border: 1px solid #e5e7eb;
+      background: white;
+      border: 2px solid #e5e7eb;
       border-radius: 12px;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.12);
+      box-shadow: 0 8px 24px rgba(0,0,0,0.15);
       z-index: 1000;
+      opacity: 0;
+      transform: translateY(-10px);
+      transition: opacity 0.3s ease, transform 0.3s ease;
     }
-    nav.open { display: block; }
+    nav.open { 
+      display: block;
+      opacity: 1;
+      transform: translateY(0);
+    }
     nav ul {
       list-style: none;
       padding: 1rem;
@@ -79,13 +87,27 @@
       flex-direction: column;
       gap: 1rem;
     }
+    nav li {
+      padding: 0.5rem 0;
+      border-bottom: 1px solid #f3f4f6;
+    }
+    nav li:last-child {
+      border-bottom: none;
+    }
     nav a {
       color: var(--fg);
       text-decoration: none;
       font-weight: 500;
       font-size: 1.05rem;
+      display: block;
+      padding: 0.5rem;
+      border-radius: 6px;
+      transition: background-color 0.2s ease;
     }
-    nav a:hover { color: var(--accent); }
+    nav a:hover { 
+      color: var(--accent); 
+      background-color: #f3f4f6;
+    }
 
     /* Profile */
     .profile { text-align: center; padding: 1rem; }
@@ -469,12 +491,22 @@
   <script>
     document.getElementById("year").textContent = new Date().getFullYear();
 
-    // Menu toggle
+    // Menu toggle with improved visibility
     const menuBtn = document.querySelector(".menu-btn");
     const nav = document.querySelector("nav");
-    menuBtn.addEventListener("click", () => {
+    
+    menuBtn.addEventListener("click", (e) => {
+      e.stopPropagation();
       menuBtn.classList.toggle("open");
       nav.classList.toggle("open");
+    });
+
+    // Close menu when clicking outside
+    document.addEventListener("click", (e) => {
+      if (!nav.contains(e.target) && !menuBtn.contains(e.target)) {
+        menuBtn.classList.remove("open");
+        nav.classList.remove("open");
+      }
     });
 
     // Tabs
