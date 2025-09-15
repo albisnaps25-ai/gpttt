@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
+  <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Creator Profile — Full (Stories + Chat + Donate)</title>
   <style>
@@ -60,7 +61,7 @@
       margin-top: 0;
     }
 
-    /* Fixed navigation menu - always visible when open */
+    /* Navigation menu */
     nav {
       position: absolute;
       top: 100%;
@@ -77,13 +78,11 @@
       transition: all 0.2s ease;
       margin-top: 8px;
     }
-    
     nav.open { 
       opacity: 1;
       visibility: visible;
       transform: translateY(0) scale(1);
     }
-    
     nav ul {
       list-style: none;
       padding: 0;
@@ -91,16 +90,13 @@
       display: flex;
       flex-direction: column;
     }
-    
     nav li {
       margin: 0;
       border-bottom: 1px solid #f3f4f6;
     }
-    
     nav li:last-child {
       border-bottom: none;
     }
-    
     nav a {
       color: var(--fg);
       text-decoration: none;
@@ -110,7 +106,6 @@
       padding: 1rem 1.25rem;
       transition: all 0.2s ease;
     }
-    
     nav a:hover { 
       color: var(--accent); 
       background-color: #f8fafc;
@@ -356,10 +351,12 @@
   <div class="container main-screen">
     <header>
       <h1 style="margin:0;font-size:1.25rem">Creator</h1>
-      <button class="menu-btn" aria-label="Menu toggle">
-        <span></span><span></span><span></span>
+      <button class="menu-btn" id="menuBtn" aria-label="Menu toggle">
+        <span></span>
+        <span></span>
+        <span></span>
       </button>
-      <nav>
+      <nav id="navPanel">
         <ul>
           <li><a href="#">Home</a></li>
           <li><a href="#chat">Chat</a></li>
@@ -444,12 +441,14 @@
     <div class="modal-content">
       <button id="closeDonate" class="close-x-button">&#10006;</button>
       <h3>Choose Your Donation Method</h3>
-      <button id="openBtcDonate" class="modal-button btc-button">Donate with Bitcoin</button>
-      <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display:inline;">
-        <input type="hidden" name="business" value="YOUR_PAYPAL_EMAIL@EXAMPLE.COM"/>
-        <input type="hidden" name="currency_code" value="USD"/>
-        <input type="submit" class="modal-button paypal-button" value="Donate with PayPal"/>
-      </form>
+      <div class="modal-buttons-container">
+        <button id="openBtcDonate" class="modal-button btc-button">Donate with Bitcoin</button>
+        <form action="https://www.paypal.com/donate" method="post" target="_blank" style="display:inline;">
+          <input type="hidden" name="business" value="YOUR_PAYPAL_EMAIL@EXAMPLE.COM"/>
+          <input type="hidden" name="currency_code" value="USD"/>
+          <input type="submit" class="modal-button paypal-button" value="Donate with PayPal"/>
+        </form>
+      </div>
     </div>
   </div>
 
@@ -457,257 +456,4 @@
     <div class="modal-content">
       <button id="closeBtcDonate" class="close-x-button">&#10006;</button>
       <h3>Support Us with Bitcoin! &#128640;</h3>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n" class="qr-code" />
-      <p>Scan the QR code or copy the address below:</p>
-      <div class="wallet-address-container">
-        <div id="btcAddress" class="wallet-address">bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n</div>
-        <button id="copyBtcAddress" class="copy-button">Copy</button>
-      </div>
-      <div id="statusMessage" class="status-message"></div>
-      <button id="donateBtcNow" class="donate-button">Donate BTC Now</button>
-      <button id="backToDonate" class="back-button">Back</button>
-    </div>
-  </div>
-
-  <!-- Story Modal -->
-  <div id="storyModal" class="story-modal">
-    <div id="storyContainer" class="story-container">
-      <button id="storyCloseBtn" class="btn close-btn">&#10006;</button>
-      <div class="story-header">
-        <img src="profile.png" class="story-profile-pic" alt="Profile" />
-        <div>
-          <span class="story-username">Sofia Creator</span>
-          <span class="story-verified">&#10004;</span>
-        </div>
-      </div>
-      <div id="progressBars" class="progress-bars"></div>
-      <div id="storyCount" class="story-count"></div>
-      <img src="storyimage1.jpg" class="story-image active" data-index="0" alt="Story 1" />
-      <img src="storyimage2.jpg" class="story-image" data-index="1" alt="Story 2" />
-      <img src="storyimage3.jpg" class="story-image" data-index="2" alt="Story 3" />
-      <button id="prevStoryBtn" class="btn nav-btn nav-btn-left">&#9664;</button>
-      <button id="nextStoryBtn" class="btn nav-btn nav-btn-right">&#9654;</button>
-      <div class="story-controls">
-        <input id="replyInput" class="reply-input" placeholder="Reply to this story" />
-        <button id="sendStoryBtn" class="send-btn">&#10148;</button>
-        <button id="likeStoryBtn" class="btn like-btn">&#10084;</button>
-      </div>
-    </div>
-  </div>
-
-  <script>
-    document.getElementById("year").textContent = new Date().getFullYear();
-
-    // Menu toggle with proper state management
-    const menuBtn = document.querySelector(".menu-btn");
-    const nav = document.querySelector("nav");
-    let isMenuOpen = false;
-    
-    menuBtn.addEventListener("click", (e) => {
-      e.stopPropagation();
-      isMenuOpen = !isMenuOpen;
-      
-      if (isMenuOpen) {
-        menuBtn.classList.add("open");
-        nav.classList.add("open");
-      } else {
-        menuBtn.classList.remove("open");
-        nav.classList.remove("open");
-      }
-    });
-
-    // Close menu when clicking outside
-    document.addEventListener("click", (e) => {
-      if (isMenuOpen && !nav.contains(e.target) && !menuBtn.contains(e.target)) {
-        isMenuOpen = false;
-        menuBtn.classList.remove("open");
-        nav.classList.remove("open");
-      }
-    });
-
-    // Close menu when clicking on menu links
-    nav.addEventListener("click", () => {
-      isMenuOpen = false;
-      menuBtn.classList.remove("open");
-      nav.classList.remove("open");
-    });
-
-    // Tabs
-    document.querySelectorAll(".tab-btn").forEach(btn => {
-      btn.addEventListener("click", () => {
-        document.querySelectorAll(".tab-btn").forEach(x => x.classList.remove("active"));
-        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-        btn.classList.add("active");
-        document.getElementById(btn.dataset.tab).classList.add("active");
-      });
-    });
-
-    // Chat
-    const chatScreen = document.getElementById("chatScreen");
-    const openChat = document.getElementById("openChat");
-    const backToMain = document.getElementById("backToMain");
-    const chatMessages = document.getElementById("chatMessages");
-    const chatInput = document.getElementById("chatInput");
-    const sendMessage = document.getElementById("sendMessage");
-
-    function addMessage(text, sender="creator") {
-      const wrapper = document.createElement("div");
-      wrapper.className = "msg-wrapper";
-      if (sender==="creator") wrapper.style.alignItems="flex-start";
-      const msg = document.createElement("div");
-      msg.className = "msg " + (sender==="creator"?"creator-msg":"user-msg");
-      msg.textContent = text;
-      wrapper.appendChild(msg);
-      chatMessages.appendChild(wrapper);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      return wrapper;
-    }
-    function addSeen(wrapper) {
-      const s = document.createElement("div");
-      s.className = "seen";
-      s.textContent = "Seen";
-      wrapper.appendChild(s);
-    }
-    function showTyping() {
-      const t = document.createElement("div");
-      t.className = "typing";
-      t.textContent = "Sofia is typing...";
-      chatMessages.appendChild(t);
-      chatMessages.scrollTop = chatMessages.scrollHeight;
-      return t;
-    }
-    openChat.addEventListener("click", () => {
-      chatScreen.style.display = "flex";
-      document.querySelector(".main-screen").style.display = "none";
-      chatMessages.innerHTML = "";
-      setTimeout(() => addMessage("Welcome to my chat! 💬"), 400);
-    });
-    backToMain.addEventListener("click", () => {
-      chatScreen.style.display = "none";
-      document.querySelector(".main-screen").style.display = "block";
-    });
-    sendMessage.addEventListener("click", () => {
-      const text = chatInput.value.trim();
-      if (!text) return;
-      const w = addMessage(text, "user");
-      chatInput.value = "";
-      setTimeout(() => {
-        addSeen(w);
-        const t = showTyping();
-        setTimeout(() => {
-          t.remove();
-          const r = addMessage("Check this out 👉 https://mywebsite.com", "creator");
-          r.querySelector(".msg").innerHTML = 'Check this out 👉 <a href="https://mywebsite.com" target="_blank">https://mywebsite.com</a>';
-        }, 3000);
-      }, 2000);
-    });
-    chatInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage.click(); });
-
-    // Donate modals
-    const chooseModal = document.getElementById("chooseMethodModal");
-    const btcModal = document.getElementById("btcDonateModal");
-    document.getElementById("openDonate").addEventListener("click", () => chooseModal.style.display = "flex");
-    document.getElementById("closeDonate").addEventListener("click", () => chooseModal.style.display = "none");
-    document.getElementById("openBtcDonate").addEventListener("click", () => { chooseModal.style.display = "none"; btcModal.style.display = "flex"; });
-    document.getElementById("closeBtcDonate").addEventListener("click", () => btcModal.style.display = "none");
-    document.getElementById("backToDonate").addEventListener("click", () => { btcModal.style.display = "none"; chooseModal.style.display = "flex"; });
-    const btcAddress = document.getElementById("btcAddress").textContent.trim();
-    function showStatus(msg,type) {
-      const s = document.getElementById("statusMessage");
-      s.textContent = msg;
-      s.className = "status-message status-" + type;
-      s.style.display = "block";
-      setTimeout(() => s.style.display = "none", 3000);
-    }
-    document.getElementById("copyBtcAddress").addEventListener("click", () => {
-      navigator.clipboard.writeText(btcAddress).then(() => showStatus("Copied! 📋","success")).catch(() => showStatus("Fail","error"));
-    });
-    document.getElementById("donateBtcNow").addEventListener("click", () => {
-      window.open("https://www.blockchain.com/explorer/addresses/btc/" + btcAddress, "_blank");
-      btcModal.style.display = "none";
-    });
-
-    // Stories
-    const profilePicElem = document.getElementById("profilePic");
-    const storyModalElem = document.getElementById("storyModal");
-    const storyImgs = document.querySelectorAll(".story-image");
-    const progressBarsElem = document.getElementById("progressBars");
-    const storyCountElem = document.getElementById("storyCount");
-    const prevBtnElem = document.getElementById("prevStoryBtn");
-    const nextBtnElem = document.getElementById("nextStoryBtn");
-    const closeBtnElem = document.getElementById("storyCloseBtn");
-    const replyInputElem = document.getElementById("replyInput");
-    const sendStoryBtnElem = document.getElementById("sendStoryBtn");
-    const likeStoryBtnElem = document.getElementById("likeStoryBtn");
-    let currentStory = 0, storyTimer, totalStories = storyImgs.length, storyDuration = 10000, liked = false;
-
-    function createBars() {
-      progressBarsElem.innerHTML = "";
-      storyImgs.forEach(() => {
-        const bar = document.createElement("div");
-        bar.className = "progress-bar";
-        const fill = document.createElement("div");
-        fill.className = "progress-bar-fill";
-        bar.appendChild(fill);
-        progressBarsElem.appendChild(bar);
-      });
-    }
-    function showStory(idx) {
-      clearTimeout(storyTimer);
-      storyImgs.forEach(img => img.classList.remove("active"));
-      storyImgs[idx].classList.add("active");
-      const fills = document.querySelectorAll(".progress-bar-fill");
-      fills.forEach((f,i) => {
-        f.style.transition = "none";
-        f.style.width = i < idx ? "100%" : "0%";
-      });
-      void progressBarsElem.offsetWidth;
-      fills[idx].style.transition = `width ${storyDuration}ms linear`;
-      requestAnimationFrame(() => fills[idx].style.width = "100%");
-      storyCountElem.textContent = `${idx+1}/${totalStories}`;
-      currentStory = idx;
-      liked = false;
-      likeStoryBtnElem.classList.remove("liked");
-      updateNav();
-    }
-    function updateNav() {
-      prevBtnElem.classList.toggle("visible",currentStory>0);
-      nextBtnElem.classList.toggle("visible",currentStory<totalStories-1);
-    }
-    function startAuto() {
-      storyTimer = setTimeout(() => {
-        if (currentStory < totalStories - 1) {
-          showStory(currentStory + 1);
-          startAuto();
-        } else closeStoryModal();
-      }, storyDuration);
-    }
-    function closeStoryModal() {
-      clearTimeout(storyTimer);
-      storyModalElem.style.display = "none";
-      currentStory = 0;
-      replyInputElem.value = "";
-      sendStoryBtnElem.classList.remove("visible");
-    }
-    profilePicElem.addEventListener("click", () => {
-      storyModalElem.style.display = "flex";
-      createBars(); showStory(0); startAuto();
-    });
-    closeBtnElem.addEventListener("click", closeStoryModal);
-    prevBtnElem.addEventListener("click", () => {
-      if (currentStory > 0) { clearTimeout(storyTimer); showStory(currentStory-1); startAuto(); }
-    });
-    nextBtnElem.addEventListener("click", () => {
-      if (currentStory < totalStories - 1) { clearTimeout(storyTimer); showStory(currentStory+1); startAuto(); }
-      else closeStoryModal();
-    });
-    replyInputElem.addEventListener("input", () => sendStoryBtnElem.classList.toggle("visible", !!replyInputElem.value.trim()));
-    sendStoryBtnElem.addEventListener("click", () => {
-      if (replyInputElem.value.trim()) { alert("Reply: " + replyInputElem.value); replyInputElem.value=""; sendStoryBtnElem.classList.remove("visible"); }
-    });
-    likeStoryBtnElem.addEventListener("click", () => {
-      liked = !liked; likeStoryBtnElem.classList.toggle("liked", liked);
-    });
-  </script>
-</body>
-</html>
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200
