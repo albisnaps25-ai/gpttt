@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
+  <meta charset="utf-8" />
   <meta http-equiv="Content-Type" content="text/html;charset=UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1" />
   <title>Creator Profile — Full (Stories + Chat + Donate)</title>
@@ -16,345 +16,172 @@
     }
     body { margin: 0; background: var(--bg); color: var(--fg); }
     .container { max-width: 800px; margin: 0 auto; padding: 0 16px; }
-
-    /* Header/Profile */
     header {
-      position: relative;
-      display: flex;
-      justify-content: space-between;
-      align-items: center;
-      padding: .8rem 1rem;
+      position: relative; display: flex; justify-content: space-between; align-items: center;
+      padding: .8rem 1rem; background: white; box-shadow: 0 2px 4px rgba(0,0,0,0.1);
     }
     .menu-btn {
-      position: relative;
-      width: 32px;
-      height: 24px;
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      background: none;
-      border: none;
-      cursor: pointer;
-      padding: 0;
-      z-index: 1001;
+      width: 32px; height: 24px; display: flex; flex-direction: column;
+      justify-content: space-between; background: none; border: none; cursor: pointer; z-index: 1001;
     }
     .menu-btn span {
-      display: block;
-      height: 4px;
-      background: var(--fg);
-      border-radius: 2px;
-      transition: all 0.3s ease;
+      height: 4px; background: var(--fg); border-radius: 2px; transition: all 0.3s ease;
     }
     .menu-btn span + span { margin-top: 4px; }
-
-    /* Open state: three vertical bars "III" */
     .menu-btn.open {
-      flex-direction: row;
-      justify-content: center;
-      align-items: center;
+      flex-direction: row; justify-content: center; align-items: center;
     }
-    .menu-btn.open span {
-      margin: 0;
-    }
-    .menu-btn.open span + span {
-      margin-left: 6px;
-      margin-top: 0;
-    }
-
-    /* Navigation menu */
+    .menu-btn.open span { margin: 0; }
+    .menu-btn.open span + span { margin-left: 6px; margin-top: 0; }
     nav {
-      position: absolute;
-      top: 100%;
-      right: 0;
-      width: 250px;
-      background: white;
-      border: 2px solid #e5e7eb;
-      border-radius: 12px;
-      box-shadow: 0 8px 32px rgba(0,0,0,0.12);
-      z-index: 1000;
-      opacity: 0;
-      visibility: hidden;
-      transform: translateY(-10px) scale(0.95);
-      transition: all 0.2s ease;
-      margin-top: 8px;
+      position: absolute; top: 100%; right: 16px; width: 240px;
+      background: white; border: 1px solid #e5e7eb; border-radius: 12px;
+      box-shadow: 0 8px 24px rgba(0,0,0,0.12); opacity: 0; visibility: hidden;
+      transform: translateY(-10px) scale(0.95); transition: all 0.2s ease; margin-top: 8px; z-index: 1000;
     }
-    nav.open { 
-      opacity: 1;
-      visibility: visible;
-      transform: translateY(0) scale(1);
-    }
-    nav ul {
-      list-style: none;
-      padding: 0;
-      margin: 0;
-      display: flex;
-      flex-direction: column;
-    }
-    nav li {
-      margin: 0;
-      border-bottom: 1px solid #f3f4f6;
-    }
-    nav li:last-child {
-      border-bottom: none;
-    }
+    nav.open { opacity: 1; visibility: visible; transform: translateY(0) scale(1); }
+    nav ul { list-style: none; margin: 0; padding: 0; }
+    nav li { border-bottom: 1px solid #f3f4f6; }
+    nav li:last-child { border-bottom: none; }
     nav a {
-      color: var(--fg);
-      text-decoration: none;
-      font-weight: 500;
-      font-size: 1.05rem;
-      display: block;
-      padding: 1rem 1.25rem;
-      transition: all 0.2s ease;
+      display: block; padding: .75rem 1rem; color: var(--fg);
+      text-decoration: none; font-weight: 500; transition: background 0.2s;
     }
-    nav a:hover { 
-      color: var(--accent); 
-      background-color: #f8fafc;
-    }
+    nav a:hover { background: #f8fafc; color: var(--accent); }
 
     /* Profile */
-    .profile { text-align: center; padding: 1rem; }
-    .profile-pic-wrapper { position: relative; display: inline-block; }
+    .profile { text-align: center; padding: 1.5rem 0; }
     .profile-pic-wrapper.has-story {
-      padding: 4px;
-      background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
-      border-radius:50%;
+      padding: 4px; background: linear-gradient(45deg,#f09433,#e6683c,#dc2743,#cc2366,#bc1888);
+      border-radius: 50%;
     }
-    .profile-pic-wrapper.has-story .profile-pic {
-      border:3px solid var(--bg);
-      position:relative; z-index:1;
-    }
-    .profile img.profile-pic {
-      width:120px; height:120px; border-radius:50%; object-fit:cover; display:block; cursor:pointer;
-    }
-    .creator-name {
-      font-size:1.5rem; font-weight:600;
-      display:flex; align-items:center; justify-content:center; gap:.3rem; margin-top:.5rem;
-    }
-    .verified { color:var(--accent); font-size:1.2rem; }
-    .username { color:var(--muted); margin-bottom:.5rem; }
-    .stats { display:flex; justify-content:center; gap:2rem; margin:1rem 0; }
-    .stat strong { display:block; font-size:1.2rem; }
-    .actions { display:flex; gap:.8rem; justify-content:center; margin-bottom:1rem; }
+    .profile-pic { width: 120px; height: 120px; border-radius: 50%; object-fit: cover; }
+    .creator-name { font-size: 1.5rem; font-weight: 600; display: inline-flex; align-items: center; gap: .3rem; margin-top: .5rem; }
+    .verified { color: var(--accent); font-size: 1.2rem; }
+    .username { color: var(--muted); margin-bottom: 1rem; }
+    .stats { display: flex; justify-content: center; gap: 2rem; margin-bottom: 1.5rem; }
+    .stat strong { font-size: 1.2rem; display: block; }
+    .actions { display: flex; gap: .8rem; justify-content: center; margin-bottom: 2rem; }
     .actions button {
-      flex:1; padding:.8rem 1.2rem; border-radius:var(--radius); border:none;
-      cursor:pointer; font-weight:600; font-size:1.1rem;
+      flex: 1; padding: .8rem; border-radius: var(--radius); border: none;
+      cursor: pointer; font-weight: 600; font-size: 1.1rem;
     }
-    .subscribe { background:var(--accent); color:white; }
-    .message { background:#e5e7eb; }
-    .donate { background:#facc15; }
+    .subscribe { background: var(--accent); color: white; }
+    .message { background: #e5e7eb; }
+    .donate { background: #facc15; }
 
-    /* Tabs / Media */
+    /* Tabs */
     .tabs {
-      display:flex; justify-content:center; gap:1.5rem;
-      margin:1.5rem 0; border-bottom:2px solid #e5e7eb; padding-bottom:.5rem;
+      display: flex; justify-content: center; gap: 1.5rem; margin-bottom: 1rem;
+      border-bottom: 2px solid #e5e7eb; padding-bottom: .5rem;
     }
     .tab-btn {
-      background:none; border:none; padding:.6rem 1.2rem;
-      cursor:pointer; font-weight:600; color:var(--muted); font-size:1.1rem;
+      background: none; border: none; padding: .6rem 1.2rem; cursor: pointer;
+      font-weight: 600; color: var(--muted); font-size: 1.1rem;
     }
-    .tab-btn.active {
-      color:var(--accent); border-bottom:3px solid var(--accent);
-    }
-    .tab-content { display:none; margin:2rem 0; }
-    .tab-content.active { display:block; }
+    .tab-btn.active { color: var(--accent); border-bottom: 3px solid var(--accent); }
+    .tab-content { display: none; margin: 2rem 0; }
+    .tab-content.active { display: block; }
     .media-grid {
-      display:grid; grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:1rem;
+      display: grid; grid-template-columns: repeat(auto-fill, minmax(150px,1fr)); gap: 1rem;
     }
     .media-grid img, .media-grid video {
-      width:100%; height:200px; object-fit:cover; border-radius:var(--radius);
+      width: 100%; height: 200px; object-fit: cover; border-radius: var(--radius);
     }
 
-    footer {
-      text-align:center; margin:2rem 0; color:var(--muted); font-size:.9rem;
-    }
+    footer { text-align: center; padding: 2rem 0; color: var(--muted); font-size: .9rem; }
 
     /* Chat */
     .chat-screen {
-      display:none; flex-direction:column; height:100vh; background:#fff;
+      display: none; flex-direction: column; height: 100vh; background: white;
+      position: absolute; top: 0; left: 0; width: 100%;
     }
     .chat-header {
-      display:flex; align-items:center; justify-content:space-between;
-      padding:.6rem 1rem; border-bottom:1px solid #e5e7eb; background:#fff;
-      position:sticky; top:0; z-index:10;
+      display: flex; align-items: center; justify-content: space-between;
+      padding: .6rem 1rem; border-bottom: 1px solid #e5e7eb; position: sticky; top: 0; background: white;
     }
-    .chat-header-left { display:flex; align-items:center; gap:.6rem; }
-    .chat-header-left img {
-      width:40px; height:40px; border-radius:50%; object-fit:cover;
-    }
-    .chat-user-info { display:flex; flex-direction:column; line-height:1.2; }
-    .chat-user-info strong { font-size:.95rem; }
-    .online { font-size:.75rem; color:green; }
-    .chat-header-right { display:flex; align-items:center; gap:1rem; }
-    .chat-header button {
-      background:none; border:none; font-size:1.4rem; cursor:pointer; color:var(--fg);
-    }
+    .chat-header-left { display: flex; align-items: center; gap: .6rem; }
+    .chat-user-info { display: flex; flex-direction: column; }
+    .online { font-size: .75rem; color: green; }
     .chat-messages {
-      flex:1; overflow-y:auto; padding:1rem; display:flex; flex-direction:column; gap:.5rem; background:#f3f4f6;
+      flex: 1; overflow-y: auto; padding: 1rem; background: #f3f4f6;
+      display: flex; flex-direction: column; gap: .5rem;
     }
-    .msg-wrapper {
-      display:flex; flex-direction:column; align-items:flex-end;
-    }
-    .msg {
-      max-width:70%; padding:.6rem .9rem; border-radius:var(--radius);
-      line-height:1.4; font-size:.9rem; word-wrap:break-word;
-    }
-    .creator-msg { background:#e5e7eb; align-self:flex-start; }
-    .user-msg { background:var(--accent); color:white; }
-    .seen {
-      font-size:.7rem; color:var(--muted); margin-top:.2rem; margin-right:.3rem;
-    }
-    .typing {
-      font-size:.8rem; color:var(--muted); font-style:italic; margin:.2rem 0;
-    }
+    .msg-wrapper { display: flex; flex-direction: column; align-items: flex-end; }
+    .msg { max-width: 70%; padding: .6rem .9rem; border-radius: var(--radius); }
+    .creator-msg { background: #e5e7eb; align-self: flex-start; }
+    .user-msg { background: var(--accent); color: white; }
+    .seen { font-size: .7rem; color: var(--muted); margin-top: .2rem; margin-right: .3rem; }
+    .typing { font-size: .8rem; color: var(--muted); font-style: italic; }
     .chat-input {
-      display:flex; align-items:center; padding:.5rem; border-top:1px solid #e5e7eb; background:#fff;
+      display: flex; align-items: center; padding: .5rem; border-top: 1px solid #e5e7eb;
+      background: white;
     }
     .chat-input input {
-      flex:1; padding:.8rem; border:1px solid #d1d5db; border-radius:20px; outline:none; font-size:1rem;
+      flex: 1; padding: .8rem; border: 1px solid #d1d5db; border-radius: 20px; outline: none;
     }
     .chat-input button {
-      background:none; border:none; font-size:1.4rem; margin-left:.6rem; cursor:pointer; color:var(--accent);
+      background: none; border: none; font-size: 1.4rem; margin-left: .6rem; cursor: pointer; color: var(--accent);
     }
 
     /* Donation Modals */
     .modal {
-      display:none; position:fixed; z-index:1000; left:0; top:0;
-      width:100%; height:100%; background:rgba(0,0,0,0.6);
-      justify-content:center; align-items:center;
+      display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.6); justify-content: center; align-items: center;
     }
     .modal-content {
-      background:#fff; padding:20px; border-radius:12px;
-      max-width:420px; width:90%; text-align:center;
-      box-shadow:0 4px 10px rgba(0,0,0,0.2); position:relative;
+      background: white; padding: 2rem; border-radius: 12px; max-width: 420px; width: 90%;
+      text-align: center; box-shadow: 0 4px 10px rgba(0,0,0,0.2); position: relative;
     }
-    .modal-content h3 { margin:0 0 1rem; font-size:1.3rem; }
     .close-x-button {
-      position:absolute; top:10px; right:15px; font-size:20px; cursor:pointer; background:none; border:none; line-height:1;
+      position: absolute; top: 1rem; right: 1rem; background: none; border: none;
+      font-size: 1.25rem; cursor: pointer;
     }
     .modal-button {
-      padding:.8rem 1.4rem; margin:.6rem; border:none; border-radius:20px;
-      cursor:pointer; font-size:1.1rem; font-weight:600; color:white;
+      padding: .8rem 1.4rem; margin: .5rem; border: none; border-radius: 20px;
+      cursor: pointer; font-weight: 600; color: white; font-size: 1rem;
     }
-    .btc-button { background:linear-gradient(45deg,#f7931a,#ffbf00); }
-    .paypal-button { background:#0070ba; }
+    .btc-button { background: linear-gradient(45deg, #f7931a, #ffbf00); }
+    .paypal-button { background: #0070ba; }
     .back-button {
-      background:#f7931a; color:white; border:none; border-radius:20px;
-      padding:.8rem 1.4rem; margin-top:.6rem; cursor:pointer; font-size:1.1rem;
+      background: #f7931a; color: white; border: none; padding: .8rem 1.4rem;
+      border-radius: 20px; margin-top: .8rem; cursor: pointer;
     }
-    .qr-code {
-      border:2px solid #f7931a; border-radius:10px; padding:8px;
-      margin:10px auto; background:#fff; width:100%; max-width:200px; display:block;
-    }
-    .wallet-address-container {
-      display:flex; align-items:center; justify-content:center; margin:10px 0; gap:8px; flex-wrap:wrap;
-    }
-    .wallet-address {
-      word-break:break-all; font-family:monospace; font-size:13px; color:#444;
-      padding:8px 10px; background:#f1f1f1; border-radius:5px; flex:1; text-align:center;
-    }
-    .copy-button {
-      background:#28a745; color:white; padding:.8rem 1.4rem; border:none; border-radius:5px; cursor:pointer; font-size:1.1rem;
-    }
-    .copy-button:hover { background:#218838; }
-    .status-message {
-      font-size:14px; margin-top:10px; display:none;
-    }
-    .status-success { color:#28a745; }
-    .status-error { color:#dc3545; }
-    .donate-button {
-      background:linear-gradient(45deg,#f7931a,#ffbf00); color:white;
-      padding:.8rem 1.4rem; border:none; border-radius:25px; cursor:pointer;
-      font-size:1.1rem; font-weight:bold; margin-top:.6rem;
-      box-shadow:0 4px 8px rgba(247,147,26,0.3);
-    }
+    .qr-code { width: 200px; height: 200px; }
+    .wallet-address { font-family: monospace; margin: 1rem 0; }
+    .copy-button { padding: .5rem 1rem; background: #28a745; color: white; border: none; border-radius: 5px; }
 
     /* Story Modal */
     .story-modal {
-      display:none; position:fixed; left:0; top:0; width:100%; height:100%;
-      background:rgba(0,0,0,0.95); z-index:2000; justify-content:center; align-items:center;
+      display: none; position: fixed; z-index: 2000; top: 0; left: 0; width: 100%; height: 100%;
+      background: rgba(0,0,0,0.95); justify-content: center; align-items: center;
     }
     .story-container {
-      position:relative; width:100%; height:100%; max-width:420px;
-      display:flex; justify-content:center; align-items:center; overflow:hidden;
-      border-radius:12px; background:#000;
+      position: relative; max-width: 420px; width: 100%; height: 100%; background: black;
+      display: flex; flex-direction: column; justify-content: center; align-items: center;
     }
-    .story-image { width:100%; height:100%; object-fit:cover; display:none; }
-    .story-image.active { display:block; }
+    .progress-bars { display: flex; gap: 6px; width: 90%; position: absolute; top: 1rem; }
+    .progress-bar { flex: 1; height: 3px; background: rgba(255,255,255,0.25); overflow: hidden; border-radius: 2px; }
+    .progress-bar-fill { width: 0; height: 100%; background: white; }
+    .story-image { max-width: 100%; max-height: 100%; display: none; object-fit: cover; }
+    .story-image.active { display: block; }
     .story-header {
-      position:absolute; top:20px; left:20px; right:20px; z-index:70; display:flex; align-items:center; gap:12px;
+      position: absolute; top: 1rem; left: 1rem; display: flex; align-items: center; gap: .5rem;
     }
-    .story-profile-pic {
-      width:40px; height:40px; border-radius:50%; object-fit:cover; border:2px solid #fff;
-    }
-    .story-username {
-      color:#fff; font-weight:600; font-size:16px; text-shadow:0 1px 3px rgba(0,0,0,0.5);
-    }
-    .story-verified {
-      color:#1DA1F2; font-size:16px; font-weight:bold; text-shadow:0 1px 3px rgba(0,0,0,0.5);
-    }
-    .progress-bars {
-      position:absolute; top:80px; left:10px; right:10px; height:3px; display:flex; gap:6px; z-index:50;
-    }
-    .progress-bar {
-      flex:1; height:100%; background:rgba(255,255,255,0.25); border-radius:2px; overflow:hidden;
-    }
-    .progress-bar-fill { height:100%; background:#fff; width:0%; }
-    .story-count {
-      position:absolute; top:84px; left:14px; color:#fff; font-size:12px;
-      background:rgba(0,0,0,0.45); padding:6px 8px; border-radius:12px; z-index:60;
-    }
-    .btn {
-      background:transparent; border:0; width:64px; height:64px;
-      display:flex; align-items:center; justify-content:center; cursor:pointer; z-index:60; font-size:28px;
-    }
+    .story-username { color: white; font-weight: 600; }
+    .story-verified { color: #1DA1F2; }
     .close-btn {
-      position:absolute; top:24px; right:24px; width:28px; height:28px;
-      font-size:18px; line-height:28px; text-align:center; background:rgba(0,0,0,0.6);
-      border-radius:50%; color:#fff; z-index:75;
+      position: absolute; top: 1rem; right: 1rem; background: rgba(0,0,0,0.6); border: none;
+      color: white; font-size: 1.2rem; padding: .5rem; border-radius: 50%; cursor: pointer;
     }
-    .nav-btn {
-      position:absolute; top:50%; transform:translateY(-50%);
-      background:rgba(0,0,0,0.6); border-radius:50%; display:none;
-      align-items:center; justify-content:center; z-index:60; color:#fff;
-    }
-    .nav-btn.visible { display:flex; }
-    .nav-btn-left { left:14px; }
-    .nav-btn-right { right:14px; }
-    .story-controls {
-      position:absolute; bottom:28px; left:50%; transform:translateX(-50%);
-      display:flex; gap:14px; width:92%; align-items:center; z-index:60;
-    }
-    .reply-input {
-      flex:1; background:rgba(255,255,255,0.12);
-      border:1px solid rgba(255,255,255,0.15); border-radius:22px;
-      padding:14px 18px; color:#fff; outline:none; font-size:1rem;
-    }
-    .reply-input::placeholder { color:rgba(255,255,255,0.7); }
-    .send-btn {
-      display:none; background:rgba(0,0,0,0.5); border:0; color:#fff;
-      width:56px; height:56px; border-radius:50%; align-items:center;
-      justify-content:center; cursor:pointer; font-size:24px;
-    }
-    .send-btn.visible { display:flex; }
-    .like-btn {
-      width:48px; height:48px; border-radius:50%;
-      background:linear-gradient(45deg,#ff416c,#ff4b2b);
-      display:flex; align-items:center; justify-content:center;
-      color:#fff; font-size:24px; box-shadow:0 4px 6px rgba(0,0,0,0.3);
-      transition:transform 0.2s; z-index:75;
-    }
-    .like-btn:hover { transform:scale(1.1); }
-    .like-btn.liked { background:linear-gradient(45deg,#fa709a,#fee140); }
   </style>
 </head>
 <body>
   <div class="container main-screen">
     <header>
-      <h1 style="margin:0;font-size:1.25rem">Creator</h1>
+      <h1>Creator</h1>
       <button class="menu-btn" id="menuBtn" aria-label="Menu toggle">
-        <span></span>
-        <span></span>
-        <span></span>
+        <span></span><span></span><span></span>
       </button>
       <nav id="navPanel">
         <ul>
@@ -368,7 +195,7 @@
 
     <section class="profile">
       <div class="profile-pic-wrapper has-story">
-        <img id="profilePic" class="profile-pic" src="profile.png" alt="Creator profile picture">
+        <img id="profilePic" class="profile-pic" src="profile.png" alt="Creator">
       </div>
       <div class="creator-name">Sofia Creator <span class="verified">&#10004;</span></div>
       <div class="username">@sofia123</div>
@@ -456,4 +283,242 @@
     <div class="modal-content">
       <button id="closeBtcDonate" class="close-x-button">&#10006;</button>
       <h3>Support Us with Bitcoin! &#128640;</h3>
-      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200
+      <img src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n" class="qr-code" alt="BTC QR Code" />
+      <p>Scan the QR code or copy the address below:</p>
+      <div class="wallet-address-container">
+        <div id="btcAddress" class="wallet-address">bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n</div>
+        <button id="copyBtcAddress" class="copy-button">Copy</button>
+      </div>
+      <div id="statusMessage" class="status-message"></div>
+      <button id="donateBtcNow" class="donate-button">Donate BTC Now</button>
+      <button id="backToDonate" class="back-button">Back</button>
+    </div>
+  </div>
+
+  <!-- Story Modal -->
+  <div id="storyModal" class="story-modal">
+    <div id="storyContainer" class="story-container">
+      <button id="storyCloseBtn" class="btn close-btn">&#10006;</button>
+      <div class="story-header">
+        <img src="profile.png" class="story-profile-pic" alt="Profile" />
+        <div>
+          <span class="story-username">Sofia Creator</span>
+          <span class="story-verified">&#10004;</span>
+        </div>
+      </div>
+      <div id="progressBars" class="progress-bars"></div>
+      <div id="storyCount" class="story-count"></div>
+      <img src="storyimage1.jpg" class="story-image active" data-index="0" alt="Story 1" />
+      <img src="storyimage2.jpg" class="story-image" data-index="1" alt="Story 2" />
+      <img src="storyimage3.jpg" class="story-image" data-index="2" alt="Story 3" />
+      <button id="prevStoryBtn" class="btn nav-btn nav-btn-left">&#9664;</button>
+      <button id="nextStoryBtn" class="btn nav-btn nav-btn-right">&#9654;</button>
+      <div class="story-controls">
+        <input id="replyInput" class="reply-input" placeholder="Reply to this story" />
+        <button id="sendStoryBtn" class="send-btn">&#10148;</button>
+        <button id="likeStoryBtn" class="btn like-btn">&#10084;</button>
+      </div>
+    </div>
+  </div>
+
+  <script>
+    // Year
+    document.getElementById("year").textContent = new Date().getFullYear();
+
+    // Menu toggle
+    const menuBtn = document.getElementById('menuBtn');
+    const navPanel = document.getElementById('navPanel');
+    let isMenuOpen = false;
+    menuBtn.addEventListener('click', e => {
+      e.stopPropagation();
+      isMenuOpen = !isMenuOpen;
+      menuBtn.classList.toggle('open', isMenuOpen);
+      navPanel.classList.toggle('open', isMenuOpen);
+    });
+    document.addEventListener('click', e => {
+      if (isMenuOpen && !menuBtn.contains(e.target) && !navPanel.contains(e.target)) {
+        isMenuOpen = false;
+        menuBtn.classList.remove('open');
+        navPanel.classList.remove('open');
+      }
+    });
+    navPanel.addEventListener('click', () => {
+      if (isMenuOpen) {
+        isMenuOpen = false;
+        menuBtn.classList.remove('open');
+        navPanel.classList.remove('open');
+      }
+    });
+
+    // Tabs
+    document.querySelectorAll(".tab-btn").forEach(btn => {
+      btn.addEventListener("click", () => {
+        document.querySelectorAll(".tab-btn").forEach(x => x.classList.remove("active"));
+        document.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+        btn.classList.add("active");
+        document.getElementById(btn.dataset.tab).classList.add("active");
+      });
+    });
+
+    // Chat
+    const chatScreen = document.getElementById("chatScreen");
+    const openChat = document.getElementById("openChat");
+    const backToMain = document.getElementById("backToMain");
+    const chatMessages = document.getElementById("chatMessages");
+    const chatInput = document.getElementById("chatInput");
+    const sendMessage = document.getElementById("sendMessage");
+
+    function addMessage(text, sender="creator") {
+      const wrapper = document.createElement("div");
+      wrapper.className = "msg-wrapper";
+      if (sender==="creator") wrapper.style.alignItems="flex-start";
+      const msg = document.createElement("div");
+      msg.className = "msg " + (sender==="creator"?"creator-msg":"user-msg");
+      msg.textContent = text;
+      wrapper.appendChild(msg);
+      chatMessages.appendChild(wrapper);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return wrapper;
+    }
+    function addSeen(wrapper) {
+      const s = document.createElement("div");
+      s.className = "seen";
+      s.textContent = "Seen";
+      wrapper.appendChild(s);
+    }
+    function showTyping() {
+      const t = document.createElement("div");
+      t.className = "typing";
+      t.textContent = "Sofia is typing...";
+      chatMessages.appendChild(t);
+      chatMessages.scrollTop = chatMessages.scrollHeight;
+      return t;
+    }
+    openChat.addEventListener("click", () => {
+      chatScreen.style.display = "flex";
+      document.querySelector(".main-screen").style.display = "none";
+      chatMessages.innerHTML = "";
+      setTimeout(() => addMessage("Welcome to my chat! 💬"), 400);
+    });
+    backToMain.addEventListener("click", () => {
+      chatScreen.style.display = "none";
+      document.querySelector(".main-screen").style.display = "block";
+    });
+    sendMessage.addEventListener("click", () => {
+      const text = chatInput.value.trim();
+      if (!text) return;
+      const w = addMessage(text, "user");
+      chatInput.value = "";
+      setTimeout(() => {
+        addSeen(w);
+        const t = showTyping();
+        setTimeout(() => {
+          t.remove();
+          const r = addMessage("Check this out 👉 https://mywebsite.com", "creator");
+          r.querySelector(".msg").innerHTML = 'Check this out 👉 <a href="https://mywebsite.com" target="_blank">mywebsite.com</a>';
+        }, 3000);
+      }, 2000);
+    });
+    chatInput.addEventListener("keypress", e => { if (e.key === "Enter") sendMessage.click(); });
+
+    // Donate modals
+    const chooseModal = document.getElementById("chooseMethodModal");
+    const btcModal = document.getElementById("btcDonateModal");
+    document.getElementById("openDonate").addEventListener("click", () => chooseModal.style.display = "flex");
+    document.getElementById("closeDonate").addEventListener("click", () => chooseModal.style.display = "none");
+    document.getElementById("openBtcDonate").addEventListener("click", () => { chooseModal.style.display = "none"; btcModal.style.display = "flex"; });
+    document.getElementById("closeBtcDonate").addEventListener("click", () => btcModal.style.display = "none");
+    document.getElementById("backToDonate").addEventListener("click", () => { btcModal.style.display = "none"; chooseModal.style.display = "flex"; });
+    const btcAddress = document.getElementById("btcAddress").textContent.trim();
+    function showStatus(msg,type) {
+      const s = document.getElementById("statusMessage");
+      s.textContent = msg;
+      s.className = "status-message status-" + type;
+      s.style.display = "block";
+      setTimeout(() => s.style.display = "none", 3000);
+    }
+    document.getElementById("copyBtcAddress").addEventListener("click", () => {
+      navigator.clipboard.writeText(btcAddress).then(() => showStatus("Copied! 📋","success")).catch(() => showStatus("Fail","error"));
+    });
+    document.getElementById("donateBtcNow").addEventListener("click", () => {
+      window.open("https://www.blockchain.com/explorer/addresses/btc/" + btcAddress, "_blank");
+      btcModal.style.display = "none";
+    });
+
+    // Stories
+    const profilePicElem = document.getElementById("profilePic");
+    const storyModalElem = document.getElementById("storyModal");
+    const storyImgs = [...document.querySelectorAll(".story-image")];
+    const progressBarsElem = document.getElementById("progressBars");
+    const storyCountElem = document.getElementById("storyCount");
+    const prevBtnElem = document.getElementById("prevStoryBtn");
+    const nextBtnElem = document.getElementById("nextStoryBtn");
+    const closeBtnElem = document.getElementById("storyCloseBtn");
+    const replyInputElem = document.getElementById("replyInput");
+    const sendStoryBtnElem = document.getElementById("sendStoryBtn");
+    const likeStoryBtnElem = document.getElementById("likeStoryBtn");
+    let currentStory = 0, storyTimer, totalStories = storyImgs.length, storyDuration = 10000, liked = false;
+
+    function createBars() {
+      progressBarsElem.innerHTML = "";
+      storyImgs.forEach(() => {
+        const bar = document.createElement("div");
+        bar.className = "progress-bar";
+        const fill = document.createElement("div");
+        fill.className = "progress-bar-fill";
+        bar.appendChild(fill);
+        progressBarsElem.appendChild(bar);
+      });
+    }
+    function showStory(idx) {
+      clearTimeout(storyTimer);
+      storyImgs.forEach(img => img.classList.remove("active"));
+      storyImgs[idx].classList.add("active");
+      const fills = [...document.querySelectorAll(".progress-bar-fill")];
+      fills.forEach((f,i) => {
+        f.style.transition = "none";
+        f.style.width = i < idx ? "100%" : "0%";
+      });
+      void progressBarsElem.offsetWidth;
+      fills[idx].style.transition = `width ${storyDuration}ms linear`;
+      requestAnimationFrame(() => fills[idx].style.width = "100%");
+      storyCountElem.textContent = `${idx+1}/${totalStories}`;
+      currentStory = idx; liked = false; likeStoryBtnElem.classList.remove("liked"); updateNav();
+    }
+    function updateNav() {
+      prevBtnElem.classList.toggle("visible", currentStory > 0);
+      nextBtnElem.classList.toggle("visible", currentStory < totalStories - 1);
+    }
+    function startAuto() {
+      storyTimer = setTimeout(() => {
+        if (currentStory < totalStories - 1) {
+          showStory(currentStory + 1); startAuto();
+        } else closeStoryModal();
+      }, storyDuration);
+    }
+    function closeStoryModal() {
+      clearTimeout(storyTimer);
+      storyModalElem.style.display = "none";
+      currentStory = 0; replyInputElem.value = ""; sendStoryBtnElem.classList.remove("visible");
+    }
+    profilePicElem.addEventListener("click", () => {
+      storyModalElem.style.display = "flex"; createBars(); showStory(0); startAuto();
+    });
+    closeBtnElem.addEventListener("click", closeStoryModal);
+    prevBtnElem.addEventListener("click", () => {
+      if (currentStory > 0) { clearTimeout(storyTimer); showStory(currentStory - 1); startAuto(); }
+    });
+    nextBtnElem.addEventListener("click", () => {
+      if (currentStory < totalStories - 1) { clearTimeout(storyTimer); showStory(currentStory + 1); startAuto(); }
+      else closeStoryModal();
+    });
+    replyInputElem.addEventListener("input", () => sendStoryBtnElem.classList.toggle("visible", !!replyInputElem.value.trim()));
+    sendStoryBtnElem.addEventListener("click", () => {
+      if (replyInputElem.value.trim()) { alert("Reply: " + replyInputElem.value); replyInputElem.value=""; sendStoryBtnElem.classList.remove("visible"); }
+    });
+    likeStoryBtnElem.addEventListener("click", () => {
+      liked = !liked; likeStoryBtnElem.classList.toggle("liked", liked);
+    });
+  </script>
+</body>
+</html>
