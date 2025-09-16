@@ -160,6 +160,7 @@
         .username { 
             color: var(--muted); 
             margin-bottom: .5rem; 
+            font-size: 1rem;
         }
         .stats { 
             display: flex; 
@@ -313,11 +314,72 @@
             gap: 20px;
         }
         
-        /* Reels grid adjustments */
+        /* ----------  REELS – NEW OVERLAY SYSTEM  ---------- */
         .reels-grid {
             display: flex;
             flex-direction: column;
             gap: 20px;
+            max-width: 500px;
+            margin: auto;
+        }
+        .reel-wrapper {
+            position: relative;
+            width: 100%;
+            aspect-ratio: 9/16;
+            background: #000;
+            border-radius: var(--radius);
+            overflow: hidden;
+        }
+        .reel-video {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            display: block;
+        }
+        .reel-overlay {
+            position: absolute;
+            inset: 0;
+            z-index: 2;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-end;
+            padding: 16px;
+            pointer-events: none;
+        }
+        .reel-user {
+            color: #fff;
+            font-weight: 600;
+            font-size: 14px;
+            text-shadow: 0 1px 3px rgba(0,0,0,.8);
+        }
+        .reel-actions {
+            display: flex;
+            flex-direction: column;
+            gap: 12px;
+            pointer-events: auto;
+        }
+        .reel-like, .reel-donate {
+            width: 48px;
+            height: 48px;
+            border-radius: 50%;
+            background: rgba(0,0,0,.45);
+            color: #fff;
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .reel-like svg {
+            width: 24px;
+            height: 24px;
+            fill: #fff;
+        }
+        .reel-like.liked svg {
+            fill: #ff5252;
+        }
+        .reel-donate {
+            font-size: 11px;
+            font-weight: 600;
         }
         
         /* Exclusive Content */
@@ -522,9 +584,9 @@
             flex-direction: column; 
             gap: .5rem; 
             background: #f3f4f6; 
-            margin-top: 70px; /* Increased from 60px for more space */
+            margin-top: 60px; /* Height of chat header */
             margin-bottom: 70px; /* Height of chat input */
-            height: calc(100vh - 140px); /* Adjusted for new margin-top */
+            height: calc(100vh - 130px); /* Viewport height minus header and input heights */
         }
         .msg-wrapper { 
             display: flex; 
@@ -814,7 +876,6 @@
             display: flex;
             align-items: center;
             gap: 12px;
-            color: #fff;
         }
         .story-profile-pic {
             width: 40px;
@@ -1016,23 +1077,6 @@
         .stat-btn .count {
             font-weight: 600;
         }
-        
-        /* SVG Icons */
-        .icon {
-            width: 1em;
-            height: 1em;
-            display: inline-block;
-            vertical-align: middle;
-        }
-        .icon-button {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background: none;
-            border: none;
-            cursor: pointer;
-            padding: 5px;
-        }
     </style>
 </head>
 <body>
@@ -1088,11 +1132,9 @@
             </div>
         </div>
         
-        <!-- Reels Content -->
+        <!-- Reels Content - Updated with new system -->
         <div id="reels-content" class="content">
-            <div class="reels-grid" id="reelsGrid">
-                <!-- Reels will be inserted here by JavaScript -->
-            </div>
+            <div class="reels-grid" id="reelsGrid"></div>
         </div>
         
         <!-- Exclusive Content -->
@@ -1111,23 +1153,17 @@
     <!-- Photo Viewer Modal -->
     <div class="viewer-modal" id="photoViewerModal">
         <div class="viewer-header">
-            <button class="close-viewer" onclick="closePhotoViewer()">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
+            <button class="close-viewer" onclick="closePhotoViewer()">×</button>
         </div>
         <div class="feed" id="photoFeed"></div>
     </div>
 
-    <!-- Reel Viewer Modal -->
+    <!-- Reel Viewer Modal - Updated with new system -->
     <div class="viewer-modal" id="reelViewerModal">
         <div class="viewer-header">
             <button class="close-viewer" onclick="closeReelViewer()">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                <svg width="24" fill="#fff" viewBox="0 0 24 24">
+                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
                 </svg>
             </button>
         </div>
@@ -1137,12 +1173,7 @@
     <div id="chatScreen" class="chat-screen container">
         <div class="chat-header">
             <div class="chat-header-left">
-                <button class="btn" id="backToMain">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="19" y1="12" x2="5" y2="12"></line>
-                        <polyline points="12 19 5 12 12 5"></polyline>
-                    </svg>
-                </button>
+                <button class="btn" id="backToMain">←</button>
                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Creator">
                 <div class="chat-user-info">
                     <strong>Sofia Creator</strong>
@@ -1150,40 +1181,21 @@
                 </div>
             </div>
             <div class="chat-header-right">
-                <button title="Video Call" class="icon-button">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M23 7l-7 5 7 5V7z"></path>
-                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
-                    </svg>
-                </button>
-                <button title="Voice Call" class="icon-button">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
-                    </svg>
-                </button>
+                <button title="Video Call">📹</button>
+                <button title="Voice Call">📞</button>
             </div>
         </div>
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input">
             <input id="chatInput" placeholder="Message...">
-            <button id="sendMessage" class="icon-button">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="22" y1="2" x2="11" y2="13"></line>
-                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                </svg>
-            </button>
+            <button id="sendMessage">➤</button>
         </div>
     </div>
 
     <!-- Subscription Modal -->
     <div id="subscriptionModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeSubscribeModal()">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </span>
+            <span class="close" onclick="closeSubscribeModal()">&times;</span>
             <h2>Choose Your Subscription Plan</h2>
             <div class="subscription-options">
                 <div class="option">
@@ -1205,12 +1217,7 @@
 
     <div id="chooseMethodModal" class="modal">
         <div class="modal-content">
-            <button class="close-x-button" id="closeDonate">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
+            <button class="close-x-button" id="closeDonate">X</button>
             <h3>Choose Your Donation Method</h3>
             <div class="modal-buttons-container">
                 <button class="modal-button btc-button" id="openBtcDonate">Donate with Bitcoin</button>
@@ -1225,12 +1232,7 @@
 
     <div id="btcDonateModal" class="modal">
         <div class="modal-content">
-            <button class="close-x-button" id="closeBtcDonate">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
+            <button class="close-x-button" id="closeBtcDonate">X</button>
             <h3>Support Us with Bitcoin! 🚀</h3>
             <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n" alt="BTC QR Code" class="qr-code">
             <p>Scan the QR code or copy the address below:</p>
@@ -1266,39 +1268,17 @@
             <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="story-image" data-index="2" alt="Story 3">
 
             <!-- Smaller close button -->
-            <button class="btn close-btn" id="storyCloseBtn">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <line x1="18" y1="6" x2="6" y2="18"></line>
-                    <line x1="6" y1="6" x2="18" y2="18"></line>
-                </svg>
-            </button>
+            <button class="btn close-btn" id="storyCloseBtn">✕</button>
 
             <!-- Navigation -->
-            <button class="btn nav-btn nav-btn-left" id="prevStoryBtn">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="15 18 9 12 15 6"></polyline>
-                </svg>
-            </button>
-            <button class="btn nav-btn nav-btn-right" id="nextStoryBtn">
-                <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <polyline points="9 18 15 12 9 6"></polyline>
-                </svg>
-            </button>
+            <button class="btn nav-btn nav-btn-left" id="prevStoryBtn">◀</button>
+            <button class="btn nav-btn nav-btn-right" id="nextStoryBtn">▶</button>
 
             <!-- Controls -->
             <div class="story-controls">
                 <input id="replyInput" class="reply-input" placeholder="Reply to this story">
-                <button id="sendStoryBtn" class="send-btn">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <line x1="22" y1="2" x2="11" y2="13"></line>
-                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
-                    </svg>
-                </button>
-                <button id="likeStoryBtn" class="btn like-btn">
-                    <svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                </button>
+                <button id="sendStoryBtn" class="send-btn">➤</button>
+                <button id="likeStoryBtn" class="btn like-btn">❤</button>
             </div>
         </div>
     </div>
@@ -1408,20 +1388,17 @@
             },
         ];
 
-        // Initialize photo and reel grids with Instagram-style post cards
+        // Initialize photo grid with Instagram-style post cards
         const photosGrid = document.getElementById('photosGrid');
         photos.forEach(photo => {
             const postCard = createPostCard(photo, 'photo');
             photosGrid.appendChild(postCard);
         });
 
-        const reelsGrid = document.getElementById('reelsGrid');
-        reels.forEach(reel => {
-            const postCard = createPostCard(reel, 'reel');
-            reelsGrid.appendChild(postCard);
-        });
+        // Initialize reels with new overlay system
+        buildReels();
 
-        // Function to create Instagram-style post card
+        // Function to create Instagram-style post card (for photos only)
         function createPostCard(item, type) {
             const postCard = document.createElement('div');
             postCard.className = 'post-card';
@@ -1433,10 +1410,10 @@
             // Main image
             const img = document.createElement('img');
             img.className = 'post-image';
-            img.src = type === 'photo' ? item.url : item.thumbnail;
-            img.alt = type === 'photo' ? `Photo ${item.id}` : `Reel ${item.id}`;
+            img.src = item.url;
+            img.alt = `Photo ${item.id}`;
             img.setAttribute('crossorigin', 'anonymous');
-            img.setAttribute('data-image', type === 'photo' ? item.url : item.thumbnail);
+            img.setAttribute('data-image', item.url);
             
             // Header with profile info
             const imageHeader = document.createElement('div');
@@ -1524,7 +1501,7 @@
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = type === 'photo' ? `photo-${item.id}.jpg` : `reel-${item.id}.jpg`;
+                    a.download = `photo-${item.id}.jpg`;
                     document.body.appendChild(a);
                     a.click();
                     a.remove();
@@ -1532,7 +1509,7 @@
                 } catch {
                     window.open(src, '_blank');
                 }
-            };
+            });
             
             postFooter.appendChild(stats);
             postFooter.appendChild(downloadBtn);
@@ -1543,15 +1520,86 @@
             // Add click event to open viewer
             postCard.addEventListener('click', (e) => {
                 if (e.target !== downloadBtn && !e.target.closest('.stat-btn')) {
-                    if (type === 'photo') {
-                        openPhotoViewer(item.id);
-                    } else {
-                        openReelViewer(item.id);
-                    }
+                    openPhotoViewer(item.id);
                 }
             });
             
             return postCard;
+        }
+
+        /* ----------  REELS – NEW OVERLAY SYSTEM  ---------- */
+        function buildReels() {
+            const grid = document.getElementById('reelsGrid');
+            reels.forEach(r => {
+                const wrap = document.createElement('div');
+                wrap.className = 'reel-wrapper';
+                
+                const video = document.createElement('video');
+                video.className = 'reel-video';
+                video.src = r.url;
+                video.loop = true;
+                video.poster = r.thumbnail;
+                video.playsinline = true;
+                video.muted = true;
+                
+                const overlay = document.createElement('div');
+                overlay.className = 'reel-overlay';
+                
+                const user = document.createElement('div');
+                user.className = 'reel-user';
+                user.textContent = '@sofia123';
+                
+                const acts = document.createElement('div');
+                acts.className = 'reel-actions';
+                
+                const like = document.createElement('button');
+                like.className = 'reel-like';
+                like.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+                
+                const donate = document.createElement('button');
+                donate.className = 'reel-donate';
+                donate.textContent = '♥';
+                
+                like.onclick = e => {
+                    e.stopPropagation();
+                    like.classList.toggle('liked');
+                };
+                
+                donate.onclick = e => {
+                    e.stopPropagation();
+                    document.getElementById('openDonate').click();
+                };
+                
+                acts.append(like, donate);
+                overlay.append(user, acts);
+                wrap.append(video, overlay);
+                grid.append(wrap);
+
+                let hideTmr;
+                const showOverlay = () => {
+                    overlay.style.opacity = 1;
+                    clearTimeout(hideTmr);
+                    hideTmr = setTimeout(() => overlay.style.opacity = 0, 2000);
+                };
+                
+                wrap.addEventListener('click', () => {
+                    if (video.paused) {
+                        video.play();
+                        showOverlay();
+                    } else {
+                        video.pause();
+                        overlay.style.opacity = 1;
+                    }
+                });
+                
+                video.addEventListener('play', showOverlay);
+                video.addEventListener('pause', () => overlay.style.opacity = 1);
+                
+                // Add double click to open full viewer
+                wrap.addEventListener('dblclick', () => {
+                    openReelViewer(r.id);
+                });
+            });
         }
 
         // Photo Viewer Functions
@@ -1581,7 +1629,7 @@
                 actions.className = 'post-actions';
                 const likeBtn = document.createElement('button');
                 likeBtn.className = 'like-btn';
-                likeBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
+                likeBtn.innerHTML = '❤️';
                 likeBtn.onclick = (e) => {
                     e.stopPropagation();
                     likeBtn.classList.toggle('liked');
@@ -1606,52 +1654,52 @@
             document.getElementById('photoViewerModal').style.display = 'none';
         }
 
-        // Reel Viewer Functions
+        /* ----------  REELS VIEWER  ---------- */
         function openReelViewer(id) {
             const modal = document.getElementById('reelViewerModal');
+            modal.style.display = 'flex';
+            
             const feed = document.getElementById('reelFeed');
             feed.innerHTML = '';
-            reels.forEach(reel => {
-                const view = document.createElement('div');
-                view.className = 'post-view';
+            
+            reels.forEach(r => {
+                const v = document.createElement('div');
+                v.className = 'post-view';
                 
-                // Add username overlay
-                const usernameOverlay = document.createElement('div');
-                usernameOverlay.className = 'media-username';
-                usernameOverlay.textContent = '@sofia123';
-                view.appendChild(usernameOverlay);
+                const u = document.createElement('div');
+                u.className = 'media-username';
+                u.textContent = '@sofia123';
+                
+                const wrap = document.createElement('div');
+                wrap.className = 'media-wrap';
                 
                 const video = document.createElement('video');
                 video.className = 'post-media';
-                video.src = reel.url;
+                video.src = r.url;
                 video.controls = true;
                 video.autoplay = true;
                 video.loop = true;
-                video.style.width = 'auto';
-                video.style.height = 'auto';
-                view.appendChild(video);
-                const actions = document.createElement('div');
-                actions.className = 'post-actions overlay';
-                const likeBtn = document.createElement('button');
-                likeBtn.className = 'like-btn';
-                likeBtn.innerHTML = '<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path></svg>';
-                likeBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    likeBtn.classList.toggle('liked');
-                };
-                const donateBtn = document.createElement('button');
-                donateBtn.className = 'donate-btn';
-                donateBtn.textContent = 'Donate';
-                donateBtn.onclick = (e) => {
-                    e.stopPropagation();
-                    document.getElementById('openDonate').click();
-                };
-                actions.appendChild(likeBtn);
-                actions.appendChild(donateBtn);
-                view.appendChild(actions);
-                feed.appendChild(view);
+                
+                const acts = document.createElement('div');
+                acts.className = 'post-actions overlay';
+                
+                const like = document.createElement('button');
+                like.className = 'like-btn';
+                like.innerHTML = '♥';
+                
+                const don = document.createElement('button');
+                don.className = 'donate-btn';
+                don.textContent = 'Donate';
+                
+                like.onclick = () => like.classList.toggle('liked');
+                don.onclick = () => document.getElementById('openDonate').click();
+                
+                acts.append(like, don);
+                wrap.append(video, acts);
+                v.append(u, wrap);
+                feed.append(v);
             });
-            modal.style.display = 'flex';
+            
             feed.scrollTo(0, (id - 1) * window.innerHeight);
         }
 
