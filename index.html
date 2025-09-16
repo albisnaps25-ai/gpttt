@@ -318,7 +318,7 @@
             gap: 20px;
         }
         
-        /* ----------  REELS – NEW OVERLAY SYSTEM  ---------- */
+        /* ----------  REELS – UPDATED OVERLAY SYSTEM  ---------- */
         .reels-grid {
             display: flex;
             flex-direction: column;
@@ -339,7 +339,6 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            /* Make video unclickable */
             pointer-events: none;
         }
         .reel-overlay {
@@ -347,9 +346,27 @@
             inset: 0;
             z-index: 2;
             display: flex;
+            flex-direction: column;
             justify-content: space-between;
-            align-items: flex-end;
             padding: 16px;
+            pointer-events: none;
+        }
+        .reel-header {
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        .reel-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            overflow: hidden;
+            flex-shrink: 0;
+        }
+        .reel-avatar img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
             pointer-events: none;
         }
         .reel-user {
@@ -363,8 +380,9 @@
             flex-direction: column;
             gap: 12px;
             pointer-events: auto;
+            align-items: flex-end;
         }
-        .reel-like, .reel-donate {
+        .reel-action-btn {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -374,18 +392,22 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            flex-direction: column;
+            font-size: 11px;
+            font-weight: 600;
         }
-        .reel-like svg {
+        .reel-action-btn svg {
             width: 24px;
             height: 24px;
-            fill: #fff;
+            margin-bottom: 2px;
         }
         .reel-like.liked svg {
             fill: #ff5252;
         }
-        .reel-donate {
+        .reel-stat {
             font-size: 11px;
-            font-weight: 600;
+            margin-top: 2px;
+            text-align: center;
         }
         
         /* Exclusive Content */
@@ -464,7 +486,7 @@
             bottom: 30px;
             left: 0;
             right: 0;
-        }
+            }
         .post-actions.overlay {
             position: absolute;
             bottom: 20px;
@@ -966,7 +988,7 @@
             line-height: 28px; 
             text-align: center; 
             background: rgba(0,0,0,0.6); 
-            border-radius: 50%; 
+            borderRadius: 50%; 
             color: #fff; 
             z-index: 75; 
         }
@@ -975,7 +997,7 @@
             top: 50%; 
             transform: translateY(-50%); 
             background: rgba(0,0,0,0.6); 
-            border-radius: 50%; 
+            borderRadius: 50%; 
             display: none; 
             align-items: center; 
             justify-content: center; 
@@ -1095,6 +1117,175 @@
             display: inline-block;
             vertical-align: middle;
             fill: currentColor;
+        }
+
+        /* Comment Modal Styles */
+        .comment-modal {
+            background: white;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+            transform: scale(0.9);
+            opacity: 0;
+            transition: all 0.4s ease;
+            max-height: 80vh;
+            display: flex;
+            flex-direction: column;
+        }
+        
+        .modal-overlay.active .comment-modal {
+            transform: scale(1);
+            opacity: 1;
+        }
+        
+        .modal-header {
+            background: #f8f9fa;
+            padding: 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid #e5e7eb;
+        }
+        
+        .modal-title {
+            font-size: 1.3rem;
+            font-weight: 600;
+            color: #333;
+        }
+        
+        .close-btn {
+            background: none;
+            border: none;
+            color: #6b7280;
+            font-size: 1.5rem;
+            cursor: pointer;
+            transition: transform 0.3s ease;
+        }
+        
+        .close-btn:hover {
+            transform: rotate(90deg);
+            color: #374151;
+        }
+        
+        .modal-body {
+            padding: 20px;
+            overflow-y: auto;
+            flex: 1;
+        }
+        
+        .comment {
+            background: #f9fafb;
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .comment-header {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 10px;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            color: #374151;
+            font-size: 0.9rem;
+        }
+        
+        .comment-time {
+            font-size: 0.8rem;
+            color: #6b7280;
+        }
+        
+        .comment-text {
+            line-height: 1.5;
+            color: #4b5563;
+        }
+        
+        .modal-footer {
+            padding: 20px;
+            background: #f8f9fa;
+            border-top: 1px solid #e5e7eb;
+        }
+        
+        .comment-form {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        
+        .form-group {
+            display: flex;
+            flex-direction: column;
+            gap: 5px;
+        }
+        
+        .form-group label {
+            font-size: 0.9rem;
+            color: #374151;
+        }
+        
+        .form-group input,
+        .form-group textarea {
+            padding: 12px;
+            border-radius: 8px;
+            border: 1px solid #d1d5db;
+            background: white;
+            color: #374151;
+            font-size: 1rem;
+        }
+        
+        .form-group textarea {
+            min-height: 80px;
+            resize: vertical;
+        }
+        
+        .submit-btn {
+            background: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .submit-btn:hover {
+            background: #1d4ed8;
+        }
+        
+        /* Modal Overlay */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(0, 0, 0, 0.7);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.3s ease;
+        }
+        
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
         }
     </style>
 </head>
@@ -1309,6 +1500,38 @@
         </div>
     </div>
 
+    <!-- Comment Modal -->
+    <div class="modal-overlay" id="commentModalOverlay" onclick="closeCommentModal(event)">
+        <div class="comment-modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Comments</h2>
+                <button class="close-btn" onclick="closeCommentModal(event)">
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
+                    </svg>
+                </button>
+            </div>
+            
+            <div class="modal-body" id="commentModalBody">
+                <!-- Comments will be loaded here -->
+            </div>
+            
+            <div class="modal-footer">
+                <form class="comment-form" onsubmit="addComment(event)">
+                    <div class="form-group">
+                        <label for="commentName">Name</label>
+                        <input type="text" id="commentName" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="commentText">Your Comment</label>
+                        <textarea id="commentText" required></textarea>
+                    </div>
+                    <button type="submit" class="submit-btn">Post Comment</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
     <div id="storyModal" class="story-modal">
         <div class="story-container" id="storyContainer">
             <!-- Story Header with Profile Picture, Username, and Verified Badge -->
@@ -1475,6 +1698,24 @@
             },
         ];
 
+        // Comments data for each media item
+        const commentsData = {
+            photo_1: [
+                { author: "John Doe", text: "This is absolutely stunning! The colors are so vibrant and the composition is perfect.", time: "2 hours ago" },
+                { author: "Sarah Smith", text: "I've been to this location and the photo doesn't even do it justice! Amazing work capturing the essence.", time: "5 hours ago" },
+                { author: "Alex Johnson", text: "What camera settings did you use for this shot? The lighting is perfect!", time: "1 day ago" }
+            ],
+            photo_2: [
+                { author: "Mike Wilson", text: "Beautiful scenery! I love how the light hits the mountains.", time: "3 hours ago" },
+                { author: "Emma Thompson", text: "This takes my breath away. Great work!", time: "1 day ago" }
+            ],
+            // Add more comments for other photos and reels as needed
+            reel_1: [
+                { author: "David Brown", text: "This is so creative! Love the editing.", time: "4 hours ago" },
+                { author: "Sophia Garcia", text: "The transitions are so smooth. How did you achieve this effect?", time: "1 day ago" }
+            ]
+        };
+
         // Initialize photo grid with Instagram-style post cards
         const photosGrid = document.getElementById('photosGrid');
         photos.forEach(photo => {
@@ -1554,13 +1795,13 @@
                 }
             };
             
-            // Comment button with SVG
+            // Comment button with SVG - updated to open comment modal
             const commentBtn = document.createElement('button');
             commentBtn.className = 'stat-btn';
             commentBtn.innerHTML = `${commentIcon} <span class="count">${item.comments}</span>`;
             commentBtn.onclick = (e) => {
                 e.stopPropagation();
-                alert('Comments functionality coming soon!');
+                openCommentModal(`${type}_${item.id}`);
             };
             
             // Donate button with SVG
@@ -1616,7 +1857,7 @@
             return postCard;
         }
 
-        /* ----------  REELS – NEW OVERLAY SYSTEM  ---------- */
+        /* ----------  REELS – UPDATED OVERLAY SYSTEM  ---------- */
         function buildReels() {
             const grid = document.getElementById('reelsGrid');
             reels.forEach(r => {
@@ -1634,24 +1875,74 @@
                 const overlay = document.createElement('div');
                 overlay.className = 'reel-overlay';
                 
+                // Header with username at the top
+                const header = document.createElement('div');
+                header.className = 'reel-header';
+                
+                const avatar = document.createElement('div');
+                avatar.className = 'reel-avatar';
+                
+                const avatarImg = document.createElement('img');
+                avatarImg.src = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80';
+                avatarImg.alt = 'Profile avatar';
+                
+                avatar.appendChild(avatarImg);
+                
                 const user = document.createElement('div');
                 user.className = 'reel-user';
                 user.textContent = '@sofia123';
                 
+                header.appendChild(avatar);
+                header.appendChild(user);
+                
+                // Actions container at the bottom
                 const acts = document.createElement('div');
                 acts.className = 'reel-actions';
                 
+                // Like button
                 const like = document.createElement('button');
-                like.className = 'reel-like';
-                like.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+                like.className = 'reel-action-btn reel-like';
+                like.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                    <span class="reel-stat">${r.likes}</span>
+                `;
                 
+                // Comment button (updated to open comment modal)
+                const comment = document.createElement('button');
+                comment.className = 'reel-action-btn';
+                comment.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                    </svg>
+                    <span class="reel-stat">${r.comments}</span>
+                `;
+                comment.onclick = e => {
+                    e.stopPropagation();
+                    openCommentModal(`reel_${r.id}`);
+                };
+                
+                // Donate button with USD icon (updated)
                 const donate = document.createElement('button');
-                donate.className = 'reel-donate';
-                donate.innerHTML = '<svg viewBox="0 0 24 24" width="20" height="20" fill="#fff"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"/></svg>';
+                donate.className = 'reel-action-btn';
+                donate.innerHTML = `
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M12 2v20m-5.5-6.5c0-1.3 2-2.5 5.5-2.5s5.5 1.2 5.5 2.5M12 6c-3.3 0-6-1.3-6-3s2.7-3 6-3 6 1.3 6 3-2.7 3-6 3z"/>
+                    </svg>
+                    <span class="reel-stat">Donate</span>
+                `;
                 
                 like.onclick = e => {
                     e.stopPropagation();
                     like.classList.toggle('liked');
+                    if (like.classList.contains('liked')) {
+                        const stat = like.querySelector('.reel-stat');
+                        stat.textContent = parseInt(stat.textContent) + 1;
+                    } else {
+                        const stat = like.querySelector('.reel-stat');
+                        stat.textContent = parseInt(stat.textContent) - 1;
+                    }
                 };
                 
                 donate.onclick = e => {
@@ -1659,8 +1950,8 @@
                     document.getElementById('openDonate').click();
                 };
                 
-                acts.append(like, donate);
-                overlay.append(user, acts);
+                acts.append(like, comment, donate);
+                overlay.append(header, acts);
                 wrap.append(video, overlay);
                 grid.append(wrap);
 
@@ -1684,7 +1975,7 @@
                 video.addEventListener('play', showOverlay);
                 video.addEventListener('pause', () => overlay.style.opacity = 1);
                 
-                // Add double click to open full viewer - but not on the video itself
+                // Add double click to open full viewer
                 wrap.addEventListener('dblclick', (e) => {
                     if (e.target === video) return;
                     openReelViewer(r.id);
@@ -2114,6 +2405,90 @@
                 start();
             } else closeStory();
         };
+
+        /* Comment Modal Functions */
+        function openCommentModal(mediaId) {
+            const modalOverlay = document.getElementById('commentModalOverlay');
+            const modalBody = document.getElementById('commentModalBody');
+            
+            // Clear previous comments
+            modalBody.innerHTML = '';
+            
+            // Get comments for this media item or use default if none exist
+            const comments = commentsData[mediaId] || [
+                { author: "John Doe", text: "This is absolutely stunning! The colors are so vibrant.", time: "2 hours ago" },
+                { author: "Sarah Smith", text: "I've been to this location and the photo doesn't even do it justice!", time: "5 hours ago" }
+            ];
+            
+            // Add comments to modal
+            comments.forEach(comment => {
+                const commentEl = document.createElement('div');
+                commentEl.className = 'comment';
+                commentEl.innerHTML = `
+                    <div class="comment-header">
+                        <div class="comment-author">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                            ${comment.author}
+                        </div>
+                        <div class="comment-time">${comment.time}</div>
+                    </div>
+                    <p class="comment-text">${comment.text}</p>
+                `;
+                modalBody.appendChild(commentEl);
+            });
+            
+            // Show the modal
+            modalOverlay.classList.add('active');
+            document.body.style.overflow = 'hidden';
+        }
+        
+        function closeCommentModal(event) {
+            // Only close if clicking on overlay (not the modal content) or the close button
+            if (event.target === document.getElementById('commentModalOverlay') || event.target.closest('.close-btn')) {
+                const modalOverlay = document.getElementById('commentModalOverlay');
+                modalOverlay.classList.remove('active');
+                document.body.style.overflow = 'auto';
+            }
+        }
+        
+        function addComment(event) {
+            event.preventDefault();
+            
+            const nameInput = document.getElementById('commentName');
+            const commentInput = document.getElementById('commentText');
+            
+            if (nameInput.value.trim() && commentInput.value.trim()) {
+                const commentSection = document.getElementById('commentModalBody');
+                
+                // Create new comment element
+                const newComment = document.createElement('div');
+                newComment.className = 'comment';
+                newComment.innerHTML = `
+                    <div class="comment-header">
+                        <div class="comment-author">
+                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
+                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
+                            </svg>
+                            ${nameInput.value}
+                        </div>
+                        <div class="comment-time">Just now</div>
+                    </div>
+                    <p class="comment-text">${commentInput.value}</p>
+                `;
+                
+                // Add to the top of comments
+                commentSection.insertBefore(newComment, commentSection.firstChild);
+                
+                // Clear form
+                nameInput.value = '';
+                commentInput.value = '';
+                
+                // Show notification
+                alert('Comment added successfully!');
+            }
+        }
     </script>
 </body>
 </html>
