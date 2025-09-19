@@ -283,6 +283,19 @@
             height: 100%;
             object-fit: cover;
         }
+        
+        /* Username in post header with verification */
+        .post-username {
+            display: flex;
+            align-items: center;
+            gap: 4px;
+            font-size: 14px;
+            font-weight: 500;
+        }
+        .verified-icon {
+            width: 14px;
+            height: 14px;
+        }
 
         .post-footer {
             display: flex;
@@ -349,6 +362,13 @@
             font-weight: 600;
             font-size: 14px;
             text-shadow: 0 1px 3px rgba(0,0,0,.8);
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .reel-verified-icon {
+            width: 14px;
+            height: 14px;
         }
         .reel-actions {
             display: flex;
@@ -422,6 +442,13 @@
             font-size: 16px;
             font-weight: 600;
             color: white;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .viewer-verified-icon {
+            width: 16px;
+            height: 16px;
         }
         .close-viewer {
             background: none;
@@ -509,6 +536,13 @@
             background: rgba(0, 0, 0, 0.4);
             padding: 8px 15px;
             border-radius: 20px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .media-verified-icon {
+            width: 16px;
+            height: 16px;
         }
 
         footer { 
@@ -564,6 +598,13 @@
         }
         .chat-user-info strong { 
             font-size: .95rem; 
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        .chat-verified-icon {
+            width: 14px;
+            height: 14px;
         }
         .online { 
             font-size: .75rem; 
@@ -1110,6 +1151,12 @@
         .stat-btn .count {
             font-weight: 600;
         }
+        
+        /* New verified icon styling */
+        .verified-icon-svg {
+            width: 16px;
+            height: 16px;
+        }
     </style>
 </head>
 <body>
@@ -1139,7 +1186,14 @@
             <div class="profile-pic-wrapper has-story">
                 <img id="profilePic" class="profile-pic" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Creator profile picture">
             </div>
-            <div class="creator-name">Sofia Creator <span class="verified">✓</span></div>
+            <div class="creator-name">Sofia Creator 
+                <span class="verified">
+                    <svg class="verified-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                        <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
+                        <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
+                    </svg>
+                </span>
+            </div>
             <div class="username">@sofia123</div>
             <div class="stats">
                 <div class="stat"><strong>15.2k</strong> Followers</div>
@@ -1207,7 +1261,12 @@
                 <button class="btn" id="backToMain">←</button>
                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Creator">
                 <div class="chat-user-info">
-                    <strong>Sofia Creator</strong>
+                    <strong>Sofia Creator
+                        <svg class="chat-verified-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+                            <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
+                            <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
+                        </svg>
+                    </strong>
                     <span class="online">Online</span>
                 </div>
             </div>
@@ -1316,6 +1375,12 @@
 
     <script>
         document.getElementById("year").textContent = new Date().getFullYear();
+
+        // Verified icon SVG
+        const verifiedIconSVG = `<svg class="verified-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
+            <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
+            <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
+        </svg>`;
 
         // SVG icons for like, comment, and donate
         const heartIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1460,8 +1525,8 @@
             avatar.appendChild(avatarImg);
             
             const username = document.createElement('div');
-            username.className = 'username';
-            username.textContent = '@sofia123';
+            username.className = 'post-username';
+            username.innerHTML = '@sofia123 ' + verifiedIconSVG;
             
             imageHeader.appendChild(avatar);
             imageHeader.appendChild(username);
@@ -1576,7 +1641,7 @@
                 
                 const user = document.createElement('div');
                 user.className = 'reel-user';
-                user.textContent = '@sofia123';
+                user.innerHTML = '@sofia123 ' + verifiedIconSVG;
                 
                 const acts = document.createElement('div');
                 acts.className = 'reel-actions';
@@ -1650,7 +1715,7 @@
                 // Add username overlay
                 const usernameOverlay = document.createElement('div');
                 usernameOverlay.className = 'media-username';
-                usernameOverlay.textContent = '@sofia123';
+                usernameOverlay.innerHTML = '@sofia123 ' + verifiedIconSVG;
                 view.appendChild(usernameOverlay);
                 
                 const img = document.createElement('img');
@@ -1704,7 +1769,7 @@
                 
                 const u = document.createElement('div');
                 u.className = 'media-username';
-                u.textContent = '@sofia123';
+                u.innerHTML = '@sofia123 ' + verifiedIconSVG;
                 
                 const video = document.createElement('video');
                 video.className = 'post-media';
