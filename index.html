@@ -11,6 +11,9 @@
             --accent: #2563eb;
             --muted: #6b7280;
             --radius: 20px;
+            --color-white: #fff;
+            --color-black: #000;
+            --color-red-400: #ff5252;
             font-family: system-ui, -apple-system, "Segoe UI", Roboto, Arial, sans-serif;
         }
         body { 
@@ -29,7 +32,7 @@
             display: flex;
             justify-content: space-between;
             align-items: center;
-            padding: 10px 16px; /* Changed from 20px to match container */
+            padding: 10px 16px;
             background-color: #ffffff;
             border-bottom: 1px solid #dbdbdb;
             position: sticky;
@@ -52,7 +55,7 @@
             width: 25px;
             height: 3px;
             background-color: #262626;
-            margin: 2.5px 0; /* Adjusted margin for better centering */
+            margin: 2.5px 0;
             transition: all 0.3s ease;
         }
         .hamburger.active div:nth-child(1) {
@@ -160,7 +163,6 @@
         .username { 
             color: var(--muted); 
             margin-bottom: .5rem; 
-            font-size: 1rem;
         }
         .stats { 
             display: flex; 
@@ -252,8 +254,6 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            /* Make image unclickable */
-            pointer-events: none;
         }
 
         /* Header that covers the top part of the image */
@@ -282,14 +282,6 @@
             width: 100%;
             height: 100%;
             object-fit: cover;
-            /* Make avatar image unclickable */
-            pointer-events: none;
-        }
-
-        .username {
-            font-weight: 600;
-            font-size: 14px;
-            color: #222;
         }
 
         .post-footer {
@@ -318,7 +310,7 @@
             gap: 20px;
         }
         
-        /* ----------  REELS – UPDATED OVERLAY SYSTEM  ---------- */
+        /* Reels grid adjustments - NEW OVERLAY SYSTEM */
         .reels-grid {
             display: flex;
             flex-direction: column;
@@ -339,35 +331,18 @@
             height: 100%;
             object-fit: cover;
             display: block;
-            pointer-events: none;
         }
         .reel-overlay {
             position: absolute;
             inset: 0;
             z-index: 2;
             display: flex;
-            flex-direction: column;
             justify-content: space-between;
+            align-items: flex-end;
             padding: 16px;
             pointer-events: none;
-        }
-        .reel-header {
-            display: flex;
-            align-items: center;
-            gap: 10px;
-        }
-        .reel-avatar {
-            width: 36px;
-            height: 36px;
-            border-radius: 50%;
-            overflow: hidden;
-            flex-shrink: 0;
-        }
-        .reel-avatar img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            pointer-events: none;
+            transition: opacity 0.3s ease;
+            opacity: 0.7;
         }
         .reel-user {
             color: #fff;
@@ -380,9 +355,8 @@
             flex-direction: column;
             gap: 12px;
             pointer-events: auto;
-            align-items: flex-end;
         }
-        .reel-action-btn {
+        .reel-like, .reel-donate {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -392,22 +366,25 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            flex-direction: column;
-            font-size: 11px;
-            font-weight: 600;
+            transition: all 0.2s ease;
+            border: none;
+            cursor: pointer;
         }
-        .reel-action-btn svg {
+        .reel-like:hover, .reel-donate:hover {
+            background: rgba(0,0,0,.65);
+            transform: scale(1.1);
+        }
+        .reel-like svg {
             width: 24px;
             height: 24px;
-            margin-bottom: 2px;
+            fill: #fff;
         }
         .reel-like.liked svg {
-            fill: #ff5252;
+            fill: var(--color-red-400);
         }
-        .reel-stat {
-            font-size: 11px;
-            margin-top: 2px;
-            text-align: center;
+        .reel-donate {
+            font-size: 16px;
+            font-weight: 600;
         }
         
         /* Exclusive Content */
@@ -415,10 +392,6 @@
             padding: 20px;
             text-align: center;
             color: #8e8e8e;
-        }
-        .exclusive-content img {
-            /* Make exclusive content images unclickable */
-            pointer-events: none;
         }
 
         /* Viewer Modals */
@@ -486,7 +459,7 @@
             bottom: 30px;
             left: 0;
             right: 0;
-            }
+        }
         .post-actions.overlay {
             position: absolute;
             bottom: 20px;
@@ -616,9 +589,9 @@
             flex-direction: column; 
             gap: .5rem; 
             background: #f3f4f6; 
-            margin-top: 60px; /* Height of chat header */
-            margin-bottom: 70px; /* Height of chat input */
-            height: calc(100vh - 130px); /* Viewport height minus header and input heights */
+            margin-top: 60px;
+            margin-bottom: 70px;
+            height: calc(100vh - 130px);
         }
         .msg-wrapper { 
             display: flex; 
@@ -640,6 +613,34 @@
         .user-msg { 
             background: var(--accent); 
             color: white; 
+        }
+        .story-reply-msg {
+            min-width: 200px;
+            max-width: 85%;
+        }
+        .story-preview {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            padding: 8px;
+            background: rgba(255,255,255,0.1);
+            border-radius: 12px;
+            margin-bottom: 6px;
+            border-left: 3px solid #0095f6;
+        }
+        .story-preview img {
+            width: 40px;
+            height: 40px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 1px solid rgba(255,255,255,0.2);
+        }
+        .creator-msg .story-preview {
+            background: rgba(0,0,0,0.05);
+            border-left: 3px solid #666;
+        }
+        .creator-msg .story-preview img {
+            border: 1px solid rgba(0,0,0,0.1);
         }
         .seen { 
             font-size: .7rem; 
@@ -988,7 +989,7 @@
             line-height: 28px; 
             text-align: center; 
             background: rgba(0,0,0,0.6); 
-            borderRadius: 50%; 
+            border-radius: 50%; 
             color: #fff; 
             z-index: 75; 
         }
@@ -997,7 +998,7 @@
             top: 50%; 
             transform: translateY(-50%); 
             background: rgba(0,0,0,0.6); 
-            borderRadius: 50%; 
+            border-radius: 50%; 
             display: none; 
             align-items: center; 
             justify-content: center; 
@@ -1109,184 +1110,6 @@
         .stat-btn .count {
             font-weight: 600;
         }
-        
-        /* SVG icon styles */
-        .svg-icon {
-            width: 1em;
-            height: 1em;
-            display: inline-block;
-            vertical-align: middle;
-            fill: currentColor;
-        }
-
-        /* Comment Modal Styles */
-        .comment-modal {
-            background: white;
-            width: 90%;
-            max-width: 500px;
-            border-radius: 15px;
-            overflow: hidden;
-            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
-            transform: scale(0.9);
-            opacity: 0;
-            transition: all 0.4s ease;
-            max-height: 80vh;
-            display: flex;
-            flex-direction: column;
-        }
-        
-        .modal-overlay.active .comment-modal {
-            transform: scale(1);
-            opacity: 1;
-        }
-        
-        .modal-header {
-            background: #f8f9fa;
-            padding: 20px;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            border-bottom: 1px solid #e5e7eb;
-        }
-        
-        .modal-title {
-            font-size: 1.3rem;
-            font-weight: 600;
-            color: #333;
-        }
-        
-        .close-btn {
-            background: none;
-            border: none;
-            color: #6b7280;
-            font-size: 1.5rem;
-            cursor: pointer;
-            transition: transform 0.3s ease;
-        }
-        
-        .close-btn:hover {
-            transform: rotate(90deg);
-            color: #374151;
-        }
-        
-        .modal-body {
-            padding: 20px;
-            overflow-y: auto;
-            flex: 1;
-        }
-        
-        .comment {
-            background: #f9fafb;
-            border-radius: 10px;
-            padding: 15px;
-            margin-bottom: 15px;
-            animation: fadeIn 0.5s ease;
-        }
-        
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(10px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-        
-        .comment-header {
-            display: flex;
-            justify-content: space-between;
-            margin-bottom: 10px;
-        }
-        
-        .comment-author {
-            font-weight: 600;
-            display: flex;
-            align-items: center;
-            gap: 8px;
-            color: #374151;
-            font-size: 0.9rem;
-        }
-        
-        .comment-time {
-            font-size: 0.8rem;
-            color: #6b7280;
-        }
-        
-        .comment-text {
-            line-height: 1.5;
-            color: 4b5563;
-        }
-        
-        .modal-footer {
-            padding: 20px;
-            background: #f8f9fa;
-            border-top: 1px solid #e5e7eb;
-        }
-        
-        .comment-form {
-            display: flex;
-            flex-direction: column;
-            gap: 15px;
-        }
-        
-        .form-group {
-            display: flex;
-            flex-direction: column;
-            gap: 5px;
-        }
-        
-        .form-group label {
-            font-size: 0.9rem;
-            color: #374151;
-        }
-        
-        .form-group input,
-        .form-group textarea {
-            padding: 12px;
-            border-radius: 8px;
-            border: 1px solid #d1d5db;
-            background: white;
-            color: #374151;
-            font-size: 1rem;
-        }
-        
-        .form-group textarea {
-            min-height: 80px;
-            resize: vertical;
-        }
-        
-        .submit-btn {
-            background: var(--accent);
-            color: white;
-            border: none;
-            padding: 12px;
-            border-radius: 8px;
-            font-weight: 600;
-            cursor: pointer;
-            transition: all 0.3s ease;
-        }
-        
-        .submit-btn:hover {
-            background: #1d4ed8;
-        }
-        
-        /* Modal Overlay */
-        .modal-overlay {
-            position: fixed;
-            top: 0;
-            left: 0;
-            right: 0;
-            bottom: 0;
-            background: rgba(0, 0, 0, 0.7);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            opacity: 0;
-            visibility: hidden;
-            transition: all 0.3s ease;
-        }
-        
-        .modal-overlay.active {
-            opacity: 1;
-            visibility: visible;
-        }
     </style>
 </head>
 <body>
@@ -1316,12 +1139,7 @@
             <div class="profile-pic-wrapper has-story">
                 <img id="profilePic" class="profile-pic" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Creator profile picture">
             </div>
-            <div class="creator-name">Sofia Creator <span class="verified">
-                <svg xmlns="http://www.w3.org/2000/svg" x="0px" y="0px" width="1em" height="1em" viewBox="0 0 48 48">
-                    <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
-                    <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
-                </svg>
-            </span></div>
+            <div class="creator-name">Sofia Creator <span class="verified">✓</span></div>
             <div class="username">@sofia123</div>
             <div class="stats">
                 <div class="stat"><strong>15.2k</strong> Followers</div>
@@ -1347,19 +1165,17 @@
             </div>
         </div>
         
-        <!-- Reels Content - Updated with new system -->
+        <!-- Reels Content -->
         <div id="reels-content" class="content">
-            <div class="reels-grid" id="reelsGrid"></div>
+            <div class="reels-grid" id="reelsGrid">
+                <!-- Reels will be inserted here by JavaScript -->
+            </div>
         </div>
         
         <!-- Exclusive Content -->
         <div id="exclusive-content" class="content">
             <div class="exclusive-content">
-                <p>Subscribe to unlock exclusive content 
-                    <svg class="svg-icon" viewBox="0 0 24 24" style="width: 16px; height: 16px;">
-                        <path d="M9.5 14c0 .4.1.8.3 1.1.2.3.5.6.9.8.4.2.8.3 1.3.3s.9-.1 1.3-.3c.4-.2.7-.5.9-.8.2-.3.3-.7.3-1.1s-.1-.8-.3-1.1c-.2-.3-.5-.6-.9-.8-.4-.2-.8-.3-1.3-.3s-.9.1-1.3.3c-.4.2-.7.5-.9.8-.2.3-.3.7-.3 1.1zm4.9-1.9c.4.4.6.9.8 1.5.2.6.3 1.2.3 1.9s-.1 1.3-.3 1.9c-.2.6-.5 1.1-.8 1.5-.4.4-.8.8-1.4 1-.6.3-1.2.4-1.9.4s-1.3-.1-1.9-.4c-.6-.3-1-.6-1.4-1-.4-.4-.6-.9-.8-1.5-.2-.6-.3-1.2-.3-1.9s.1-1.3.3-1.9c.2-.6.5-1.1.8-1.5.4-.4.8-.8 1.4-1 .6-.3 1.2-.4 1.9-.4s1.3.1 1.9.4c.6.3 1 .6 1.4 1zM12 2C6.5 2 2 6.5 2 12s4.5 10 10 10 10-4.5 10-10S17.5 2 12 2zm0 18c-4.4 0-8-3.6-8-8s3.6-8 8-8 8 3.6 8 8-3.6 8-8 8z"/>
-                    </svg>
-                </p>
+                <p>Subscribe to unlock exclusive content ✨</p>
                 <div class="media-grid">
                     <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Exclusive content locked">
                 </div>
@@ -1372,23 +1188,15 @@
     <!-- Photo Viewer Modal -->
     <div class="viewer-modal" id="photoViewerModal">
         <div class="viewer-header">
-            <button class="close-viewer" onclick="closePhotoViewer()">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
+            <button class="close-viewer" onclick="closePhotoViewer()">×</button>
         </div>
         <div class="feed" id="photoFeed"></div>
     </div>
 
-    <!-- Reel Viewer Modal - Updated with new system -->
+    <!-- Reel Viewer Modal -->
     <div class="viewer-modal" id="reelViewerModal">
         <div class="viewer-header">
-            <button class="close-viewer" onclick="closeReelViewer()">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
+            <button class="close-viewer" onclick="closeReelViewer()">×</button>
         </div>
         <div class="feed" id="reelFeed"></div>
     </div>
@@ -1396,11 +1204,7 @@
     <div id="chatScreen" class="chat-screen container">
         <div class="chat-header">
             <div class="chat-header-left">
-                <button class="btn" id="backToMain">
-                    <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                        <path d="M20 11H7.83l5.59-5.59L12 4l-8 8 8 8 1.41-1.41L7.83 13H20v-2z"/>
-                    </svg>
-                </button>
+                <button class="btn" id="backToMain">←</button>
                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Creator">
                 <div class="chat-user-info">
                     <strong>Sofia Creator</strong>
@@ -1408,37 +1212,21 @@
                 </div>
             </div>
             <div class="chat-header-right">
-                <button title="Video Call">
-                    <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                        <path d="M17 10.5V7c0-.55-.45-1-1-1H4c-.55 0-1 .45-1 1v10c0 .55.45 1 1 1h12c.55 0 1-.45 1-1v-3.5l4 4v-11l-4 4z"/>
-                    </svg>
-                </button>
-                <button title="Voice Call">
-                    <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                        <path d="M6.62 10.79c1.44 2.83 3.76 5.14 6.59 6.59l2.2-2.2c.27-.27.67-.36 1.02-.24 1.12.37 2.33.57 3.57.57.55 0 1 .45 1 1V20c0 .55-.45 1-1 1-9.39 0-17-7.61-17-17 0-.55.45-1 1-1h3.5c.55 0 1 .45 1 1 0 1.25.2 2.45.57 3.57.11.35.03.74-.25 1.02l-2.2 2.2z"/>
-                    </svg>
-                </button>
+                <button title="Video Call">📹</button>
+                <button title="Voice Call">📞</button>
             </div>
         </div>
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input">
             <input id="chatInput" placeholder="Message...">
-            <button id="sendMessage">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                    <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                </svg>
-            </button>
+            <button id="sendMessage">➤</button>
         </div>
     </div>
 
     <!-- Subscription Modal -->
     <div id="subscriptionModal" class="modal">
         <div class="modal-content">
-            <span class="close" onclick="closeSubscribeModal()">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </span>
+            <span class="close" onclick="closeSubscribeModal()">&times;</span>
             <h2>Choose Your Subscription Plan</h2>
             <div class="subscription-options">
                 <div class="option">
@@ -1460,11 +1248,7 @@
 
     <div id="chooseMethodModal" class="modal">
         <div class="modal-content">
-            <button class="close-x-button" id="closeDonate">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
+            <button class="close-x-button" id="closeDonate">X</button>
             <h3>Choose Your Donation Method</h3>
             <div class="modal-buttons-container">
                 <button class="modal-button btc-button" id="openBtcDonate">Donate with Bitcoin</button>
@@ -1479,16 +1263,8 @@
 
     <div id="btcDonateModal" class="modal">
         <div class="modal-content">
-            <button class="close-x-button" id="closeBtcDonate">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
-            <h3>Support Us with Bitcoin! 
-                <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20" style="vertical-align: middle;">
-                    <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm0 18c-4.42 0-8-3.58-8-8s3.58-8 8-8 8 3.58 8 8-3.58 8-8 8zm.22-13.5h-2.5v3.5H7.5v2h2.22v3H7.5v2h4.72v-10zm4.78 8.5h-2.5v-10h2.5v10z"/>
-                </svg>
-            </h3>
+            <button class="close-x-button" id="closeBtcDonate">X</button>
+            <h3>Support Us with Bitcoin! 🚀</h3>
             <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n" alt="BTC QR Code" class="qr-code">
             <p>Scan the QR code or copy the address below:</p>
             <div class="wallet-address-container">
@@ -1501,38 +1277,6 @@
         </div>
     </div>
 
-    <!-- Comment Modal -->
-    <div class="modal-overlay" id="commentModalOverlay" onclick="closeCommentModal(event)">
-        <div class="comment-modal">
-            <div class="modal-header">
-                <h2 class="modal-title">Comments</h2>
-                <button class="close-btn" onclick="closeCommentModal(event)">
-                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
-                        <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                    </svg>
-                </button>
-            </div>
-            
-            <div class="modal-body" id="commentModalBody">
-                <!-- Comments will be loaded here -->
-            </div>
-            
-            <div class="modal-footer">
-                <form class="comment-form" onsubmit="addComment(event)">
-                    <div class="form-group">
-                        <label for="commentName">Name</label>
-                        <input type="text" id="commentName" required>
-                    </div>
-                    <div class="form-group">
-                        <label for="commentText">Your Comment</label>
-                        <textarea id="commentText" required></textarea>
-                    </div>
-                    <button type="submit" class="submit-btn">Post Comment</button>
-                </form>
-            </div>
-        </div>
-    </div>
-
     <div id="storyModal" class="story-modal">
         <div class="story-container" id="storyContainer">
             <!-- Story Header with Profile Picture, Username, and Verified Badge -->
@@ -1541,11 +1285,7 @@
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Profile" class="story-profile-pic">
                     <div class="story-user-details">
                         <span class="story-username">Sofia Creator</span>
-                        <span class="story-verified">
-                            <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" fill="#1DA1F2">
-                                <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                            </svg>
-                        </span>
+                        <span class="story-verified">✓</span>
                     </div>
                 </div>
             </div>
@@ -1559,37 +1299,17 @@
             <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="story-image" data-index="2" alt="Story 3">
 
             <!-- Smaller close button -->
-            <button class="btn close-btn" id="storyCloseBtn">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="16" height="16" fill="#fff">
-                    <path d="M19 6.41L17.59 5 12 10.59 6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 12 13.41 17.59 19 19 17.59 13.41 12z"/>
-                </svg>
-            </button>
+            <button class="btn close-btn" id="storyCloseBtn">✕</button>
 
             <!-- Navigation -->
-            <button class="btn nav-btn nav-btn-left" id="prevStoryBtn">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff">
-                    <path d="M15.41 7.41L14 6l-6 6 6 6 1.41-1.41L10.83 12z"/>
-                </svg>
-            </button>
-            <button class="btn nav-btn nav-btn-right" id="nextStoryBtn">
-                <svg class="svg-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff">
-                    <path d="M10 6L8.59 7.41 13.17 12l-4.58 4.59L10 18l6-6z"/>
-                </svg>
-            </button>
+            <button class="btn nav-btn nav-btn-left" id="prevStoryBtn">◀</button>
+            <button class="btn nav-btn nav-btn-right" id="nextStoryBtn">▶</button>
 
             <!-- Controls -->
             <div class="story-controls">
                 <input id="replyInput" class="reply-input" placeholder="Reply to this story">
-                <button id="sendStoryBtn" class="send-btn">
-                    <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20" fill="#fff">
-                        <path d="M2.01 21L23 12 2.01 3 2 10l15 2-15 2z"/>
-                    </svg>
-                </button>
-                <button id="likeStoryBtn" class="btn like-btn">
-                    <svg class="svg-icon" viewBox="0 0 24 24" width="20" height="20" fill="#fff">
-                        <path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"/>
-                    </svg>
-                </button>
+                <button id="sendStoryBtn" class="send-btn">➤</button>
+                <button id="likeStoryBtn" class="btn like-btn">❤</button>
             </div>
         </div>
     </div>
@@ -1657,14 +1377,14 @@
         const reels = [
             { 
                 id: 1, 
-                thumbnail: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80', 
+                thumbnail: 'https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?w=600&q=80', 
                 url: 'https://assets.mixkit.co/videos/preview/mixkit-girl-in-neon-sign-1232-large.mp4',
                 likes: 215,
                 comments: 47
             },
             { 
                 id: 2, 
-                thumbnail: 'https://images.unsplash.com/photo-1492681290082-e932832941e6?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80', 
+                thumbnail: 'https://images.unsplash.com/photo-1492681290082-e9328329f543?w=600&q=80', 
                 url: 'https://assets.mixkit.co/videos/preview/mixkit-tree-with-yellow-flowers-1173-large.mp4',
                 likes: 178,
                 comments: 32
@@ -1699,35 +1419,17 @@
             },
         ];
 
-        // Comments data for each media item
-        const commentsData = {
-            photo_1: [
-                { author: "John Doe", text: "This is absolutely stunning! The colors are so vibrant and the composition is perfect.", time: "2 hours ago" },
-                { author: "Sarah Smith", text: "I've been to this location and the photo doesn't even do it justice! Amazing work capturing the essence.", time: "5 hours ago" },
-                { author: "Alex Johnson", text: "What camera settings did you use for this shot? The lighting is perfect!", time: "1 day ago" }
-            ],
-            photo_2: [
-                { author: "Mike Wilson", text: "Beautiful scenery! I love how the light hits the mountains.", time: "3 hours ago" },
-                { author: "Emma Thompson", text: "This takes my breath away. Great work!", time: "1 day ago" }
-            ],
-            // Add more comments for other photos and reels as needed
-            reel_1: [
-                { author: "David Brown", text: "This is so creative! Love the editing.", time: "4 hours ago" },
-                { author: "Sophia Garcia", text: "The transitions are so smooth. How did you achieve this effect?", time: "1 day ago" }
-            ]
-        };
-
-        // Initialize photo grid with Instagram-style post cards
+        // Initialize photo and reel grids
         const photosGrid = document.getElementById('photosGrid');
         photos.forEach(photo => {
             const postCard = createPostCard(photo, 'photo');
             photosGrid.appendChild(postCard);
         });
 
-        // Initialize reels with new overlay system
+        // Initialize reels with new system
         buildReels();
 
-        // Function to create Instagram-style post card (for photos only)
+        // Function to create Instagram-style post card
         function createPostCard(item, type) {
             const postCard = document.createElement('div');
             postCard.className = 'post-card';
@@ -1739,10 +1441,10 @@
             // Main image
             const img = document.createElement('img');
             img.className = 'post-image';
-            img.src = item.url;
-            img.alt = `Photo ${item.id}`;
+            img.src = type === 'photo' ? item.url : item.thumbnail;
+            img.alt = type === 'photo' ? `Photo ${item.id}` : `Reel ${item.id}`;
             img.setAttribute('crossorigin', 'anonymous');
-            img.setAttribute('data-image', item.url);
+            img.setAttribute('data-image', type === 'photo' ? item.url : item.thumbnail);
             
             // Header with profile info
             const imageHeader = document.createElement('div');
@@ -1796,13 +1498,13 @@
                 }
             };
             
-            // Comment button with SVG - updated to open comment modal
+            // Comment button with SVG
             const commentBtn = document.createElement('button');
             commentBtn.className = 'stat-btn';
             commentBtn.innerHTML = `${commentIcon} <span class="count">${item.comments}</span>`;
             commentBtn.onclick = (e) => {
                 e.stopPropagation();
-                openCommentModal(`${type}_${item.id}`);
+                alert('Comments functionality coming soon!');
             };
             
             // Donate button with SVG
@@ -1830,7 +1532,7 @@
                     const url = URL.createObjectURL(blob);
                     const a = document.createElement('a');
                     a.href = url;
-                    a.download = `photo-${item.id}.jpg`;
+                    a.download = type === 'photo' ? `photo-${item.id}.jpg` : `reel-${item.id}.jpg`;
                     document.body.appendChild(a);
                     a.click();
                     a.remove();
@@ -1846,21 +1548,16 @@
             postCard.appendChild(imageWrap);
             postCard.appendChild(postFooter);
             
-            // Add click event to open viewer - but not on the image itself
-            postCard.addEventListener('click', (e) => {
-                // Don't open viewer if clicking on image, download button, or stat buttons
-                if (e.target === img || e.target === downloadBtn || e.target.closest('.stat-btn')) {
-                    return;
-                }
-                openPhotoViewer(item.id);
-            });
+            // Remove click event - photos are no longer clickable
             
             return postCard;
         }
 
-        /* ----------  REELS – UPDATED OVERLAY SYSTEM  ---------- */
+        // NEW REELS SYSTEM - Build reels with autoplay and no click interactions
         function buildReels() {
             const grid = document.getElementById('reelsGrid');
+            grid.innerHTML = ''; // Clear existing content
+            
             reels.forEach(r => {
                 const wrap = document.createElement('div');
                 wrap.className = 'reel-wrapper';
@@ -1872,78 +1569,29 @@
                 video.poster = r.thumbnail;
                 video.playsinline = true;
                 video.muted = true;
+                video.autoplay = false; // Will be controlled by intersection observer
                 
                 const overlay = document.createElement('div');
                 overlay.className = 'reel-overlay';
-                
-                // Header with username at the top
-                const header = document.createElement('div');
-                header.className = 'reel-header';
-                
-                const avatar = document.createElement('div');
-                avatar.className = 'reel-avatar';
-                
-                const avatarImg = document.createElement('img');
-                avatarImg.src = 'https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80';
-                avatarImg.alt = 'Profile avatar';
-                
-                avatar.appendChild(avatarImg);
                 
                 const user = document.createElement('div');
                 user.className = 'reel-user';
                 user.textContent = '@sofia123';
                 
-                header.appendChild(avatar);
-                header.appendChild(user);
-                
-                // Actions container at the bottom
                 const acts = document.createElement('div');
                 acts.className = 'reel-actions';
                 
-                // Like button
                 const like = document.createElement('button');
-                like.className = 'reel-action-btn reel-like';
-                like.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
-                    </svg>
-                    <span class="reel-stat">${r.likes}</span>
-                `;
+                like.className = 'reel-like';
+                like.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
                 
-                // Comment button (updated to open comment modal)
-                const comment = document.createElement('button');
-                comment.className = 'reel-action-btn';
-                comment.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
-                    </svg>
-                    <span class="reel-stat">${r.comments}</span>
-                `;
-                comment.onclick = e => {
-                    e.stopPropagation();
-                    openCommentModal(`reel_${r.id}`);
-                };
-                
-                // Donate button with USD icon (updated)
                 const donate = document.createElement('button');
-                donate.className = 'reel-action-btn';
-                donate.innerHTML = `
-                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                        <path d="M12 2v20m-5.5-6.5c0-1.3 2-2.5 5.5-2.5s5.5 1.2 5.5 2.5M12 6c-3.3 0-6-1.3-6-3s2.7-3 6-3 6 1.3 6 3-2.7 3-6 3z"/>
-                    </svg>
-                    <span class="reel-stat">Donate</span>
-                `;
+                donate.className = 'reel-donate';
+                donate.textContent = '♥';
                 
                 like.onclick = e => {
                     e.stopPropagation();
                     like.classList.toggle('liked');
-                    if (like.classList.contains('liked')) {
-                        const stat = like.querySelector('.reel-stat');
-                        stat.textContent = parseInt(stat.textContent) + 1;
-                    } else {
-                        const stat = like.querySelector('.reel-stat');
-                        stat.textContent = parseInt(stat.textContent) - 1;
-                    }
                 };
                 
                 donate.onclick = e => {
@@ -1951,36 +1599,42 @@
                     document.getElementById('openDonate').click();
                 };
                 
-                acts.append(like, comment, donate);
-                overlay.append(header, acts);
+                acts.append(like, donate);
+                overlay.append(user, acts);
                 wrap.append(video, overlay);
                 grid.append(wrap);
 
-                let hideTmr;
-                const showOverlay = () => {
-                    overlay.style.opacity = 1;
-                    clearTimeout(hideTmr);
-                    hideTmr = setTimeout(() => overlay.style.opacity = 0, 2000);
-                };
-                
-                wrap.addEventListener('click', () => {
-                    if (video.paused) {
-                        video.play();
-                        showOverlay();
-                    } else {
-                        video.pause();
-                        overlay.style.opacity = 1;
-                    }
+                // Set up intersection observer for autoplay
+                const observer = new IntersectionObserver((entries) => {
+                    entries.forEach(entry => {
+                        if (entry.isIntersecting) {
+                            // Video is visible, start playing
+                            video.play().catch(() => {
+                                // Autoplay failed, user interaction required
+                                console.log('Autoplay prevented for video:', r.id);
+                            });
+                            overlay.style.opacity = '0.7';
+                        } else {
+                            // Video is not visible, pause it
+                            video.pause();
+                            overlay.style.opacity = '1';
+                        }
+                    });
+                }, {
+                    threshold: 0.5 // Trigger when 50% of video is visible
                 });
                 
-                video.addEventListener('play', showOverlay);
-                video.addEventListener('pause', () => overlay.style.opacity = 1);
+                observer.observe(wrap);
                 
-                // Add double click to open full viewer
-                wrap.addEventListener('dblclick', (e) => {
-                    if (e.target === video) return;
-                    openReelViewer(r.id);
+                // Show overlay permanently when paused, semi-transparent when playing
+                video.addEventListener('play', () => {
+                    overlay.style.opacity = '0.7';
                 });
+                video.addEventListener('pause', () => {
+                    overlay.style.opacity = '1';
+                });
+                
+                // Remove all click interactions - videos play automatically based on visibility
             });
         }
 
@@ -2011,7 +1665,7 @@
                 actions.className = 'post-actions';
                 const likeBtn = document.createElement('button');
                 likeBtn.className = 'like-btn';
-                likeBtn.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"/></svg>';
+                likeBtn.innerHTML = '❤️';
                 likeBtn.onclick = (e) => {
                     e.stopPropagation();
                     likeBtn.classList.toggle('liked');
@@ -2036,7 +1690,7 @@
             document.getElementById('photoViewerModal').style.display = 'none';
         }
 
-        /* ----------  REELS VIEWER  ---------- */
+        // Updated Reel Viewer Functions
         function openReelViewer(id) {
             const modal = document.getElementById('reelViewerModal');
             modal.style.display = 'flex';
@@ -2052,22 +1706,22 @@
                 u.className = 'media-username';
                 u.textContent = '@sofia123';
                 
-                const wrap = document.createElement('div');
-                wrap.className = 'media-wrap';
-                
                 const video = document.createElement('video');
                 video.className = 'post-media';
                 video.src = r.url;
                 video.controls = true;
                 video.autoplay = true;
                 video.loop = true;
+                video.style.maxWidth = '100%';
+                video.style.maxHeight = '80vh';
+                video.style.objectFit = 'contain';
                 
                 const acts = document.createElement('div');
                 acts.className = 'post-actions overlay';
                 
                 const like = document.createElement('button');
                 like.className = 'like-btn';
-                like.innerHTML = '<svg class="svg-icon" viewBox="0 0 24 24" width="24" height="24" fill="#fff"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54z"/></svg>';
+                like.innerHTML = '♥';
                 
                 const don = document.createElement('button');
                 don.className = 'donate-btn';
@@ -2077,8 +1731,7 @@
                 don.onclick = () => document.getElementById('openDonate').click();
                 
                 acts.append(like, don);
-                wrap.append(video, acts);
-                v.append(u, wrap);
+                v.append(u, video, acts);
                 feed.append(v);
             });
             
@@ -2191,6 +1844,111 @@
             chatMessages.scrollTop = chatMessages.scrollHeight;
             return wrapper;
         }
+
+        function addStoryReplyMessage(storyImage, replyText, sender = "user") {
+            const wrapper = document.createElement("div");
+            wrapper.className = "msg-wrapper";
+            if (sender === "creator") wrapper.style.alignItems = "flex-start";
+            
+            const msg = document.createElement("div");
+            msg.className = "msg story-reply-msg " + (sender === "creator" ? "creator-msg" : "user-msg");
+            
+            // Create story preview container
+            const storyPreview = document.createElement("div");
+            storyPreview.className = "story-preview";
+            storyPreview.style.cssText = `
+                display: flex;
+                align-items: center;
+                gap: 8px;
+                padding: 8px;
+                background: rgba(255,255,255,0.1);
+                border-radius: 12px;
+                margin-bottom: 6px;
+                border-left: 3px solid #0095f6;
+                cursor: pointer;
+                transition: background 0.2s ease;
+            `;
+            
+            // Add click handler to reopen story
+            storyPreview.onclick = () => {
+                // Find which story this image belongs to
+                const storyIndex = Array.from(storyImages).findIndex(img => img.src === storyImage);
+                if (storyIndex !== -1) {
+                    // Close chat and open story
+                    backToMain.click();
+                    setTimeout(() => {
+                        storyModal.style.display = "flex";
+                        createBars();
+                        showStory(storyIndex);
+                        start();
+                    }, 100);
+                }
+            };
+            
+            // Add hover effect
+            storyPreview.onmouseenter = () => {
+                storyPreview.style.background = sender === "creator" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)";
+            };
+            storyPreview.onmouseleave = () => {
+                storyPreview.style.background = sender === "creator" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.1)";
+            };
+            
+            // Add small story image
+            const imgPreview = document.createElement("img");
+            imgPreview.src = storyImage;
+            imgPreview.style.cssText = `
+                width: 40px;
+                height: 40px;
+                border-radius: 8px;
+                object-fit: cover;
+                border: 1px solid rgba(255,255,255,0.2);
+            `;
+            
+            // Add "Story" label
+            const storyLabel = document.createElement("span");
+            storyLabel.textContent = "Story";
+            storyLabel.style.cssText = `
+                font-size: 12px;
+                font-weight: 600;
+                color: ${sender === "creator" ? "#666" : "rgba(255,255,255,0.8)"};
+            `;
+            
+            storyPreview.appendChild(imgPreview);
+            storyPreview.appendChild(storyLabel);
+            
+            // Add reply text
+            const replyTextDiv = document.createElement("div");
+            replyTextDiv.textContent = replyText;
+            replyTextDiv.style.cssText = "margin-top: 4px;";
+            
+            msg.appendChild(storyPreview);
+            msg.appendChild(replyTextDiv);
+            wrapper.appendChild(msg);
+            chatMessages.appendChild(wrapper);
+            chatMessages.scrollTop = chatMessages.scrollHeight;
+            return wrapper;
+        }
+
+        function sendStoryReplyToChat(storyImage, replyText) {
+            // Hide main header when chat is opened
+            document.querySelector('.header').style.display = 'none';
+            
+            chatScreen.style.display = "flex";
+            document.querySelector(".main-screen").style.display = "none";
+            
+            // Add the story reply message
+            const wrapper = addStoryReplyMessage(storyImage, replyText, "user");
+            
+            // Simulate creator response after a delay
+            setTimeout(() => {
+                addSeen(wrapper);
+                const typingIndicator = showTyping();
+                setTimeout(() => {
+                    typingIndicator.remove();
+                    addMessage("Thanks for replying to my story! 😊", "creator");
+                }, 2000);
+            }, 1500);
+        }
         function addSeen(wrapper) {
             const seen = document.createElement("div");
             seen.className = "seen";
@@ -2212,20 +1970,7 @@
             chatScreen.style.display = "flex";
             document.querySelector(".main-screen").style.display = "none";
             chatMessages.innerHTML = "";
-            setTimeout(() => {
-                const msg = addMessage("Welcome to my chat! ", "creator");
-                // Add speech bubble SVG
-                const svg = document.createElement('svg');
-                svg.innerHTML = '<path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"/>';
-                svg.setAttribute('class', 'svg-icon');
-                svg.setAttribute('viewBox', '0 0 24 24');
-                svg.setAttribute('width', '16');
-                svg.setAttribute('height', '16');
-                svg.style.fill = 'currentColor';
-                svg.style.marginLeft = '4px';
-                svg.style.display = 'inline-block';
-                msg.querySelector('.msg').appendChild(svg);
-            }, 400);
+            setTimeout(() => addMessage("Welcome to my chat! 💬", "creator"), 400);
         };
         backToMain.onclick = () => {
             // Show main header again when returning from chat
@@ -2276,37 +2021,19 @@
             donateModal.style.display = "flex";
         };
         copyBtcAddress.onclick = () => {
-            navigator.clipboard.writeText(btcAddress).then(() => {
-                const s = document.getElementById("statusMessage");
-                s.textContent = "Address copied! ";
-                s.className = "status-message status-success";
-                s.style.display = "block";
-                
-                // Add clipboard SVG
-                const svg = document.createElement('svg');
-                svg.innerHTML = '<path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/>';
-                svg.setAttribute('class', 'svg-icon');
-                svg.setAttribute('viewBox', '0 0 24 24');
-                svg.setAttribute('width', '16');
-                svg.setAttribute('height', '16');
-                svg.style.fill = '#28a745';
-                svg.style.marginLeft = '4px';
-                svg.style.display = 'inline-block';
-                s.appendChild(svg);
-                
-                setTimeout(() => s.style.display = "none", 3000);
-            }).catch(() => {
-                const s = document.getElementById("statusMessage");
-                s.textContent = "Failed to copy";
-                s.className = "status-message status-error";
-                s.style.display = "block";
-                setTimeout(() => s.style.display = "none", 3000);
-            });
+            navigator.clipboard.writeText(btcAddress).then(() => showStatus("Address copied! 📋", "success")).catch(() => showStatus("Failed to copy", "error"));
         };
         donateBtcNow.onclick = () => {
             window.open("https://www.blockchain.com/explorer/addresses/btc/" + btcAddress, "_blank");
             btcDonateModal.style.display = "none";
         };
+        function showStatus(msg, type) {
+            const s = document.getElementById("statusMessage");
+            s.textContent = msg;
+            s.className = "status-message status-" + type;
+            s.style.display = "block";
+            setTimeout(() => s.style.display = "none", 3000);
+        }
 
         /* Stories */
         const profilePic = document.getElementById("profilePic");
@@ -2383,7 +2110,15 @@
         replyInput.oninput = () => sendStoryBtn.classList.toggle("visible", !!replyInput.value.trim());
         sendStoryBtn.onclick = () => {
             if (replyInput.value.trim()) {
-                alert("Reply: " + replyInput.value);
+                const replyText = replyInput.value.trim();
+                const currentStoryImage = storyImages[currentStory].src;
+                
+                // Close story modal
+                closeStory();
+                
+                // Open chat with story reply
+                sendStoryReplyToChat(currentStoryImage, replyText);
+                
                 replyInput.value = "";
                 sendStoryBtn.classList.remove("visible");
             }
@@ -2406,90 +2141,6 @@
                 start();
             } else closeStory();
         };
-
-        /* Comment Modal Functions */
-        function openCommentModal(mediaId) {
-            const modalOverlay = document.getElementById('commentModalOverlay');
-            const modalBody = document.getElementById('commentModalBody');
-            
-            // Clear previous comments
-            modalBody.innerHTML = '';
-            
-            // Get comments for this media item or use default if none exist
-            const comments = commentsData[mediaId] || [
-                { author: "John Doe", text: "This is absolutely stunning! The colors are so vibrant.", time: "2 hours ago" },
-                { author: "Sarah Smith", text: "I've been to this location and the photo doesn't even do it justice!", time: "5 hours ago" }
-            ];
-            
-            // Add comments to modal
-            comments.forEach(comment => {
-                const commentEl = document.createElement('div');
-                commentEl.className = 'comment';
-                commentEl.innerHTML = `
-                    <div class="comment-header">
-                        <div class="comment-author">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                            ${comment.author}
-                        </div>
-                        <div class="comment-time">${comment.time}</div>
-                    </div>
-                    <p class="comment-text">${comment.text}</p>
-                `;
-                modalBody.appendChild(commentEl);
-            });
-            
-            // Show the modal
-            modalOverlay.classList.add('active');
-            document.body.style.overflow = 'hidden';
-        }
-        
-        function closeCommentModal(event) {
-            // Only close if clicking on overlay (not the modal content) or the close button
-            if (event.target === document.getElementById('commentModalOverlay') || event.target.closest('.close-btn')) {
-                const modalOverlay = document.getElementById('commentModalOverlay');
-                modalOverlay.classList.remove('active');
-                document.body.style.overflow = 'auto';
-            }
-        }
-        
-        function addComment(event) {
-            event.preventDefault();
-            
-            const nameInput = document.getElementById('commentName');
-            const commentInput = document.getElementById('commentText');
-            
-            if (nameInput.value.trim() && commentInput.value.trim()) {
-                const commentSection = document.getElementById('commentModalBody');
-                
-                // Create new comment element
-                const newComment = document.createElement('div');
-                newComment.className = 'comment';
-                newComment.innerHTML = `
-                    <div class="comment-header">
-                        <div class="comment-author">
-                            <svg width="18" height="18" viewBox="0 0 24 24" fill="currentColor">
-                                <path d="M12 12c2.21 0 4-1.79 4-4s-1.79-4-4-4-4 1.79-4 4 1.79 4 4 4zm0 2c-2.67 0-8 1.34-8 4v2h16v-2c0-2.66-5.33-4-8-4z"/>
-                            </svg>
-                            ${nameInput.value}
-                        </div>
-                        <div class="comment-time">Just now</div>
-                    </div>
-                    <p class="comment-text">${commentInput.value}</p>
-                `;
-                
-                // Add to the top of comments
-                commentSection.insertBefore(newComment, commentSection.firstChild);
-                
-                // Clear form
-                nameInput.value = '';
-                commentInput.value = '';
-                
-                // Show notification
-                alert('Comment added successfully!');
-            }
-        }
     </script>
 </body>
 </html>
