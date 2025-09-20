@@ -155,7 +155,6 @@
             justify-content: center; 
             gap: .3rem; 
             margin-top: .5rem; 
-            margin-bottom: .3rem;
         }
         .verified { 
             color: var(--accent); 
@@ -284,19 +283,6 @@
             height: 100%;
             object-fit: cover;
         }
-        
-        /* Username in post header with verification */
-        .post-username {
-            display: flex;
-            align-items: center;
-            gap: 4px;
-            font-size: 14px;
-            font-weight: 500;
-        }
-        .verified-icon {
-            width: 14px;
-            height: 14px;
-        }
 
         .post-footer {
             display: flex;
@@ -339,7 +325,6 @@
             background: #000;
             border-radius: var(--radius);
             overflow: hidden;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.1);
         }
         .reel-video {
             width: 100%;
@@ -353,7 +338,7 @@
             z-index: 2;
             display: flex;
             justify-content: space-between;
-            align-items: flex-end;
+            align-items: flex-start;
             padding: 16px;
             pointer-events: none;
             transition: opacity 0.3s ease;
@@ -364,21 +349,16 @@
             font-weight: 600;
             font-size: 14px;
             text-shadow: 0 1px 3px rgba(0,0,0,.8);
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .reel-verified-icon {
-            width: 14px;
-            height: 14px;
+            margin-top: 8px;
         }
         .reel-actions {
             display: flex;
             flex-direction: column;
             gap: 12px;
             pointer-events: auto;
+            align-self: flex-end;
         }
-        .reel-like, .reel-donate {
+        .reel-like, .reel-comment, .reel-donate {
             width: 48px;
             height: 48px;
             border-radius: 50%;
@@ -392,21 +372,19 @@
             border: none;
             cursor: pointer;
         }
-        .reel-like:hover, .reel-donate:hover {
+        .reel-like:hover, .reel-comment:hover, .reel-donate:hover {
             background: rgba(0,0,0,.65);
             transform: scale(1.1);
         }
-        .reel-like svg {
+        .reel-like svg, .reel-comment svg, .reel-donate svg {
             width: 24px;
             height: 24px;
             fill: #fff;
+            stroke: #fff;
         }
         .reel-like.liked svg {
             fill: var(--color-red-400);
-        }
-        .reel-donate {
-            font-size: 16px;
-            font-weight: 600;
+            stroke: var(--color-red-400);
         }
         
         /* Exclusive Content */
@@ -444,13 +422,6 @@
             font-size: 16px;
             font-weight: 600;
             color: white;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .viewer-verified-icon {
-            width: 16px;
-            height: 16px;
         }
         .close-viewer {
             background: none;
@@ -477,7 +448,6 @@
             max-width: 100%;
             max-height: 100%;
             object-fit: contain;
-            background: #000;
         }
         .post-actions {
             display: flex;
@@ -539,13 +509,6 @@
             background: rgba(0, 0, 0, 0.4);
             padding: 8px 15px;
             border-radius: 20px;
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .media-verified-icon {
-            width: 16px;
-            height: 16px;
         }
 
         footer { 
@@ -572,7 +535,7 @@
             display: flex; 
             align-items: center; 
             justify-content: space-between; 
-            padding: .8rem 1.2rem; 
+            padding: 12px 16px; 
             border-bottom: 1px solid #e5e7eb; 
             background: #fff; 
             position: fixed;
@@ -581,150 +544,157 @@
             right: 0;
             z-index: 10; 
             height: 64px;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.04);
         }
         .chat-header-left { 
             display: flex; 
             align-items: center; 
-            gap: .8rem; 
+            gap: 12px; 
             flex: 1;
         }
         .chat-header-left img { 
-            width: 44px; 
-            height: 44px; 
+            width: 42px; 
+            height: 42px; 
             border-radius: 50%; 
             object-fit: cover; 
         }
         .chat-user-info { 
             display: flex; 
             flex-direction: column; 
-            line-height: 1.2; 
+            line-height: 1.3; 
         }
         .chat-user-info strong { 
-            font-size: 1rem; 
-            display: flex;
-            align-items: center;
-            gap: 4px;
-        }
-        .chat-verified-icon {
-            width: 16px;
-            height: 16px;
+            font-size: 16px;
+            font-weight: 600;
+            margin-bottom: 1px;
         }
         .online { 
-            font-size: .8rem; 
-            color: #10b981; 
-            margin-top: 2px;
+            font-size: 13px; 
+            color: #28a745;
+            font-weight: 500;
         }
         .chat-header-right { 
             display: flex; 
             align-items: center; 
-            gap: 1rem; 
+            gap: 16px; 
         }
         .chat-header button { 
             background: none; 
             border: none; 
-            font-size: 1.4rem; 
+            font-size: 20px; 
             cursor: pointer; 
-            color: var(--fg); 
+            color: var(--fg);
             padding: 8px;
             border-radius: 50%;
-            transition: background-color 0.2s;
+            transition: background-color 0.2s ease;
         }
         .chat-header button:hover {
-            background-color: #f3f4f6;
+            background-color: #f0f0f0;
         }
-        
-        /* Updated chat messages with more space */
         .chat-messages { 
             flex: 1; 
             overflow-y: auto; 
-            padding: 1.2rem; 
+            padding: 24px 16px 24px 16px; 
             display: flex; 
             flex-direction: column; 
-            gap: 1rem; 
-            background: #f3f4f6; 
+            gap: 6px; 
+            background: #f8f9fa; 
             margin-top: 64px;
-            margin-bottom: 70px;
-            height: calc(100vh - 134px);
+            margin-bottom: 72px;
+            height: calc(100vh - 136px);
         }
         .msg-wrapper { 
             display: flex; 
             flex-direction: column; 
             align-items: flex-end; 
-            margin-bottom: 1rem;
+            margin-bottom: 2px;
+            padding: 2px 8px;
         }
         .msg-wrapper:first-child {
-            margin-top: 1.5rem;
+            margin-top: 16px;
+            padding-top: 8px;
         }
         .msg { 
             max-width: 75%; 
-            padding: .8rem 1.2rem; 
+            padding: 12px 16px; 
             border-radius: 18px; 
             line-height: 1.4; 
-            font-size: .95rem; 
+            font-size: 15px; 
             word-wrap: break-word; 
-            box-shadow: 0 2px 6px rgba(0,0,0,0.05);
+            box-shadow: 0 1px 2px rgba(0,0,0,0.04);
         }
         .creator-msg { 
-            background: #fff; 
-            align-self: flex-start; 
-            border-bottom-left-radius: 4px;
+            background: #ffffff; 
+            align-self: flex-start;
+            border: 1px solid #e5e7eb;
+            color: #1f2937;
         }
         .user-msg { 
             background: var(--accent); 
             color: white; 
-            border-bottom-right-radius: 4px;
         }
         .story-reply-msg {
-            min-width: 200px;
+            min-width: 220px;
             max-width: 85%;
         }
         .story-preview {
             display: flex;
             align-items: center;
-            gap: 8px;
-            padding: 8px;
-            background: rgba(255,255,255,0.1);
+            gap: 12px;
+            padding: 10px 12px;
+            background: rgba(255,255,255,0.15);
             border-radius: 12px;
             margin-bottom: 8px;
             border-left: 3px solid #0095f6;
-        }
-        .story-preview img {
-            width: 40px;
-            height: 40px;
-            border-radius: 8px;
-            object-fit: cover;
+            cursor: pointer;
+            transition: all 0.2s ease;
             border: 1px solid rgba(255,255,255,0.2);
         }
-        .creator-msg .story-preview {
-            background: rgba(0,0,0,0.05);
-            border-left: 3px solid #666;
+        .story-preview:hover {
+            transform: scale(1.02);
+            box-shadow: 0 2px 8px rgba(0,0,0,0.15);
         }
-        .creator-msg .story-preview img {
+        .story-preview img {
+            width: 48px;
+            height: 48px;
+            border-radius: 8px;
+            object-fit: cover;
+            border: 2px solid rgba(255,255,255,0.3);
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .creator-msg .story-preview {
+            background: rgba(0,0,0,0.08);
+            border-left: 3px solid #666;
             border: 1px solid rgba(0,0,0,0.1);
         }
+        .creator-msg .story-preview:hover {
+            background: rgba(0,0,0,0.12);
+        }
+        .creator-msg .story-preview img {
+            border: 2px solid rgba(0,0,0,0.1);
+        }
         .seen { 
-            font-size: .75rem; 
+            font-size: 12px; 
             color: var(--muted); 
-            margin-top: .4rem; 
-            margin-right: .4rem; 
-            align-self: flex-end;
+            margin-top: 4px; 
+            margin-right: 4px;
+            font-weight: 500;
         }
         .typing { 
-            font-size: .85rem; 
+            font-size: 14px; 
             color: var(--muted); 
             font-style: italic; 
-            margin: .4rem 0; 
+            margin: 8px 0;
+            padding: 12px 16px;
+            background: #ffffff;
+            border-radius: 18px;
             align-self: flex-start;
-            padding: .6rem 1rem;
-            background: #fff;
-            border-radius: 12px;
-            box-shadow: 0 1px 3px rgba(0,0,0,0.1);
+            border: 1px solid #e5e7eb;
         }
         .chat-input { 
             display: flex; 
             align-items: center; 
-            padding: .8rem 1rem; 
+            padding: 12px 16px; 
             border-top: 1px solid #e5e7eb; 
             background: white; 
             position: fixed;
@@ -732,36 +702,38 @@
             left: 0;
             right: 0;
             z-index: 10;
-            height: 70px;
-            box-shadow: 0 -2px 10px rgba(0,0,0,0.05);
+            height: 72px;
+            box-shadow: 0 -2px 4px rgba(0,0,0,0.04);
         }
         .chat-input input { 
             flex: 1; 
-            padding: .9rem 1.2rem; 
+            padding: 12px 18px; 
             border: 1px solid #d1d5db; 
             border-radius: 24px; 
             outline: none; 
-            font-size: 1rem; 
-            background: #f9fafb;
-            transition: border-color 0.2s;
+            font-size: 15px;
+            background: #f8f9fa;
+            transition: all 0.2s ease;
         }
         .chat-input input:focus {
             border-color: var(--accent);
-            background: #fff;
+            background: white;
+            box-shadow: 0 0 0 3px rgba(37, 99, 235, 0.1);
         }
         .chat-input button { 
             background: none; 
             border: none; 
-            font-size: 1.6rem; 
-            margin-left: .8rem; 
+            font-size: 20px; 
+            margin-left: 12px; 
             cursor: pointer; 
-            color: var(--accent); 
-            padding: 8px;
+            color: var(--accent);
+            padding: 10px;
             border-radius: 50%;
-            transition: background-color 0.2s;
+            transition: all 0.2s ease;
         }
         .chat-input button:hover {
-            background-color: #e0e7ff;
+            background: rgba(37, 99, 235, 0.1);
+            transform: scale(1.05);
         }
 
         /* Subscription Modal */
@@ -779,19 +751,19 @@
         }
         #subscriptionModal .modal-content {
             background-color: white;
-            padding: 24px;
-            border-radius: 16px;
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            padding: 20px;
+            border-radius: 12px;
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2);
             text-align: center;
             width: 90%;
-            max-width: 360px;
+            max-width: 320px;
             position: relative;
         }
         #subscriptionModal .close {
             color: #aaa;
             position: absolute;
-            top: 12px;
-            right: 18px;
+            top: 10px;
+            right: 15px;
             font-size: 28px;
             font-weight: bold;
             cursor: pointer;
@@ -801,87 +773,62 @@
             color: black;
         }
         .subscription-options {
-            margin-bottom: 24px;
+            margin-bottom: 20px;
             text-align: left;
         }
         .option {
-            margin: 14px 0;
-            padding: 12px;
-            border-radius: 10px;
+            margin: 12px 0;
+            padding: 8px;
+            border-radius: 8px;
             background: #f9f9f9;
-            border: 1px solid #eee;
-            transition: background-color 0.2s;
-        }
-        .option:hover {
-            background: #f0f4ff;
         }
         .option input {
-            margin-right: 12px;
+            margin-right: 10px;
         }
         #subscriptionModal .subscribe-btn {
-            padding: 12px 24px;
+            padding: 10px 20px;
             background-color: #28a745;
             color: white;
             border: none;
-            border-radius: 8px;
+            border-radius: 4px;
             cursor: pointer;
             font-size: 16px;
-            font-weight: 600;
             width: 100%;
-            transition: background-color 0.2s;
-        }
-        #subscriptionModal .subscribe-btn:hover {
-            background-color: #218838;
         }
 
         /* Donation modals */
         .modal-content { 
             background: #fff; 
-            padding: 24px; 
-            border-radius: 16px; 
-            max-width: 440px; 
+            padding: 20px; 
+            border-radius: 12px; 
+            max-width: 420px; 
             width: 90%; 
             text-align: center; 
-            box-shadow: 0 10px 25px rgba(0,0,0,0.2); 
+            box-shadow: 0 4px 10px rgba(0,0,0,0.2); 
             position: relative; 
         }
         .modal-content h3 { 
-            margin: 0 0 1.2rem; 
-            font-size: 1.4rem; 
+            margin: 0 0 1rem; 
+            font-size: 1.3rem; 
         }
         .close-x-button { 
             position: absolute; 
-            top: 12px; 
-            right: 18px; 
-            font-size: 22px; 
+            top: 10px; 
+            right: 15px; 
+            font-size: 20px; 
             cursor: pointer; 
             background: none; 
             border: none; 
-            color: #999;
-            padding: 4px;
-            border-radius: 50%;
-            width: 32px;
-            height: 32px;
-        }
-        .close-x-button:hover {
-            background: #f3f4f6;
-            color: #333;
         }
         .modal-button { 
-            padding: 1rem 1.6rem; 
-            margin: .8rem; 
+            padding: .8rem 1.4rem; 
+            margin: .6rem; 
             border: none; 
-            border-radius: 12px; 
+            border-radius: 20px; 
             cursor: pointer; 
             font-size: 1.1rem; 
             font-weight: 600; 
             color: white; 
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
-        }
-        .modal-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(0,0,0,0.15);
         }
         .btc-button { 
             background: linear-gradient(45deg, #f7931a, #ffbf00); 
@@ -893,42 +840,38 @@
             background: #f7931a; 
             color: white; 
             border: none; 
-            border-radius: 12px; 
+            border-radius: 20px; 
             padding: .8rem 1.4rem; 
-            margin-top: .8rem; 
+            margin-top: .6rem; 
             cursor: pointer; 
             font-size: 1.1rem; 
-            transition: background-color 0.2s;
-        }
-        .back-button:hover {
-            background: #e08516;
         }
         .qr-code { 
             border: 2px solid #f7931a; 
-            border-radius: 12px; 
-            padding: 12px; 
-            margin: 12px auto; 
+            border-radius: 10px; 
+            padding: 8px; 
+            margin: 10px auto; 
             background: white; 
             width: 100%; 
-            max-width: 220px; 
+            max-width: 200px; 
             display: block; 
         }
         .wallet-address-container { 
             display: flex; 
             align-items: center; 
             justify-content: center; 
-            margin: 12px 0; 
+            margin: 10px 0; 
             flex-wrap: wrap; 
-            gap: 10px; 
+            gap: 8px; 
         }
         .wallet-address { 
             word-break: break-all; 
             font-family: monospace; 
-            font-size: 14px; 
+            font-size: 13px; 
             color: #444; 
-            padding: 10px 12px; 
+            padding: 8px 10px; 
             background: #f1f1f1; 
-            border-radius: 8px; 
+            border-radius: 5px; 
             flex: 1; 
             text-align: center; 
         }
@@ -937,46 +880,35 @@
             color: white; 
             padding: .8rem 1.4rem; 
             border: none; 
-            border-radius: 8px; 
+            border-radius: 5px; 
             cursor: pointer; 
             font-size: 1.1rem; 
-            transition: background-color 0.2s;
         }
         .copy-button:hover { 
             background: #218838; 
         }
         .status-message { 
             font-size: 14px; 
-            margin-top: 12px; 
+            margin-top: 10px; 
             display: none; 
-            padding: 8px 12px;
-            border-radius: 6px;
         }
         .status-success { 
-            background: #d4edda;
-            color: #155724; 
+            color: #28a745; 
         }
         .status-error { 
-            background: #f8d7da;
-            color: #721c24; 
+            color: #dc3545; 
         }
         .donate-button { 
             background: linear-gradient(45deg, #f7931a, #ffbf00); 
             color: white; 
-            padding: 1rem 1.6rem; 
+            padding: .8rem 1.4rem; 
             border: none; 
-            border-radius: 12px; 
+            border-radius: 25px; 
             cursor: pointer; 
             font-size: 1.1rem; 
             font-weight: bold; 
-            margin-top: .8rem; 
+            margin-top: .6rem; 
             box-shadow: 0 4px 8px rgba(247, 147, 26, 0.3); 
-            transition: transform 0.2s, box-shadow 0.2s;
-            width: 100%;
-        }
-        .donate-button:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 6px 12px rgba(247, 147, 26, 0.4);
         }
 
         /* Story modal */
@@ -1103,19 +1035,15 @@
             position: absolute; 
             top: 24px; 
             right: 24px; 
-            width: 32px; 
-            height: 32px; 
+            width: 28px; 
+            height: 28px; 
             font-size: 18px; 
-            line-height: 32px; 
+            line-height: 28px; 
             text-align: center; 
             background: rgba(0,0,0,0.6); 
             border-radius: 50%; 
             color: #fff; 
             z-index: 75; 
-            transition: background-color 0.2s;
-        }
-        .close-btn:hover {
-            background: rgba(0,0,0,0.8);
         }
         .nav-btn { 
             position: absolute; 
@@ -1128,12 +1056,6 @@
             justify-content: center; 
             z-index: 60; 
             color: #fff; 
-            width: 48px;
-            height: 48px;
-            transition: background-color 0.2s;
-        }
-        .nav-btn:hover {
-            background: rgba(0,0,0,0.8);
         }
         .nav-btn.visible { 
             display: flex; 
@@ -1159,7 +1081,7 @@
             flex: 1; 
             background: rgba(255,255,255,0.12); 
             border: 1px solid rgba(255,255,255,0.15); 
-            border-radius: 24px; 
+            border-radius: 22px; 
             padding: 14px 18px; 
             color: #fff; 
             outline: none; 
@@ -1180,10 +1102,6 @@
             justify-content: center; 
             cursor: pointer; 
             font-size: 24px; 
-            transition: background-color 0.2s;
-        }
-        .send-btn:hover {
-            background: rgba(0,0,0,0.7);
         }
         .send-btn.visible { 
             display: flex; 
@@ -1244,12 +1162,6 @@
         .stat-btn .count {
             font-weight: 600;
         }
-        
-        /* New verified icon styling */
-        .verified-icon-svg {
-            width: 16px;
-            height: 16px;
-        }
     </style>
 </head>
 <body>
@@ -1279,14 +1191,12 @@
             <div class="profile-pic-wrapper has-story">
                 <img id="profilePic" class="profile-pic" src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Creator profile picture">
             </div>
-            <div class="creator-name">Sofia Creator 
-                <span class="verified">
-                    <svg class="verified-icon-svg" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                        <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
-                        <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
-                    </svg>
-                </span>
-            </div>
+            <div class="creator-name">Sofia Creator <span class="verified">
+                <svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 48 48" style="display:inline-block;">
+                    <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
+                    <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
+                </svg>
+            </span></div>
             <div class="username">@sofia123</div>
             <div class="stats">
                 <div class="stat"><strong>15.2k</strong> Followers</div>
@@ -1322,7 +1232,15 @@
         <!-- Exclusive Content -->
         <div id="exclusive-content" class="content">
             <div class="exclusive-content">
-                <p>Subscribe to unlock exclusive content ✨</p>
+                <p>Subscribe to unlock exclusive content 
+                    <svg style="width:16px;height:16px;display:inline-block;margin-left:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+                        <path d="M5 3v4"></path>
+                        <path d="M19 17v4"></path>
+                        <path d="M3 5h4"></path>
+                        <path d="M17 19h4"></path>
+                    </svg>
+                </p>
                 <div class="media-grid">
                     <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=300&q=80" alt="Exclusive content locked">
                 </div>
@@ -1351,27 +1269,41 @@
     <div id="chatScreen" class="chat-screen container">
         <div class="chat-header">
             <div class="chat-header-left">
-                <button class="btn" id="backToMain">←</button>
+                <button class="btn" id="backToMain">
+                    <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="19" y1="12" x2="5" y2="12"></line>
+                        <polyline points="12 19 5 12 12 5"></polyline>
+                    </svg>
+                </button>
                 <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Creator">
                 <div class="chat-user-info">
-                    <strong>Sofia Creator
-                        <svg class="chat-verified-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-                            <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
-                            <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
-                        </svg>
-                    </strong>
+                    <strong>Sofia Creator</strong>
                     <span class="online">Online</span>
                 </div>
             </div>
             <div class="chat-header-right">
-                <button title="Video Call">📹</button>
-                <button title="Voice Call">📞</button>
+                <button title="Video Call">
+                    <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <polygon points="23 7 16 12 23 17 23 7"></polygon>
+                        <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+                    </svg>
+                </button>
+                <button title="Voice Call">
+                    <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+                    </svg>
+                </button>
             </div>
         </div>
         <div class="chat-messages" id="chatMessages"></div>
         <div class="chat-input">
             <input id="chatInput" placeholder="Message...">
-            <button id="sendMessage">➤</button>
+            <button id="sendMessage">
+                <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="22" y1="2" x2="11" y2="13"></line>
+                    <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                </svg>
+            </button>
         </div>
     </div>
 
@@ -1416,7 +1348,14 @@
     <div id="btcDonateModal" class="modal">
         <div class="modal-content">
             <button class="close-x-button" id="closeBtcDonate">X</button>
-            <h3>Support Us with Bitcoin! 🚀</h3>
+            <h3>Support Us with Bitcoin! 
+                <svg style="width:18px;height:18px;display:inline-block;margin-left:4px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+                    <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+                    <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+                    <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+                </svg>
+            </h3>
             <img id="qrCode" src="https://api.qrserver.com/v1/create-qr-code/?size=200x200&data=bc1q0ehvhyeaqnzj7apuk0a6d4ureayfl038cs8r6n" alt="BTC QR Code" class="qr-code">
             <p>Scan the QR code or copy the address below:</p>
             <div class="wallet-address-container">
@@ -1431,13 +1370,18 @@
 
     <div id="storyModal" class="story-modal">
         <div class="story-container" id="storyContainer">
-            <!-- Story Header with Profile Picture, Username and Verified Badge -->
+            <!-- Story Header with Profile Picture, Username, and Verified Badge -->
             <div class="story-header">
                 <div class="story-user-info">
                     <img src="https://images.unsplash.com/photo-1494790108377-be9c29b29330?ixlib=rb-1.2.1&ixid=eyJhcHBfaWQiOjEyMDd9&auto=format&fit=crop&w=200&q=80" alt="Profile" class="story-profile-pic">
                     <div class="story-user-details">
                         <span class="story-username">Sofia Creator</span>
-                        <span class="story-verified">✓</span>
+                        <span class="story-verified">
+                            <svg xmlns="http://www.w3.org/2000/svg" width="18" height="18" viewBox="0 0 48 48" style="display:inline-block;">
+                                <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
+                                <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
+                            </svg>
+                        </span>
                     </div>
                 </div>
             </div>
@@ -1450,18 +1394,42 @@
             <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="story-image" data-index="1" alt="Story 2">
             <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="story-image" data-index="2" alt="Story 3">
 
-            <!-- Smaller close button -->
-            <button class="btn close-btn" id="storyCloseBtn">✕</button>
+            <!-- Close button -->
+            <button class="btn close-btn" id="storyCloseBtn">
+                <svg style="width:18px;height:18px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="18" y1="6" x2="6" y2="18"></line>
+                    <line x1="6" y1="6" x2="18" y2="18"></line>
+                </svg>
+            </button>
 
             <!-- Navigation -->
-            <button class="btn nav-btn nav-btn-left" id="prevStoryBtn">◀</button>
-            <button class="btn nav-btn nav-btn-right" id="nextStoryBtn">▶</button>
+            <button class="btn nav-btn nav-btn-left" id="prevStoryBtn">
+                <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="19" y1="12" x2="5" y2="12"></line>
+                    <polyline points="12 19 5 12 12 5"></polyline>
+                </svg>
+            </button>
+            <button class="btn nav-btn nav-btn-right" id="nextStoryBtn">
+                <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <line x1="5" y1="12" x2="19" y2="12"></line>
+                    <polyline points="12 5 19 12 12 19"></polyline>
+                </svg>
+            </button>
 
             <!-- Controls -->
             <div class="story-controls">
                 <input id="replyInput" class="reply-input" placeholder="Reply to this story">
-                <button id="sendStoryBtn" class="send-btn">➤</button>
-                <button id="likeStoryBtn" class="btn like-btn">❤</button>
+                <button id="sendStoryBtn" class="send-btn">
+                    <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="22" y1="2" x2="11" y2="13"></line>
+                        <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                    </svg>
+                </button>
+                <button id="likeStoryBtn" class="btn like-btn">
+                    <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                    </svg>
+                </button>
             </div>
         </div>
     </div>
@@ -1469,13 +1437,7 @@
     <script>
         document.getElementById("year").textContent = new Date().getFullYear();
 
-        // Verified icon SVG
-        const verifiedIconSVG = `<svg class="verified-icon" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 48 48">
-            <polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon>
-            <polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon>
-        </svg>`;
-
-        // SVG icons for like, comment, and donate
+        // SVG icons for various UI elements
         const heartIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
         </svg>`;
@@ -1490,6 +1452,63 @@
             <line x1="12" y1="22" x2="12" y2="7"></line>
             <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
             <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+        </svg>`;
+
+        const checkIcon = `<svg class="icon" viewBox="0 0 24 24" fill="currentColor" stroke="currentColor" stroke-width="2">
+            <polyline points="20 6 9 17 4 12"></polyline>
+        </svg>`;
+
+        const messageIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m3 21 1.9-5.7a8.5 8.5 0 1 1 3.8 3.8z"></path>
+        </svg>`;
+
+        const videoIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <polygon points="23 7 16 12 23 17 23 7"></polygon>
+            <rect x="1" y="5" width="15" height="14" rx="2" ry="2"></rect>
+        </svg>`;
+
+        const phoneIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"></path>
+        </svg>`;
+
+        const arrowLeftIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="19" y1="12" x2="5" y2="12"></line>
+            <polyline points="12 19 5 12 12 5"></polyline>
+        </svg>`;
+
+        const arrowRightIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="5" y1="12" x2="19" y2="12"></line>
+            <polyline points="12 5 19 12 12 19"></polyline>
+        </svg>`;
+
+        const sendIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="22" y1="2" x2="11" y2="13"></line>
+            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+        </svg>`;
+
+        const closeIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <line x1="18" y1="6" x2="6" y2="18"></line>
+            <line x1="6" y1="6" x2="18" y2="18"></line>
+        </svg>`;
+
+        const sparklesIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="m12 3-1.912 5.813a2 2 0 0 1-1.275 1.275L3 12l5.813 1.912a2 2 0 0 1 1.275 1.275L12 21l1.912-5.813a2 2 0 0 1 1.275-1.275L21 12l-5.813-1.912a2 2 0 0 1-1.275-1.275L12 3Z"></path>
+            <path d="M5 3v4"></path>
+            <path d="M19 17v4"></path>
+            <path d="M3 5h4"></path>
+            <path d="M17 19h4"></path>
+        </svg>`;
+
+        const rocketIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M4.5 16.5c-1.5 1.26-2 5-2 5s3.74-.5 5-2c.71-.84.7-2.13-.09-2.91a2.18 2.18 0 0 0-2.91-.09z"></path>
+            <path d="m12 15-3-3a22 22 0 0 1 2-3.95A12.88 12.88 0 0 1 22 2c0 2.72-.78 7.5-6 11a22.35 22.35 0 0 1-4 2z"></path>
+            <path d="M9 12H4s.55-3.03 2-4c1.62-1.08 5 0 5 0"></path>
+            <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
+        </svg>`;
+
+        const clipboardIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
+            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
         </svg>`;
 
         // Photo and Reel Data
@@ -1618,8 +1637,8 @@
             avatar.appendChild(avatarImg);
             
             const username = document.createElement('div');
-            username.className = 'post-username';
-            username.innerHTML = '@sofia123 ' + verifiedIconSVG;
+            username.className = 'username';
+            username.innerHTML = '@sofia123 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48" style="display:inline-block;margin-left:4px;vertical-align:middle;"><polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon><polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon></svg>';
             
             imageHeader.appendChild(avatar);
             imageHeader.appendChild(username);
@@ -1734,22 +1753,44 @@
                 
                 const user = document.createElement('div');
                 user.className = 'reel-user';
-                user.innerHTML = '@sofia123 ' + verifiedIconSVG;
+                user.innerHTML = '@sofia123 <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 48 48" style="display:inline-block;margin-left:4px;vertical-align:middle;"><polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon><polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon></svg>';
                 
                 const acts = document.createElement('div');
                 acts.className = 'reel-actions';
                 
+                // Like button with heart icon
                 const like = document.createElement('button');
                 like.className = 'reel-like';
-                like.innerHTML = '<svg viewBox="0 0 24 24"><path d="M12 21.35l-1.45-1.32C5.4 15.36 2 12.28 2 8.5 2 5.42 4.42 3 7.5 3c1.74 0 3.41.81 4.5 2.09C13.09 3.81 14.76 3 16.5 3 19.58 3 22 5.42 22 8.5c0 3.78-3.4 6.86-8.55 11.54L12 21.35z"/></svg>';
+                like.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>`;
                 
+                // Comment button
+                const comment = document.createElement('button');
+                comment.className = 'reel-comment';
+                comment.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z"></path>
+                </svg>`;
+                
+                // Donate button with gift icon
                 const donate = document.createElement('button');
                 donate.className = 'reel-donate';
-                donate.textContent = '♥';
+                donate.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <polyline points="20 12 20 22 4 22 4 12"></polyline>
+                    <rect x="2" y="7" width="20" height="5"></rect>
+                    <line x1="12" y1="22" x2="12" y2="7"></line>
+                    <path d="M12 7H7.5a2.5 2.5 0 0 1 0-5C11 2 12 7 12 7z"></path>
+                    <path d="M12 7h4.5a2.5 2.5 0 0 0 0-5C13 2 12 7 12 7z"></path>
+                </svg>`;
                 
                 like.onclick = e => {
                     e.stopPropagation();
                     like.classList.toggle('liked');
+                };
+                
+                comment.onclick = e => {
+                    e.stopPropagation();
+                    alert('Comments functionality coming soon!');
                 };
                 
                 donate.onclick = e => {
@@ -1757,7 +1798,7 @@
                     document.getElementById('openDonate').click();
                 };
                 
-                acts.append(like, donate);
+                acts.append(like, comment, donate);
                 overlay.append(user, acts);
                 wrap.append(video, overlay);
                 grid.append(wrap);
@@ -1808,7 +1849,7 @@
                 // Add username overlay
                 const usernameOverlay = document.createElement('div');
                 usernameOverlay.className = 'media-username';
-                usernameOverlay.innerHTML = '@sofia123 ' + verifiedIconSVG;
+                usernameOverlay.textContent = '@sofia123';
                 view.appendChild(usernameOverlay);
                 
                 const img = document.createElement('img');
@@ -1823,7 +1864,9 @@
                 actions.className = 'post-actions';
                 const likeBtn = document.createElement('button');
                 likeBtn.className = 'like-btn';
-                likeBtn.innerHTML = '❤️';
+                likeBtn.innerHTML = `<svg style="width:24px;height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>`;
                 likeBtn.onclick = (e) => {
                     e.stopPropagation();
                     likeBtn.classList.toggle('liked');
@@ -1862,7 +1905,7 @@
                 
                 const u = document.createElement('div');
                 u.className = 'media-username';
-                u.innerHTML = '@sofia123 ' + verifiedIconSVG;
+                u.textContent = '@sofia123';
                 
                 const video = document.createElement('video');
                 video.className = 'post-media';
@@ -1879,7 +1922,9 @@
                 
                 const like = document.createElement('button');
                 like.className = 'like-btn';
-                like.innerHTML = '♥';
+                like.innerHTML = `<svg style="width:24px;height:24px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M20.84 4.61a5.5 5.5 0 0 0-7.78 0L12 5.67l-1.06-1.06a5.5 5.5 0 0 0-7.78 7.78l1.06 1.06L12 21.23l7.78-7.78 1.06-1.06a5.5 5.5 0 0 0 0-7.78z"></path>
+                </svg>`;
                 
                 const don = document.createElement('button');
                 don.className = 'donate-btn';
@@ -2018,13 +2063,14 @@
                 display: flex;
                 align-items: center;
                 gap: 8px;
-                padding: 8px;
-                background: rgba(255,255,255,0.1);
+                padding: 8px 12px;
+                background: ${sender === "creator" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)"};
                 border-radius: 12px;
-                margin-bottom: 6px;
+                margin-bottom: 8px;
                 border-left: 3px solid #0095f6;
                 cursor: pointer;
-                transition: background 0.2s ease;
+                transition: all 0.2s ease;
+                border: 1px solid ${sender === "creator" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.2)"};
             `;
             
             // Add click handler to reopen story
@@ -2045,39 +2091,64 @@
             
             // Add hover effect
             storyPreview.onmouseenter = () => {
-                storyPreview.style.background = sender === "creator" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)";
+                storyPreview.style.background = sender === "creator" ? "rgba(0,0,0,0.12)" : "rgba(255,255,255,0.25)";
+                storyPreview.style.transform = "scale(1.02)";
             };
             storyPreview.onmouseleave = () => {
-                storyPreview.style.background = sender === "creator" ? "rgba(0,0,0,0.05)" : "rgba(255,255,255,0.1)";
+                storyPreview.style.background = sender === "creator" ? "rgba(0,0,0,0.08)" : "rgba(255,255,255,0.15)";
+                storyPreview.style.transform = "scale(1)";
             };
             
-            // Add small story image
+            // Add story image with proper sizing and styling
             const imgPreview = document.createElement("img");
             imgPreview.src = storyImage;
             imgPreview.style.cssText = `
-                width: 40px;
-                height: 40px;
+                width: 48px;
+                height: 48px;
                 border-radius: 8px;
                 object-fit: cover;
-                border: 1px solid rgba(255,255,255,0.2);
+                border: 2px solid ${sender === "creator" ? "rgba(0,0,0,0.1)" : "rgba(255,255,255,0.3)"};
+                box-shadow: 0 2px 4px rgba(0,0,0,0.1);
             `;
             
+            // Add story info container
+            const storyInfo = document.createElement("div");
+            storyInfo.style.cssText = "display: flex; flex-direction: column; gap: 2px;";
+            
             // Add "Story" label
-            const storyLabel = document.createElement("span");
+            const storyLabel = document.createElement("div");
             storyLabel.textContent = "Story";
             storyLabel.style.cssText = `
                 font-size: 12px;
                 font-weight: 600;
-                color: ${sender === "creator" ? "#666" : "rgba(255,255,255,0.8)"};
+                color: ${sender === "creator" ? "#666" : "rgba(255,255,255,0.9)"};
+                text-transform: uppercase;
+                letter-spacing: 0.5px;
             `;
             
-            storyPreview.appendChild(imgPreview);
-            storyPreview.appendChild(storyLabel);
+            // Add story timestamp/indicator
+            const storyTime = document.createElement("div");
+            storyTime.textContent = "Tap to view";
+            storyTime.style.cssText = `
+                font-size: 10px;
+                color: ${sender === "creator" ? "#999" : "rgba(255,255,255,0.7)"};
+                font-style: italic;
+            `;
             
-            // Add reply text
+            storyInfo.appendChild(storyLabel);
+            storyInfo.appendChild(storyTime);
+            
+            storyPreview.appendChild(imgPreview);
+            storyPreview.appendChild(storyInfo);
+            
+            // Add reply text with better styling
             const replyTextDiv = document.createElement("div");
             replyTextDiv.textContent = replyText;
-            replyTextDiv.style.cssText = "margin-top: 4px;";
+            replyTextDiv.style.cssText = `
+                margin-top: 4px;
+                line-height: 1.4;
+                font-size: 15px;
+            `;
             
             msg.appendChild(storyPreview);
             msg.appendChild(replyTextDiv);
@@ -2087,6 +2158,24 @@
             return wrapper;
         }
 
+        let lastUserMessageWrapper = null; // Track the last user message
+        let currentSeenElement = null; // Track current "seen" message
+
+        function addSeen(wrapper) {
+            // Remove any existing "seen" message
+            if (currentSeenElement) {
+                currentSeenElement.remove();
+                currentSeenElement = null;
+            }
+            
+            const seen = document.createElement("div");
+            seen.className = "seen";
+            seen.textContent = "Seen";
+            wrapper.appendChild(seen);
+            currentSeenElement = seen; // Track this "seen" element
+            lastUserMessageWrapper = wrapper; // Update last user message tracker
+        }
+
         function sendStoryReplyToChat(storyImage, replyText) {
             // Hide main header when chat is opened
             document.querySelector('.header').style.display = 'none';
@@ -2094,12 +2183,17 @@
             chatScreen.style.display = "flex";
             document.querySelector(".main-screen").style.display = "none";
             
+            // Remove any existing "seen" message
+            removeExistingSeen();
+            
             // Add the story reply message
             const wrapper = addStoryReplyMessage(storyImage, replyText, "user");
+            lastUserMessageWrapper = wrapper; // Track this as the last user message
             
             // Simulate creator response after a delay
             setTimeout(() => {
-                addSeen(wrapper);
+                // Only add "seen" to the most recent user message (story reply)
+                addSeen(lastUserMessageWrapper);
                 const typingIndicator = showTyping();
                 setTimeout(() => {
                     typingIndicator.remove();
@@ -2107,11 +2201,13 @@
                 }, 2000);
             }, 1500);
         }
-        function addSeen(wrapper) {
-            const seen = document.createElement("div");
-            seen.className = "seen";
-            seen.textContent = "Seen";
-            wrapper.appendChild(seen);
+
+        function removeExistingSeen() {
+            // Remove any existing "seen" message when user sends a new message
+            if (currentSeenElement) {
+                currentSeenElement.remove();
+                currentSeenElement = null;
+            }
         }
         function showTyping() {
             const typing = document.createElement("div");
@@ -2128,13 +2224,7 @@
             chatScreen.style.display = "flex";
             document.querySelector(".main-screen").style.display = "none";
             chatMessages.innerHTML = "";
-            
-            // Add welcome message with more space
-            setTimeout(() => {
-                const welcomeMsg = addMessage("Welcome to my chat! 💬", "creator");
-                // Add extra space above the first message
-                welcomeMsg.style.marginTop = "1.5rem";
-            }, 400);
+            setTimeout(() => addMessage("Welcome to my chat! 💬", "creator"), 400);
         };
         backToMain.onclick = () => {
             // Show main header again when returning from chat
@@ -2146,10 +2236,16 @@
         sendMessage.onclick = () => {
             const text = chatInput.value.trim();
             if (text) {
+                // Remove any existing "seen" message when user sends a new message
+                removeExistingSeen();
+                
                 const wrapper = addMessage(text, "user");
+                lastUserMessageWrapper = wrapper; // Track this as the last user message
                 chatInput.value = "";
+                
                 setTimeout(() => {
-                    addSeen(wrapper);
+                    // Only add "seen" to the most recent user message
+                    addSeen(lastUserMessageWrapper);
                     const typingIndicator = showTyping();
                     setTimeout(() => {
                         typingIndicator.remove();
@@ -2272,19 +2368,30 @@
         };
         storyCloseBtn.onclick = closeStory;
         replyInput.oninput = () => sendStoryBtn.classList.toggle("visible", !!replyInput.value.trim());
+        
+        // Add Enter key functionality to story reply input
+        replyInput.addEventListener("keypress", e => { 
+            if (e.key === "Enter" && replyInput.value.trim()) {
+                sendStoryBtn.click();
+            }
+        });
+        
         sendStoryBtn.onclick = () => {
             if (replyInput.value.trim()) {
                 const replyText = replyInput.value.trim();
                 const currentStoryImage = storyImages[currentStory].src;
                 
+                // Clear input and hide button immediately
+                replyInput.value = "";
+                sendStoryBtn.classList.remove("visible");
+                
                 // Close story modal
                 closeStory();
                 
-                // Open chat with story reply
-                sendStoryReplyToChat(currentStoryImage, replyText);
-                
-                replyInput.value = "";
-                sendStoryBtn.classList.remove("visible");
+                // Small delay to ensure smooth transition
+                setTimeout(() => {
+                    sendStoryReplyToChat(currentStoryImage, replyText);
+                }, 100);
             }
         };
         likeStoryBtn.onclick = () => {
