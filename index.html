@@ -200,12 +200,33 @@
             background: #facc15; 
         }
 
+        /* Bio/Description Section */
+        .bio-section {
+            margin: 8px 0 4px 0;
+            padding: 2px 0;
+            cursor: pointer;
+            transition: opacity 0.2s ease;
+        }
+        
+        .bio-section:hover {
+            opacity: 0.7;
+        }
+        
+        .bio-text {
+            font-size: 14px;
+            line-height: 1.4;
+            color: var(--fg);
+            text-align: center;
+            margin: 0;
+            padding: 0;
+        }
+
         /* Tabs */
         .tabs { 
             display: flex; 
             justify-content: center; 
             gap: 1.5rem; 
-            margin: 1.5rem 0; 
+            margin: 0.5rem 0; 
             border-bottom: 2px solid #e5e7eb; 
             padding-bottom: 0.5rem; 
         }
@@ -951,9 +972,9 @@
         .story-tap-right {
             position: absolute;
             top: 0;
-            bottom: 0;
+            bottom: 140px; /* Stop before story controls */
             width: 50%;
-            z-index: 80;
+            z-index: 10; /* Lower than controls */
             cursor: pointer;
         }
         .story-tap-left {
@@ -1101,7 +1122,7 @@
             gap: 14px; 
             width: 92%; 
             align-items: center; 
-            z-index: 60; 
+            z-index: 85; 
         }
         .reply-input { 
             flex: 1; 
@@ -1127,10 +1148,17 @@
             align-items: center; 
             justify-content: center; 
             cursor: pointer; 
-            font-size: 24px; 
+            font-size: 24px;
+            z-index: 80;
         }
         .send-btn.visible { 
             display: flex; 
+        }
+        .send-btn svg {
+            pointer-events: none;
+        }
+        .send-btn * {
+            pointer-events: none;
         }
         .like-btn {
             width: 48px;
@@ -1411,10 +1439,9 @@
     <nav class="menu">
         <ul>
             <li><a href="#" onclick="switchTab('photos')">Home</a></li>
-            <li><a href="#" onclick="switchTab('chat')">Chat</a></li>
+            <li><a href="#" onclick="openChatFromMenu()">Chat</a></li>
             <li><a href="#" onclick="switchTab('support')">Support</a></li>
             <li><a href="#" onclick="switchTab('about')">About</a></li>
-            <li><a href="#" onclick="toggleMenu()">Close</a></li>
         </ul>
     </nav>
 
@@ -1438,6 +1465,11 @@
                 <button class="subscribe" onclick="openSubscribeModal()">Subscribe</button>
                 <button class="message" id="openChat">Message</button>
                 <button class="donate" id="openDonate">Donate</button>
+            </div>
+
+            <!-- Bio/Description Area -->
+            <div class="bio-section" onclick="window.open('https://example.com/register', '_blank')">
+                <p class="bio-text">Click here to register for free</p>
             </div>
         </section>
 
@@ -2474,6 +2506,15 @@
             closeSubscribeModal();
         }
 
+        function openChatFromMenu() {
+            // Close menu first
+            document.querySelector('.menu').classList.remove('active');
+            document.querySelector('.hamburger').classList.remove('active');
+            
+            // Open chat directly
+            document.getElementById("openChat").click();
+        }
+
         function switchTab(tabName) {
             // Close menu when a tab is selected
             document.querySelector('.menu').classList.remove('active');
@@ -2738,8 +2779,40 @@
                     const typingIndicator = showTyping();
                     setTimeout(() => {
                         typingIndicator.remove();
-                        const reply = addMessage("Check this out 👉 https://mywebsite.com", "creator");
-                        reply.querySelector(".msg").innerHTML = 'Check this out 👉 <a href="https://mywebsite.com" target="_blank">https://mywebsite.com</a>';
+                        
+                        // Enhanced response system with images
+                        const responses = [
+                            "Thanks for your message! Here's a behind-the-scenes photo from today",
+                            "I love connecting with my fans! Check out this photo from my latest shoot",
+                            "Your support means everything! Here's an exclusive pic for you",
+                            "So sweet of you to message me! Here's a special photo",
+                            "Thanks for being amazing! Here's something I wanted to share with you"
+                        ];
+                        
+                        const images = [
+                            "message1.png",
+                            "message2.png", 
+                            "message3.png",
+                            "message4.png",
+                            "message5.png"
+                        ];
+                        
+                        const randomResponse = responses[Math.floor(Math.random() * responses.length)];
+                        const randomImage = images[Math.floor(Math.random() * images.length)];
+                        
+                        // Send text response
+                        addMessage(randomResponse, "creator");
+                        
+                        // Send image after a short delay
+                        setTimeout(() => {
+                            addImageMessage(randomImage, "creator");
+                            
+                            // Ask if they want to see more after another delay
+                            setTimeout(() => {
+                                addMessage("Would you like to see more exclusive content? 😊", "creator");
+                            }, 2000);
+                        }, 1500);
+                        
                     }, 3000);
                 }, 2000);
             }
@@ -2892,13 +2965,17 @@
         replyInput.oninput = () => sendStoryBtn.classList.toggle("visible", !!replyInput.value.trim());
         
         // Add Enter key functionality to story reply input
-        replyInput.addEventListener("keypress", e => { 
+        replyInput.addEventListener("keypress", (e) => { 
             if (e.key === "Enter" && replyInput.value.trim()) {
+                e.preventDefault();
                 sendStoryBtn.click();
             }
         });
         
-        sendStoryBtn.onclick = () => {
+        sendStoryBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
             if (replyInput.value.trim()) {
                 const replyText = replyInput.value.trim();
                 const currentStoryImage = storyImages[currentStory].src;
@@ -2916,6 +2993,29 @@
                 }, 100);
             }
         };
+        
+        // Also add event listener as backup
+        sendStoryBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            if (replyInput.value.trim()) {
+                const replyText = replyInput.value.trim();
+                const currentStoryImage = storyImages[currentStory].src;
+                
+                // Clear input and hide button immediately
+                replyInput.value = "";
+                sendStoryBtn.classList.remove("visible");
+                
+                // Close story modal
+                closeStory();
+                
+                // Small delay to ensure smooth transition
+                setTimeout(() => {
+                    sendStoryReplyToChat(currentStoryImage, replyText);
+                }, 100);
+            }
+        });
         likeStoryBtn.onclick = () => {
             isLiked = !isLiked;
             likeStoryBtn.classList.toggle("liked", isLiked);
