@@ -1052,15 +1052,24 @@
             position: absolute; 
             top: 24px; 
             right: 24px; 
-            width: 28px; 
-            height: 28px; 
+            width: 40px; 
+            height: 40px; 
             font-size: 18px; 
-            line-height: 28px; 
+            line-height: 40px; 
             text-align: center; 
             background: rgba(0,0,0,0.6); 
             border-radius: 50%; 
             color: #fff; 
-            z-index: 75; 
+            z-index: 100;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        .close-btn svg {
+            pointer-events: none;
+        }
+        .close-btn * {
+            pointer-events: none;
         }
         .nav-btn { 
             position: absolute; 
@@ -1176,8 +1185,214 @@
             align-items: center;
             justify-content: center;
         }
-        .stat-btn .count {
+        /* Comment Modal Styles */
+        .comment-modal {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0,0,0,0.8);
+            z-index: 2000;
+            justify-content: center;
+            align-items: flex-end;
+        }
+        
+        .comment-container {
+            background: white;
+            width: 100%;
+            max-width: 500px;
+            height: 70vh;
+            border-radius: 12px 12px 0 0;
+            display: flex;
+            flex-direction: column;
+            animation: slideUp 0.3s ease-out;
+        }
+        
+        @keyframes slideUp {
+            from { transform: translateY(100%); }
+            to { transform: translateY(0); }
+        }
+        
+        .comment-header {
+            padding: 16px 20px;
+            border-bottom: 1px solid #e5e7eb;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+        
+        .comment-header h3 {
+            margin: 0;
+            font-size: 18px;
             font-weight: 600;
+        }
+        
+        .comment-close {
+            background: none;
+            border: none;
+            font-size: 24px;
+            cursor: pointer;
+            color: #666;
+            padding: 4px;
+        }
+        
+        .comments-list {
+            flex: 1;
+            overflow-y: auto;
+            padding: 16px 20px;
+        }
+        
+        .comment-item {
+            margin-bottom: 16px;
+            position: relative;
+        }
+        
+        .comment-main {
+            display: flex;
+            gap: 12px;
+            align-items: flex-start;
+        }
+        
+        .comment-avatar {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            object-fit: cover;
+            flex-shrink: 0;
+        }
+        
+        .comment-content {
+            flex: 1;
+            background: #f1f3f4;
+            border-radius: 16px;
+            padding: 8px 12px;
+            position: relative;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            font-size: 13px;
+            margin-bottom: 2px;
+            display: flex;
+            align-items: center;
+            gap: 4px;
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            line-height: 1.4;
+        }
+        
+        .comment-actions {
+            display: flex;
+            gap: 16px;
+            margin-top: 8px;
+            margin-left: 48px;
+            font-size: 12px;
+            color: #666;
+        }
+        
+        .comment-action {
+            background: none;
+            border: none;
+            cursor: pointer;
+            font-size: 12px;
+            font-weight: 600;
+            color: #666;
+            padding: 0;
+        }
+        
+        .comment-action:hover {
+            color: var(--accent);
+        }
+        
+        .comment-action.liked {
+            color: var(--color-red-400);
+        }
+        
+        .comment-time {
+            font-size: 12px;
+            color: #999;
+        }
+        
+        .comment-replies {
+            margin-top: 12px;
+            margin-left: 48px;
+            border-left: 2px solid #e5e7eb;
+            padding-left: 16px;
+        }
+        
+        .reply-item {
+            margin-bottom: 12px;
+        }
+        
+        .reply-content {
+            background: #f8f9fa;
+        }
+        
+        .comment-input-container {
+            padding: 12px 20px;
+            border-top: 1px solid #e5e7eb;
+            background: white;
+        }
+        
+        .comment-input-wrapper {
+            display: flex;
+            gap: 8px;
+            align-items: flex-end;
+        }
+        
+        .comment-input {
+            flex: 1;
+            border: 1px solid #ddd;
+            border-radius: 20px;
+            padding: 8px 16px;
+            font-size: 14px;
+            outline: none;
+            resize: none;
+            min-height: 36px;
+            max-height: 100px;
+        }
+        
+        .comment-input:focus {
+            border-color: var(--accent);
+        }
+        
+        .comment-send {
+            background: var(--accent);
+            color: white;
+            border: none;
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .comment-send:disabled {
+            background: #ccc;
+            cursor: not-allowed;
+        }
+        
+        .show-replies {
+            color: var(--accent);
+            font-size: 12px;
+            font-weight: 600;
+            background: none;
+            border: none;
+            cursor: pointer;
+            margin-left: 48px;
+            margin-top: 8px;
+            padding: 4px 0;
+        }
+        
+        .verified-comment {
+            color: var(--accent);
+            font-size: 12px;
         }
     </style>
 </head>
@@ -1455,8 +1670,261 @@
         </div>
     </div>
 
+    <!-- Comment Modal -->
+    <div class="comment-modal" id="commentModal">
+        <div class="comment-container">
+            <div class="comment-header">
+                <h3>Comments</h3>
+                <button class="comment-close" id="closeComments">
+                    <svg style="width:20px;height:20px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                        <line x1="18" y1="6" x2="6" y2="18"></line>
+                        <line x1="6" y1="6" x2="18" y2="18"></line>
+                    </svg>
+                </button>
+            </div>
+            <div class="comments-list" id="commentsList">
+                <!-- Comments will be dynamically added here -->
+            </div>
+            <div class="comment-input-container">
+                <div class="comment-input-wrapper">
+                    <textarea class="comment-input" id="commentInput" placeholder="Write a comment..." rows="1"></textarea>
+                    <button class="comment-send" id="sendComment" disabled>
+                        <svg style="width:16px;height:16px;" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                            <line x1="22" y1="2" x2="11" y2="13"></line>
+                            <polygon points="22 2 15 22 11 13 2 9 22 2"></polygon>
+                        </svg>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
     <script>
+        let currentPostId = null;
+        let currentPostType = null;
+        let replyingTo = null;
+
+        // Comment system data
+        const commentsData = {
+            1: [
+                {
+                    id: 1,
+                    author: "Emma Wilson",
+                    avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80",
+                    text: "Amazing shot! The lighting is perfect 😍",
+                    time: "2h",
+                    likes: 12,
+                    verified: false,
+                    replies: [
+                        {
+                            id: 11,
+                            author: "Sofia Creator",
+                            avatar: "https://images.unsplash.com/photo-1494790108377-be9c29b29330?w=100&q=80",
+                            text: "Thank you so much! 💕",
+                            time: "1h",
+                            likes: 5,
+                            verified: true
+                        }
+                    ]
+                },
+                {
+                    id: 2,
+                    author: "Mike Johnson",
+                    avatar: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=100&q=80",
+                    text: "Keep up the great work!",
+                    time: "3h",
+                    likes: 8,
+                    verified: false,
+                    replies: []
+                }
+            ],
+            2: [
+                {
+                    id: 3,
+                    author: "Sarah Davis",
+                    avatar: "https://images.unsplash.com/photo-1438761681033-6461ffad8d80?w=100&q=80",
+                    text: "Love this content! 🔥",
+                    time: "1h",
+                    likes: 15,
+                    verified: false,
+                    replies: []
+                }
+            ]
+        };
+
+        function openCommentModal(postId, postType) {
+            currentPostId = postId;
+            currentPostType = postType;
+            replyingTo = null;
+            
+            const modal = document.getElementById('commentModal');
+            const commentsList = document.getElementById('commentsList');
+            const commentInput = document.getElementById('commentInput');
+            
+            // Clear and populate comments
+            commentsList.innerHTML = '';
+            const comments = commentsData[postId] || [];
+            
+            comments.forEach(comment => {
+                const commentElement = createCommentElement(comment);
+                commentsList.appendChild(commentElement);
+            });
+
         document.getElementById("year").textContent = new Date().getFullYear();
+            
+            // Show modal
+            modal.style.display = 'flex';
+            
+            // Focus input after modal is shown
+            setTimeout(() => {
+                commentInput.focus();
+            }, 300);
+        }
+
+        function createCommentElement(comment) {
+            const commentDiv = document.createElement('div');
+            commentDiv.className = 'comment-item';
+            
+            const avatarHTML = comment.avatar === "user-icon" ? 
+                userIconSVG : 
+                `<img src="${comment.avatar}" alt="${comment.author}" class="comment-avatar">`;
+            
+            commentDiv.innerHTML = `
+                <div class="comment-main">
+                    ${avatarHTML}
+                    <div class="comment-content">
+                        <div class="comment-author">
+                            ${comment.author}
+                            ${comment.verified ? '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 48 48" class="verified-comment"><polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon><polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon></svg>' : ''}
+                        </div>
+                        <div class="comment-text">${comment.text}</div>
+                    </div>
+                </div>
+                <div class="comment-actions">
+                    <button class="comment-action like-comment" data-comment-id="${comment.id}">
+                        Like
+                    </button>
+                    <button class="comment-action reply-comment" data-comment-id="${comment.id}">
+                        Reply
+                    </button>
+                    <span class="comment-time">${comment.time}</span>
+                    ${comment.likes > 0 ? `<span class="comment-likes">${comment.likes} likes</span>` : ''}
+                </div>
+                ${comment.replies && comment.replies.length > 0 ? `
+                    <div class="comment-replies">
+                        ${comment.replies.map(reply => `
+                            <div class="reply-item">
+                                <div class="comment-main">
+                                    ${reply.avatar === "user-icon" ? userIconSVG : `<img src="${reply.avatar}" alt="${reply.author}" class="comment-avatar">`}
+                                    <div class="comment-content reply-content">
+                                        <div class="comment-author">
+                                            ${reply.author}
+                                            ${reply.verified ? '<svg xmlns="http://www.w3.org/2000/svg" width="12" height="12" viewBox="0 0 48 48" class="verified-comment"><polygon fill="#42a5f5" points="29.62,3 33.053,8.308 39.367,8.624 39.686,14.937 44.997,18.367 42.116,23.995 45,29.62 39.692,33.053 39.376,39.367 33.063,39.686 29.633,44.997 24.005,42.116 18.38,45 14.947,39.692 8.633,39.376 8.314,33.063 3.003,29.633 5.884,24.005 3,18.38 8.308,14.947 8.624,8.633 14.937,8.314 18.367,3.003 23.995,5.884"></polygon><polygon fill="#fff" points="21.396,31.255 14.899,24.76 17.021,22.639 21.428,27.046 30.996,17.772 33.084,19.926"></polygon></svg>' : ''}
+                                        </div>
+                                        <div class="comment-text">${reply.text}</div>
+                                    </div>
+                                </div>
+                                <div class="comment-actions">
+                                    <button class="comment-action like-comment" data-comment-id="${reply.id}">
+                                        Like
+                                    </button>
+                                    <span class="comment-time">${reply.time}</span>
+                                    ${reply.likes > 0 ? `<span class="comment-likes">${reply.likes} likes</span>` : ''}
+                                </div>
+                            </div>
+                        `).join('')}
+                    </div>
+                ` : ''}
+            `;
+            
+            return commentDiv;
+        }
+
+        function closeCommentModal() {
+            const modal = document.getElementById('commentModal');
+            modal.style.display = 'none';
+            currentPostId = null;
+            currentPostType = null;
+            replyingTo = null;
+            
+            // Clear input
+            const commentInput = document.getElementById('commentInput');
+            commentInput.value = '';
+            commentInput.placeholder = 'Write a comment...';
+            updateSendButton();
+        }
+
+        function updateSendButton() {
+            const commentInput = document.getElementById('commentInput');
+            const sendButton = document.getElementById('sendComment');
+            sendButton.disabled = !commentInput.value.trim();
+        }
+
+        function addComment() {
+            const commentInput = document.getElementById('commentInput');
+            const text = commentInput.value.trim();
+            
+            if (!text || !currentPostId) return;
+            
+            const newComment = {
+                id: Date.now(),
+                author: "You",
+                avatar: "user-icon", // Use special identifier for icon
+                text: text,
+                time: "now",
+                likes: 0,
+                verified: false,
+                replies: []
+            };
+            
+            if (!commentsData[currentPostId]) {
+                commentsData[currentPostId] = [];
+            }
+            
+            if (replyingTo) {
+                // Add as reply
+                const parentComment = commentsData[currentPostId].find(c => c.id === replyingTo);
+                if (parentComment) {
+                    parentComment.replies.push(newComment);
+                }
+                replyingTo = null;
+                commentInput.placeholder = 'Write a comment...';
+            } else {
+                // Add as main comment
+                commentsData[currentPostId].unshift(newComment);
+            }
+            
+            // Clear input and refresh comments
+            commentInput.value = '';
+            updateSendButton();
+            openCommentModal(currentPostId, currentPostType);
+        }
+
+        // Event listeners
+        document.getElementById('closeComments').onclick = closeCommentModal;
+        document.getElementById('commentInput').oninput = updateSendButton;
+        document.getElementById('commentInput').addEventListener('keypress', (e) => {
+            if (e.key === 'Enter' && !e.shiftKey) {
+                e.preventDefault();
+                addComment();
+            }
+        });
+        document.getElementById('sendComment').onclick = addComment;
+
+        // Handle comment actions (like, reply)
+        document.getElementById('commentsList').addEventListener('click', (e) => {
+            if (e.target.classList.contains('like-comment')) {
+                e.target.classList.toggle('liked');
+                e.target.textContent = e.target.classList.contains('liked') ? 'Liked' : 'Like';
+            } else if (e.target.classList.contains('reply-comment')) {
+                const commentId = parseInt(e.target.dataset.commentId);
+                const commentInput = document.getElementById('commentInput');
+                
+                replyingTo = commentId;
+                commentInput.placeholder = 'Write a reply...';
+                commentInput.focus();
+            }
+        });
 
         // SVG icons for various UI elements
         const heartIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
@@ -1527,9 +1995,9 @@
             <path d="M12 15v5s3.03-.55 4-2c1.08-1.62 0-5 0-5"></path>
         </svg>`;
 
-        const clipboardIcon = `<svg class="icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect width="8" height="4" x="8" y="2" rx="1" ry="1"></rect>
-            <path d="M16 4h2a2 2 0 0 1 2 2v14a2 2 0 0 1-2 2H6a2 2 0 0 1-2-2V6a2 2 0 0 1 2-2h2"></path>
+        const userIconSVG = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" style="width:36px;height:36px;background:#e5e7eb;border-radius:50%;padding:6px;color:#666;">
+            <path d="M20 21v-2a4 4 0 0 0-4-4H8a4 4 0 0 0-4 4v2"></path>
+            <circle cx="12" cy="7" r="4"></circle>
         </svg>`;
 
         // Photo and Reel Data
@@ -1702,7 +2170,7 @@
             commentBtn.innerHTML = `${commentIcon} <span class="count">${item.comments}</span>`;
             commentBtn.onclick = (e) => {
                 e.stopPropagation();
-                alert('Comments functionality coming soon!');
+                openCommentModal(item.id, type);
             };
             
             // Donate button with SVG
@@ -1811,7 +2279,7 @@
                 
                 comment.onclick = e => {
                     e.stopPropagation();
-                    alert('Comments functionality coming soon!');
+                    openCommentModal(r.id, 'reel');
                 };
                 
                 donate.onclick = e => {
@@ -2389,7 +2857,18 @@
             showStory(0);
             start();
         };
-        storyCloseBtn.onclick = closeStory;
+        storyCloseBtn.onclick = (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeStory();
+        };
+        
+        // Also add event listener as backup
+        storyCloseBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            e.stopPropagation();
+            closeStory();
+        });
         
         // Add tap area navigation
         storyTapLeft.onclick = () => {
