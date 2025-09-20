@@ -946,6 +946,23 @@
             display: block; 
         }
 
+        /* Story tap areas for navigation */
+        .story-tap-left,
+        .story-tap-right {
+            position: absolute;
+            top: 0;
+            bottom: 0;
+            width: 50%;
+            z-index: 80;
+            cursor: pointer;
+        }
+        .story-tap-left {
+            left: 0;
+        }
+        .story-tap-right {
+            right: 0;
+        }
+
         /* Story Header Styles */
         .story-header {
             position: absolute;
@@ -1393,6 +1410,10 @@
             <img src="https://images.unsplash.com/photo-1515886657613-9f3515b0c78f?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="story-image active" data-index="0" alt="Story 1">
             <img src="https://images.unsplash.com/photo-1529626455594-4ff0802cfb7e?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="story-image" data-index="1" alt="Story 2">
             <img src="https://images.unsplash.com/photo-1488426862026-3ee34a7d66df?ixlib=rb-1.2.1&auto=format&fit=crop&w=600&q=80" class="story-image" data-index="2" alt="Story 3">
+
+            <!-- Invisible tap areas for navigation -->
+            <div class="story-tap-left" id="storyTapLeft"></div>
+            <div class="story-tap-right" id="storyTapRight"></div>
 
             <!-- Close button -->
             <button class="btn close-btn" id="storyCloseBtn">
@@ -2302,6 +2323,8 @@
         const storyCloseBtn = document.getElementById("storyCloseBtn");
         const prevStoryBtn = document.getElementById("prevStoryBtn");
         const nextStoryBtn = document.getElementById("nextStoryBtn");
+        const storyTapLeft = document.getElementById("storyTapLeft");
+        const storyTapRight = document.getElementById("storyTapRight");
         const storyImages = document.querySelectorAll(".story-image");
         const progressBars = document.getElementById("progressBars");
         const storyCount = document.getElementById("storyCount");
@@ -2367,6 +2390,26 @@
             start();
         };
         storyCloseBtn.onclick = closeStory;
+        
+        // Add tap area navigation
+        storyTapLeft.onclick = () => {
+            if (currentStory > 0) {
+                clearTimeout(timer);
+                showStory(currentStory - 1);
+                start();
+            }
+        };
+        
+        storyTapRight.onclick = () => {
+            if (currentStory < total - 1) {
+                clearTimeout(timer);
+                showStory(currentStory + 1);
+                start();
+            } else {
+                closeStory();
+            }
+        };
+        
         replyInput.oninput = () => sendStoryBtn.classList.toggle("visible", !!replyInput.value.trim());
         
         // Add Enter key functionality to story reply input
